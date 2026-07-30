@@ -1,0 +1,64 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_stop: true
+          script: |
+            set -e
+
+            cd /var/www/hexaterminal
+            git config --global --add safe.directory /var/www/hexaterminal
+            git fetch origin main
+            git reset --hard origin/main
+            composer install --no-dev --optimize-autoloader --no-interaction
+
+            npm ci
+            npm run build
+
+            # Run Laravel optimizations
+            php artisan config:clear
+            php artisan route:cache
+            php artisan view:cache
+
+            # Run migrations
+            php artisan migrate --force
+
+            # Ensure storage link
+
+            # Clear application cache
+            php artisan cache:clear
+
+            # Fix permissions
+            chown -R www-data:www-data .
+            chmod -R 775 storage
+            chmod -R 775 bootstrap/cache
+
+            # Restart services
+            systemctl reload php8.2-fpm
+            systemctl reload nginx
+
+
+            cd /var/www/hexaterminal/frontend
+            git config --global --add safe.directory /var/www/hexaterminal/frontend
+            npm install
+            npm run build
+
+            systemctl reload php8.2-fpm
+            systemctl reload nginx
+            systemctl restart hexa-frontend
