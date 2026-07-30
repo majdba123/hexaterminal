@@ -34,9 +34,7 @@ class UsersTableSeeder extends Seeder
             return;
         }
 
-        if (strlen($password) < 12) {
-            throw new \RuntimeException('ADMIN_PASSWORD must be at least 12 characters.');
-        }
+
 
         $user = User::firstOrCreate(
             ['email' => $email],
