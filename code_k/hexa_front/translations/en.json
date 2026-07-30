@@ -1,0 +1,460 @@
+{
+    "header": {
+        "select_language": "Select Language:",
+        "menu": "Menu",
+        "offcanvas": {
+            "title": "Scalable Business for Startups",
+            "quote": "Get the oars in the water and start rowing. Execution is the single biggest factor in achievement so the faster and better your execution.",
+            "follow_us": "Follow Us",
+            "contact_info": "Contact Info",
+            "phone": "Phone",
+            "email": "Email",
+            "location": "Location",
+            "collaboration": "Looking for collaboration for your next creative project?",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "linkedin": "LinkedIn",
+            "twitter": "Twitter",
+            "github": "GitHub"
+        },
+        "logo_part1": "Hexa",
+        "logo_part2": "Terminal",
+
+        "search": "Search",
+        "menu_alt": "Menu",
+        "languages": {
+            "en": "English",
+            "ar": "Arabic",
+            "tr": "Turkish"
+        },
+        "logo": "Hexa Terminal",
+        "home": "Home",
+        "about": "About Us",
+        "services": "Our Services",
+        "projects": "Our Projects",
+        "ourteam": "Our Team",
+
+        "why_choose_us": "Why Choose Us",
+        "contact": "Contact Us",
+        "join_team": "Join Our Team",
+        "search_placeholder": "Search"
+    },
+    "vision": {
+        "title": "Shaping the future through Tech",
+        "description": "At Hexa Terminal, we redefine technology as the engine of innovation and growth. We deliver cutting-edge digital solutions tailored to your needs, ensuring your competitive edge with world-class technical expertise.",
+        "paragraph1": "Our vision stems from a firm belief that every great idea deserves a digital embodiment, and every ambitious project deserves a solid technological foundation to launch from.",
+        "paragraph2": "We aspire to be the premier technical partner in the Arab world and globally - transforming ideas into tangible digital products and leading the digital transformation journey for individuals and organizations with a professional, customized approach built on deep market understanding.",
+        "paragraph3": "Our vision focuses on building an integrated technological ecosystem that supports innovation and provides our clients with the digital tools they need to grow, expand, and compete in a rapidly changing market. We don't just create software - we build real, advanced 'digital entities' with clear identities that reflect our clients' ambitions and embody their goals in reality.",
+        "paragraph4": "From Syria to America, through Lebanon and Turkey, we aim to make the Hexa Terminal name synonymous with quality, commitment, and technological innovation.",
+        "objectives": {
+            "title": "Our Objectives",
+            "1": "Deliver comprehensive, innovative technical solutions",
+            "2": "Enable organizations' digital transformation",
+            "3": "Build strategic relationships with clients",
+            "4": "Lead in Gulf and international markets",
+            "5": "Invest in innovation and research",
+            "6": "Develop an elite technical team",
+            "7": "Build a trusted technical brand"
+        }
+    },
+    "banner": {
+        "satisfied_clients": "Trusted Clients",
+        "image_alt": "Innovative Hexa Terminal Banner Background",
+        "title": "Towards Unprecedented Digital Horizons",
+        "subtitle": "With Technical Creativity & Advanced Intelligence",
+        "description": "At Hexa Terminal, we develop cutting-edge technological solutions that empower businesses to achieve sustainable growth and confidently expand into global markets through digital leadership.",
+        "start_project": "Launch Your Digital Project",
+        "contact_us": "Consult Our Experts",
+        "clients": "+1,250 Successful Client Partnerships"
+    },
+    "about": {
+        "title": "Where Tech Meets Market Insight",
+        "subtitle": "About Hexa Terminal",
+        "description": "A tech startup led by Engineer Youssef Saheel, specializing in software, applications, and web development.",
+        "intro": "We combine engineering creativity with deep market understanding, serving clients across Lebanon, Turkey, UAE, and the United States.",
+        "rated": "Rated 4.80/5 from 1000+ global clients",
+        "strengths": {
+            "1_title": "Multidisciplinary Team ",
+            "1_description": "Full-stack technical expertise",
+            "2_title": "Market-Focused ",
+            "2_description": " Solutions tailored to business needs",
+            "3_title": "Quality-Driven ",
+            "3_description": " Rigorous development standards",
+            "4_title": "Rapid Execution ",
+            "4_description": " Agile delivery without compromise"
+        },
+        "projects": "240+ Successful Projects",
+        "satisfaction": "100% Client Satisfaction",
+        "founder": {
+            "name": "Youssef Saheel",
+            "position": "Founder & Lead Engineer"
+        },
+        "story": "Our Story"
+    },
+    "services": {
+        "title": "Comprehensive Digital Solutions",
+        "subtitle": "Our Services",
+        "description": "We deliver integrated technical solutions that help transform your ideas into successful digital products:",
+        "web": {
+            "alt": "Web Development Icon",
+            "title": "Web Development",
+            "description": "Fast, responsive, meticulously designed, and scalable websites built with cutting-edge technologies."
+        },
+        "mobile": {
+            "title": "Mobile App Development",
+            "description": "Native iOS and Android applications developed using the latest frameworks and technologies."
+        },
+        "uiux": {
+            "title": "UI/UX Design",
+            "description": "Engaging user interfaces and seamless experiences crafted through human-centered design principles."
+        },
+        "mvp": {
+            "title": "MVP Development",
+            "description": "Rapid development of minimum viable products for startups with minimal time and cost investment."
+        },
+        "software": {
+            "title": "Custom Software",
+            "description": "Tailored solutions designed specifically for your unique business requirements and workflows."
+        },
+        "consulting": {
+            "title": "Tech Consulting",
+            "description": "End-to-end project management and technical guidance for your digital transformation journey."
+        }
+    },
+    "projects": {
+        "title": "Transforming Industries Through Tech",
+        "subtitle": "Our Projects",
+        "medical": {
+            "title": "Istanbul Medical Clinic",
+            "description": "Custom medical app for a leading Istanbul clinic featuring appointment scheduling, telemedicine, and patient records management.",
+            "category": "Healthcare"
+        },
+        "ecommerce": {
+            "title": "Dubai Marketplace",
+            "description": "Comprehensive e-commerce solution with multi-vendor support, Arabic/English interface, and integrated payment gateways for Dubai's retail market.",
+            "category": "Retail"
+        },
+        "logistics": {
+            "title": "Beirut Logistics",
+            "description": "End-to-end logistics management platform with real-time tracking, fleet management, and automated routing for Lebanon's growing delivery sector.",
+            "category": "Logistics"
+        },
+        "booking": {
+            "title": "California Reservations",
+            "description": "AI-powered booking system with dynamic pricing, multi-property management, and seamless integration with major travel platforms for a California-based hospitality group.",
+            "category": "Hospitality"
+        },
+        "quote": "Every project we undertake is a long-term partnership, not just a one-time implementation.",
+        "view_all": "View All Projects"
+    },
+    "events": {
+        "subtitle_icon": "Events Icon",
+        "subtitle": "Events",
+        "title": "Event Schedule",
+        "day1": "Day 01",
+        "day2": "Day 02",
+        "day3": "Day 03",
+        "day1_title": "Day One",
+        "day2_title": "Day Two",
+        "day3_title": "Day Three",
+        "april_monday": "April, Monday",
+        "location_icon": "Location Icon",
+        "time_icon": "Time Icon",
+        "day1_event1": {
+            "title": "Tech Innovators Summit",
+            "location": "Apple Upper West Side, Brooklyn",
+            "time": "10.00AM – 12.00PM"
+        },
+        "day1_event2": {
+            "title": "AI and Cloud Expo",
+            "location": "The Majestic Event Space, Houston",
+            "time": "01.00PM – 03.00PM"
+        },
+        "day1_event3": {
+            "title": "The Future of DevOps",
+            "location": "Crystal Banquet Hall, Miami Beach",
+            "time": "04.00PM – 06.00PM"
+        },
+        "day2_event1": {
+            "title": "Data Analytics Revolution Forum",
+            "location": "Aurora Events Center, San Francisco",
+            "time": "12.00PM – 02.00PM"
+        },
+        "day2_event2": {
+            "title": "Next-Gen Blockchain Symposium",
+            "location": "Aurora Events Center, San Francisco",
+            "time": "02.30PM – 05.00PM"
+        },
+        "day2_event3": {
+            "title": "Smart Cities Tech Fair",
+            "location": "Silver Oak Venue, Austin",
+            "time": "07.00PM – 09.00PM"
+        },
+        "day3_event1": {
+            "title": "Emerging Trends in IT",
+            "location": "Palm Grove Hall, Beverly Hills",
+            "time": "10.00PM – 12.00AM"
+        },
+        "day3_event2": {
+            "title": "Developers Meetup",
+            "location": "Willow Creek Lodge, Portland",
+            "time": "10.00PM – 12.00AM"
+        },
+        "day3_event3": {
+            "title": "Tech Startups Pitch Day",
+            "location": "Heritage Banquet Hall, Atlanta",
+            "time": "10.00PM – 12.00AM"
+        }
+    },
+    "team": {
+        "title": "Our team is friendly, talkative, and fully reliable.",
+        "subtitle": "Our Staff",
+        "description": "We all carry a lot of baggage, thanks to our upbringing. The majority of people carry with them, an entire series of self-limiting beliefs.",
+        "members": {
+            "anne": {
+                "name": "Khaled Tabaa",
+                "position": "Officer"
+            },
+            "mellissa": {
+                "name": "Gorge Soltan",
+                "position": "Analyst"
+            },
+            "john": {
+                "name": "Alaa Bayan",
+                "position": "Director"
+            },
+            "paul": {
+                "name": "Paul Flavius",
+                "position": "Coordinator"
+            }
+        },
+        "stats": {
+            "business": " Business Peoples",
+            "projects": " Project completed",
+            "customers": " Happy Customers"
+        }
+    },
+    "advantages": {
+        "title": "Your Tech Partner, Not Just a Vendor",
+        "subtitle": "Why Choose Hexa Terminal",
+        "description": "We believe Tech means nothing without truly understanding your business needs.",
+        "quality": {
+            "title": "Premium Quality Code",
+            "description": "Rigorous adherence to industry best practices and coding standards that ensure scalable, maintainable solutions."
+        },
+        "support": {
+            "title": "Continuous Support",
+            "description": "Dedicated post-delivery maintenance and support packages tailored to your operational requirements."
+        },
+        "delivery": {
+            "title": "Rapid Yet Professional Delivery",
+            "description": "Agile development processes that deliver quickly without compromising on quality or attention to detail."
+        },
+        "pricing": {
+            "title": "Flexible & Competitive Pricing",
+            "description": "Customizable engagement models and pricing structures designed to fit your budget and project scope."
+        },
+        "team": {
+            "title": "Your Extended Development Team",
+            "description": "We integrate with your operations as an in-house team, committed to your long-term success."
+        },
+        "business": {
+            "title": "Business-First Approach",
+            "description": "Solutions designed around your specific operational challenges and market opportunities."
+        },
+        "start_project": "Start Your Project"
+    },
+    "contact": {
+        "title": "Ready to start your project or need consultation?",
+        "subtitle": "Contact Hexa Terminal",
+        "email": "majdbayer77@gmail.com",
+        "email_label": "24/7 online support",
+        "phone": "+963 935 027 218 ",
+        "phone_label": "Mon-Fri 8:30am - 6:30pm",
+        "whatsapp": "+963 949 805 426",
+        "whatsapp_label": "WhatsApp available",
+        "social": "Connect With Us",
+        "locations": "Serving you from Beirut • Istanbul • Dubai • New York",
+        "process": {
+            "title": "Our Global Presence",
+            "1": "Share your project requirements",
+            "2": "Get a free consultation",
+            "3": "Receive a tailored proposal"
+        },
+        "form": {
+            "subject": "Subject",
+            "title": "Let's discuss your project",
+            "description": "We'll be happy to assist you and answer any questions",
+            "name": "Full Name*",
+            "email": "Email Address*",
+            "phone": "Phone Number*",
+            "service": "Select Service",
+            "services": {
+                "web": "Web Development",
+                "mobile": "Mobile App Development",
+                "uiux": "UI/UX Design",
+                "consulting": "Tech Consulting"
+            },
+            "company": "Company Name",
+            "message": "Tell us about your project*",
+            "submit": "Submit"
+        }
+    },
+    "careers": {
+        "title": "Join Our Growing Team",
+        "subtitle": "Careers at HexaTerminal",
+        "description": "We're always looking for talented individuals to join our team",
+        "form": {
+            "name": "Full Name*",
+            "email": "Email*",
+            "phone": "Phone Number*",
+            "position": "Select Position",
+            "positions": {
+                "frontend": "Frontend Developer",
+                "backend": "Backend Developer",
+                "fullstack": "Full Stack Developer",
+                "mobile": "Mobile Developer",
+                "ios": "iOS Developer",
+                "android": "Android Developer",
+                "devops": "DevOps Engineer",
+                "embedded": "Embedded Systems Developer",
+                "uiux": "UI/UX Designer",
+                "graphic": "Graphic Designer",
+                "pm": "Project Manager",
+                "techlead": "Technical Lead",
+                "datascientist": "Data Scientist",
+                "dataengineer": "Data Engineer",
+                "ai": "AI Engineer",
+                "ml": "Machine Learning Engineer",
+                "qa": "QA Engineer",
+                "test": "Test Automation Engineer",
+                "security": "Security Engineer",
+                "cloud": "Cloud Engineer",
+                "blockchain": "Blockchain Developer",
+                "business": "Business Analyst",
+                "system": "Systems Analyst",
+                "product": "Product Manager",
+                "other": "Other"
+            },
+            "cover": "Cover Letter (Optional)",
+            "resume": "Upload Resume/CV (PDF or Word)*",
+            "submit": "Submit Application"
+        }
+    },
+    "footer": {
+        "address": {
+            "title": "Where To Find Us",
+            "location": "Syria - Damascus",
+            "phone": "+963-949805426",
+            "phone_label": "Mon-fri 9:00am 6:00pm",
+            "email": "majdbayer77@gmail.com",
+            "email_label": "24x7 online support"
+        },
+        "newsletter": {
+            "title": "Newsletter",
+            "placeholder": "Enter Your Email"
+        },
+        "links": {
+            "project": "Projects",
+
+            "title": "Quick Links",
+            "home": "Home",
+            "about": "About us",
+            "team": "Team",
+            "team_single": "Team Single",
+            "service": "Service",
+            "service_single": "Service Single",
+            "why_choose_us": "Why Choose Us",
+            "blog_single": "Blog Single",
+            "contact": "Contact"
+        },
+        "call": {
+            "title": "Call Center",
+            "number": "+963-935027218",
+            "text": "and get a free estimate"
+        },
+        "copyright": "Develop and design by Hexa Terminal"
+    },
+    "marquee": {
+        "web_design": {
+            "title": "Web Design",
+
+            "alt": "Web Design Icon"
+        },
+        "uiux": {
+            "title": "UI/UX Design",
+
+            "alt": "UI/UX Design Icon"
+        },
+        "developer": {
+            "title": "Developer",
+
+            "alt": "Developer Icon"
+        },
+        "ios": {
+            "title": "iOS Developer",
+
+            "alt": "iOS Developer Icon"
+        },
+        "digital_agency": {
+            "title": "Digital Agency",
+
+            "alt": "Digital Agency Icon"
+        }
+    },
+    "faq": {
+        "subtitle_icon": "Subtitle Icon",
+        "subtitle": "Frequently Asked Questions",
+        "title": "Common Questions",
+        "description": "Answers to your common queries about our services and how we operate.",
+        "contact_us": "Contact Us for More Inquiries"
+    },
+    "reviews": {
+        "no_reviews": "No reviews available at the moment",
+
+        "subtitle": "Customer Reviews",
+        "title": "What Our Clients Say",
+        "description": "Discover the experiences and feedback from our valued clients.",
+        "submit_review": "Submit a Review"
+    },
+    "video_section.title": "Company Video",
+    "video_section.subtitle": "Intro Video",
+    "video_section.subtitle_icon": "Video Icon",
+    "video_section.description": "Watch this introductory video to learn about our vision, mission and goals.",
+    "video_section.loading": "Loading video...",
+    "video_section.no_video": "No video available at the moment.",
+    "project": {
+        "title": "Project Details",
+        "loading": "Loading project...",
+        "error": "An error occurred while loading the project",
+        "retry": "Retry",
+        "overview": "Project Overview",
+        "details": "Project Details",
+        "features": "Key Features",
+        "video": "Video Presentation",
+        "visit_project": "Visit Project",
+        "back_to_projects": "Back to Projects",
+        "no_images": "No images available for this project",
+        "no_description": "No description available",
+        "no_features": "No features available",
+        "no_video": "No video available",
+        "category": "Project",
+        "service": "Service",
+        "title_label": "Title",
+        "service_label": "Service",
+        "service_description": "Service Description",
+        "not_available": "Not Available",
+        "project_id_missing": "Project ID is missing",
+        "auth_missing": "Authentication token missing",
+        "fetch_error": "Failed to fetch project details",
+        "timeout_error": "Connection timeout. Please try again."
+    },
+
+    "social": {
+        "github": "GitHub",
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook",
+        "instagram": "Instagram",
+        "twitter": "Twitter"
+    }
+}

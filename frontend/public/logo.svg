@@ -1,0 +1,23 @@
+<svg width="208" height="32" viewBox="0 0 208 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hexa Terminal">
+  <!--
+    Official Hexa Terminal logo: flat-top hexagon outline (brand blue to
+    cyan gradient) with a terminal prompt glyph at its center, plus the
+    wordmark. Source of truth for the mark: the branded reveal frame of
+    public/media/hero-intro.mp4. This standalone variant is fetched directly
+    by crawlers (Organization JSON-LD logo URL), so colors are hardcoded:
+    white glyph/wordmark for the brand's dark aesthetic. Replaces the
+    previous file, which contained the "ITinfinite" template vendor's
+    outlined wordmark and X-mark, not this company's brand.
+  -->
+  <path d="M9.7 3.14h12.6L29.69 16l-7.39 12.86H9.7L2.31 16Z" stroke="url(#hexa-logo-hex-gradient)" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M10.4 11.2 16.4 16l-6 4.8" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18.2 20.8h4.6" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+  <text x="42" y="23" fill="#ffffff" font-family="ui-sans-serif, system-ui, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="-0.02em">Hexa Terminal</text>
+  <defs>
+    <linearGradient id="hexa-logo-hex-gradient" x1="2.31" y1="3.14" x2="29.69" y2="28.86" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3663D8"/>
+      <stop offset="0.56" stop-color="#77BEFF"/>
+      <stop offset="0.99" stop-color="#00D1FF"/>
+    </linearGradient>
+  </defs>
+</svg>

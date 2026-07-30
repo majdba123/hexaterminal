@@ -1,0 +1,32 @@
+# =============================================================================
+# Laravel API + Filament CMS — PHP-FPM image for staging.
+# Multi-stage: install PHP extensions + composer deps, then run as php-fpm.
+# No secrets baked in; all runtime config comes from the env file at run time.
+# =============================================================================
+FROM php:8.2-fpm AS base
+
+# System deps for the PHP extensions Laravel + Filament need.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git unzip libzip-dev libpng-dev libjpeg-dev libfreetype6-dev libonig-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j"$(nproc)" pdo_mysql mbstring zip gd bcmath \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/hexa
+
+# Install PHP dependencies first (better layer caching).
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+# App source.
+COPY . .
+RUN composer dump-autoload --optimize --no-dev \
+    && php artisan storage:link || true \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+# Liveness/readiness are HTTP (served by nginx); the container itself just runs
+# php-fpm. Caches are built at deploy time, not bake time, so env is present.
+EXPOSE 9000
+CMD ["php-fpm"]

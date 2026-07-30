@@ -1,0 +1,27 @@
+# =============================================================================
+# systemd unit — Next.js frontend (Option A: bare VPS + Nginx + process manager)
+# Install to /etc/systemd/system/hexa-frontend.service, then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now hexa-frontend
+#
+# Assumes the app was built (`npm ci && npm run build`) against a reachable API
+# BEFORE starting the service. Env (including the server-only REVALIDATE_SECRET
+# and API_URL) is read from EnvironmentFile — keep that file 0600 and untracked.
+# =============================================================================
+[Unit]
+Description=Hexa Terminal — Next.js frontend (staging)
+After=network.target
+
+[Service]
+Type=simple
+User=hexa
+WorkingDirectory=/var/www/hexa-frontend
+EnvironmentFile=/etc/hexa/frontend.env
+ExecStart=/usr/bin/npm run start
+Restart=on-failure
+RestartSec=5
+# Frontend listens on :3000; Nginx (frontend-staging.conf) proxies to it.
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target

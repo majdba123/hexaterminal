@@ -1,0 +1,114 @@
+# =============================================================================
+# Hexa Terminal — STAGING Docker Compose (Option C)
+# A self-contained staging stack: MySQL, Redis, the Laravel API+CMS (PHP-FPM
+# behind Nginx), and the Next.js frontend. All configuration comes from env
+# files; NO secrets are committed here.
+#
+# Prereqns:
+#   - ../../.env                    Laravel env  (copy from .env.staging.example)
+#   - ../../frontend/.env           Next env     (copy from frontend/.env.staging.example)
+#   - TLS termination is expected at an upstream LB/edge; these services speak
+#     plain HTTP internally. Set TRUSTED_PROXIES accordingly in the Laravel env.
+#
+# Usage:
+#   docker compose -f deploy/staging/docker-compose.staging.yml --env-file .env up -d --build
+#   docker compose -f deploy/staging/docker-compose.staging.yml exec app php artisan migrate --force
+#
+# Deployment ORDER matters (see docs/deployment/staging-deployment.md): DB ->
+# migrate -> API healthy -> build+start frontend -> smoke tests. `depends_on`
+# with health conditions enforces the first half of that automatically.
+# =============================================================================
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-hexa_terminal_staging}
+      MYSQL_USER: ${DB_USERNAME:-hexa_staging}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in the env file}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in the env file}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: ../../
+      dockerfile: deploy/staging/Dockerfile.backend
+    restart: unless-stopped
+    env_file:
+      - ../../.env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      # Persist uploaded media across deploys (public disk).
+      - storage_app:/var/www/hexa/storage/app/public
+    # PHP-FPM listens on 9000 for the api_web nginx service.
+    expose:
+      - "9000"
+
+  api_web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/api-staging.conf:/etc/nginx/conf.d/default.conf:ro
+      - app_public:/var/www/hexa/public:ro
+    ports:
+      - "8080:443"   # map behind your TLS edge
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../deploy/staging/Dockerfile.frontend
+    restart: unless-stopped
+    env_file:
+      - ../../frontend/.env
+    depends_on:
+      api_web:
+        condition: service_healthy   # never build/serve against a dead API
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  edge:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - frontend
+    volumes:
+      - ./nginx/frontend-staging.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "443:443"
+
+volumes:
+  db_data:
+  storage_app:
+  app_public:

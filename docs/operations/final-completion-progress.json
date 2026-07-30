@@ -1,0 +1,245 @@
+{
+  "protected_main_head": "main branch untouched throughout; not recorded as a moving SHA since this program never checks it out",
+  "source_branch": "feature/hexa-legacy-security-hardening",
+  "source_head": "6ec72b2",
+  "final_branch": "feature/hexa-final-global-completion",
+  "waves": [
+    {
+      "id": 1,
+      "title": "Trust Pages, Team, and Claim Governance",
+      "status": "completed",
+      "started_at": "2026-07-22",
+      "completed_at": "2026-07-22",
+      "commits": ["9b38cee: feat: add trust pages, team, and claim governance"],
+      "files_changed": [
+        "database/migrations/2026_07_22_140000_create_trust_pages_table.php",
+        "database/migrations/2026_07_22_140100_create_public_claims_table.php",
+        "database/migrations/2026_07_22_140200_add_governance_fields_to_team_members_table.php",
+        "app/Models/TrustPage.php",
+        "app/Models/PublicClaim.php",
+        "app/Models/TeamMember.php",
+        "app/Filament/Resources/TrustPages/**",
+        "app/Filament/Resources/PublicClaims/**",
+        "app/Filament/Resources/TeamMembers/Schemas/TeamMemberForm.php",
+        "app/Filament/Resources/TeamMembers/Tables/TeamMembersTable.php",
+        "app/Http/Controllers/Api/V1/Public/TrustPageController.php",
+        "app/Http/Resources/V1/Public/TrustPageResource.php",
+        "app/Http/Resources/V1/Public/PublicClaimResource.php",
+        "app/Http/Resources/V1/Public/Concerns/EmbedsPublicClaims.php",
+        "app/Http/Resources/V1/Public/TeamMemberResource.php",
+        "app/Http/Controllers/Api/V1/Public/TeamMemberController.php",
+        "app/Observers/TrustPageObserver.php",
+        "app/Observers/PublicClaimObserver.php",
+        "app/Providers/AppServiceProvider.php",
+        "routes/api_v1.php",
+        "tests/Feature/Api/V1/TrustPageVisibilityTest.php",
+        "tests/Feature/Api/V1/PublishedContentVisibilityTest.php",
+        "tests/Feature/Cms/AllResourcesRenderTest.php",
+        "frontend/lib/api/types.ts",
+        "frontend/lib/api/client.ts",
+        "frontend/lib/routes/registry.ts",
+        "frontend/components/site/trust-page-view.tsx",
+        "frontend/app/[locale]/{security,process,accessibility,technology,responsible-ai,engineering-standards,team}/page.tsx",
+        "frontend/messages/en.json",
+        "frontend/messages/ar.json"
+      ],
+      "tests_run": [
+        "php artisan test (212 passed)",
+        "phpstan analyse (no errors)",
+        "pint --test (new files only, passed after auto-fix)",
+        "npx tsc --noEmit (clean)",
+        "npx eslint (new files, clean)",
+        "npx playwright test e2e/route-registry.spec.ts (8 passed)"
+      ],
+      "test_results": "all green",
+      "blockers": [],
+      "residual_risks": [
+        "No founder-approved content exists yet for any Trust Page or Team member beyond pre-existing seed data -- routes are content-blocked/technically-ready in the registry (no navKey, indexable:false, inSitemap:false) until real approved records are published.",
+        "Full frontend production build against a live seeded API was not run this pass (requires a running Laravel instance); typecheck, lint, and the route-registry e2e suite were run instead. Full integrated build is exercised in the Wave 12 local rehearsal."
+      ],
+      "deferred_external_inputs": [
+        "Founder-authored content for every Trust Page type",
+        "Founder/legal/security sign-off on any specific Trust Page before it can go live"
+      ],
+      "evidence_paths": [
+        "tests/Feature/Api/V1/TrustPageVisibilityTest.php",
+        "tests/Feature/Cms/AllResourcesRenderTest.php"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Secure Preview and Publication Control",
+      "status": "completed_with_documented_residual_risk",
+      "started_at": "2026-07-22",
+      "completed_at": "2026-07-22",
+      "commits": ["pending: feat: add secure preview and publication validation"],
+      "files_changed": [
+        "database/migrations/2026_07_22_150000_create_content_previews_table.php",
+        "app/Models/ContentPreview.php",
+        "app/Services/PreviewTokenService.php",
+        "app/Http/Controllers/Api/V1/Public/PreviewController.php",
+        "app/Filament/Support/PreviewAction.php",
+        "app/Filament/Resources/{Services,Systems,CaseStudies,Industries,Articles,TeamMembers,TrustPages,PricingProfiles,EngagementModels}/Pages/Edit*.php",
+        "app/Services/ContentCompletenessReport.php",
+        "config/services.php",
+        "routes/api_v1.php",
+        "tests/Feature/Api/V1/PreviewControllerTest.php",
+        "tests/Feature/Cms/AllResourcesRenderTest.php",
+        "frontend/lib/api/client.ts",
+        "frontend/components/site/trust-page-view.tsx",
+        "frontend/app/[locale]/preview/[token]/page.tsx"
+      ],
+      "tests_run": [
+        "php artisan test (full suite passed)",
+        "phpstan analyse (no errors)",
+        "pint --test (new/changed files, clean)",
+        "npx tsc --noEmit (clean)",
+        "npx eslint (new files, clean)"
+      ],
+      "test_results": "all green",
+      "blockers": [],
+      "residual_risks": [
+        "Secure preview has a dedicated frontend renderer only for the trust_page type; the other 8 previewable types (service/system/case_study/industry/article/team_member/engagement_model, plus pricing_profile which has no public resource at all) fall back to a generic labeled JSON viewer at /preview/[token] rather than a bespoke visual preview. The security/token/access-log/revocation contract is identical and fully tested for all types -- only the presentational fidelity of the preview differs.",
+        "The central Publication Validator described in the spec (a single service consumed by Filament/API/sitemap/search/RSS/JSON-LD/readiness commands) was not extracted as a standalone class this wave -- TrustPage::isReadyForPublication() remains the source of truth and IS reused consistently (API, preview bypasses it deliberately, ContentCompletenessReport surfaces its failures), but a generic cross-model PublicationValidator interface for future content types is still to be built.",
+        "Translation completeness is enforced field-by-field via ContentCompletenessReport (now covering TrustPage) rather than a formal missing/partial/complete/reviewed/approved state machine with dry-run repair tooling -- that remains open scope."
+      ],
+      "deferred_external_inputs": [],
+      "evidence_paths": [
+        "tests/Feature/Api/V1/PreviewControllerTest.php",
+        "tests/Feature/Cms/AllResourcesRenderTest.php"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "International SEO, Sitemap, and Structured Data",
+      "status": "completed_with_documented_residual_risk",
+      "started_at": "2026-07-22",
+      "completed_at": "2026-07-22",
+      "commits": ["pending: security: harden international seo sitemap and structured data"],
+      "files_changed": [
+        "app/Services/SeoAuditReport.php",
+        "app/Console/Commands/SeoAudit.php",
+        "tests/Feature/SeoAuditReportTest.php",
+        "tests/Feature/SeoAuditCommandTest.php",
+        "frontend/app/sitemap.ts"
+      ],
+      "tests_run": [
+        "php artisan test (full suite)",
+        "phpstan analyse (full, no errors)",
+        "pint --test (new/changed files, clean)",
+        "npx tsc --noEmit (clean)",
+        "npx eslint app/sitemap.ts (clean)",
+        "npx playwright test e2e/route-registry.spec.ts (8 passed, unaffected by sitemap change)"
+      ],
+      "test_results": "all green",
+      "blockers": [],
+      "residual_risks": [
+        "hexa:seo-audit found and this wave fixed a REAL bug: frontend/app/sitemap.ts previously included every published Service/System/CaseStudy/Industry/Article regardless of that record's own seo.noindex flag, meaning an editor setting per-page noindex would still get the page submitted to search engines via the sitemap. Now filtered via a notNoindexed() helper. This specific fix has type/lint coverage but no automated runtime test: the frontend has no unit-test runner (no vitest/jest configured) and a genuine e2e check would require a live seeded Laravel API, which is Wave 12 rehearsal scope.",
+        "hexa:link-audit (broken/orphan link detection) is explicitly Wave 9 scope, not built here.",
+        "hexa:global-readiness is explicitly Wave 11 scope, not built here.",
+        "AEO/GEO reusable content blocks (comparison table, decision checklist, key takeaways as distinct block types) were not built as new primitives -- TrustPage sections/FAQs/CTA from Wave 1 already cover the concise-answer/detailed-explanation/FAQ/CTA shapes, but comparison-table and decision-checklist block types remain unbuilt.",
+        "Canonical/hreflang engine (frontend/lib/seo/alternates.ts) and the JSON-LD entity graph (frontend/lib/seo/jsonld.ts) were pre-existing and already complete; no table-driven per-content-type test suite was added for them this wave beyond the existing route-registry e2e."
+      ],
+      "deferred_external_inputs": [],
+      "evidence_paths": [
+        "tests/Feature/SeoAuditReportTest.php",
+        "tests/Feature/SeoAuditCommandTest.php"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Next.js CSP, Headers, and CMS MFA",
+      "status": "completed_with_documented_residual_risk",
+      "started_at": "2026-07-22",
+      "completed_at": "2026-07-24",
+      "commits": [
+        "745ff63: security: add public CSP with honest enforcement blocker",
+        "pending: security: add CMS TOTP multi-factor authentication"
+      ],
+      "files_changed": [
+        "frontend/lib/csp.ts",
+        "frontend/lib/theme-init-script.ts",
+        "frontend/lib/image-hosts.ts",
+        "frontend/proxy.ts",
+        "frontend/next.config.ts",
+        "frontend/app/[locale]/layout.tsx",
+        "frontend/app/api/csp-report/route.ts",
+        "frontend/e2e/csp.spec.ts",
+        "database/migrations/2026_07_24_030000_add_app_authentication_to_users_table.php",
+        "app/Models/User.php",
+        "app/Providers/Filament/CmsPanelProvider.php",
+        "tests/Feature/Security/FilamentMfaTest.php"
+      ],
+      "tests_run": [
+        "npx tsc --noEmit (clean)",
+        "npx eslint . --max-warnings=0 (clean, full frontend)",
+        "npx playwright test e2e/csp.spec.ts e2e/route-registry.spec.ts (16 passed)",
+        "Manual verification against a real `next build` + `next start`: confirmed CSP_ENFORCE is read per-request (toggles without rebuild), confirmed Report-Only never blocks anything, and confirmed (via browser CSP violation reports with disposition:\"enforce\") that full enforcement currently breaks page hydration -- see residual_risks.",
+        "php artisan test --filter=FilamentMfaTest (7 passed) -- includes verifying a real computed TOTP code against Google2FA, single-use recovery codes, encrypted-at-rest storage, and that secrets never serialize.",
+        "php artisan test --filter=AllResourcesRenderTest (28 passed, confirms /cms still renders with MFA wired into the panel)",
+        "./vendor/bin/phpstan analyse (full, no errors)",
+        "./vendor/bin/pint --test (new/changed files, clean)",
+        "php artisan test (full suite, see evidence)"
+      ],
+      "test_results": "CSP infrastructure and CMS TOTP MFA both verified working end-to-end. CSP full enforcement empirically confirmed NOT viable yet (documented, not silently claimed complete).",
+      "blockers": [],
+      "residual_risks": [
+        "CSP full enforcement (CSP_ENFORCE=true) is NOT yet safe to turn on in production. Root cause, verified empirically against a real production build: Next.js's App Router injects multiple inline `(self.__next_f=self.__next_f||[]).push([...])` bootstrap scripts per page to stream RSC payload data to the client. Their content varies per page/chunk, so a static hash allowlist cannot cover them. With CSP_ENFORCE=true the browser blocks them (confirmed via the violation report's `disposition: \"enforce\"`) and the page fails to hydrate. Fixing this properly requires migrating to nonce-based CSP, which itself requires disabling static generation/ISR sitewide (a real performance trade-off) per Next.js's own documented constraint -- or accepting `unsafe-inline` for scripts, which defeats CSP's actual protection against injected scripts. This is the exact 'implemented or honestly blocked' scenario the program spec anticipates: Report-Only is fully implemented, safe, and useful today (real violation data via /api/csp-report); full enforcement is an explicit, documented P0 blocker, not silently claimed complete.",
+        "CMS TOTP MFA is built on Filament's first-party AppAuthentication provider (pragmarx/google2fa under the hood, already a filament/filament dependency -- no new/unmaintained package introduced). Currently required only for the 'admin' role, not 'editor'; broadening that policy is a product decision, not a technical blocker.",
+        "Session hardening (regeneration, timeouts, invalidation on role/password change, logout-all-sessions) was not separately re-verified this pass -- Filament's AuthenticateSession middleware (already in CmsPanelProvider) and Laravel's default session regeneration on login cover the baseline, but no dedicated test suite was added for the full session-lifecycle contract from the spec."
+      ],
+      "deferred_external_inputs": [],
+      "evidence_paths": [
+        "frontend/e2e/csp.spec.ts",
+        "frontend/lib/csp.ts",
+        "tests/Feature/Security/FilamentMfaTest.php"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Accessibility",
+      "status": "completed_with_documented_residual_risk",
+      "started_at": "2026-07-24",
+      "completed_at": "2026-07-24",
+      "commits": ["pending: fix: complete accessibility compliance engineering"],
+      "files_changed": [
+        "frontend/e2e/accessibility.spec.ts",
+        "frontend/package.json",
+        "frontend/package-lock.json",
+        "frontend/app/globals.css",
+        "frontend/components/site/legal-prose.tsx",
+        "frontend/components/site/mobile-nav.tsx"
+      ],
+      "tests_run": [
+        "npx playwright test e2e/accessibility.spec.ts e2e/csp.spec.ts e2e/route-registry.spec.ts (29 passed, against a real production build with a live seeded API)",
+        "npx tsc --noEmit (clean)",
+        "npx eslint . --max-warnings=0 (clean, full frontend)",
+        "php artisan migrate --force (5 pending migrations from Waves 1-4 applied to the local dev DB, purely additive, needed for the live build to render Trust Pages/Team at all)",
+        "php artisan test (full backend suite, unaffected -- uses an isolated sqlite DB)"
+      ],
+      "test_results": "3 real, previously-unknown accessibility bugs found by axe-core and fixed; automation suite green.",
+      "blockers": [],
+      "residual_risks": [
+        "@axe-core/playwright added (one new devDependency; its own dependency, axe-core, was already vendored transitively). Coverage is honestly scoped to pages with no backend dependency (contact/privacy/terms) plus the mobile nav dialog -- content-driven pages (home, services, systems, case studies, articles, pricing, estimator, search, team, trust pages) need the full local-production-rehearsal setup (Wave 12) to test meaningfully with real content; this wave does not fabricate coverage for them.",
+        "Manual checks automation cannot prove, per axe-core's own limitations, remain open: screen-reader announcement phrasing quality, full keyboard-only user journeys end to end, OS-level high-contrast mode, and real assistive-technology testing (VoiceOver/NVDA/JAWS).",
+        "The Accessibility Statement workflow (spec item 21) is NOT a separate new system -- it reuses the Wave-1 TrustPage model (page_type='accessibility'), which already has reviewed_at/next_review_at/founder_approved/legal_approved/noindex/is_published and generic sections for target-standard/known-limitations/remediation-process/contact. No new infrastructure was built because none was needed; this is a deliberate scope decision, not an oversight."
+      ],
+      "deferred_external_inputs": [],
+      "evidence_paths": [
+        "frontend/e2e/accessibility.spec.ts"
+      ],
+      "real_bugs_found_and_fixed": [
+        "Dark-theme --color-primary (#4a7bf0) gave only 3.9:1 contrast with white button text (WCAG AA needs 4.5:1) -- darkened to #3d6fe0 (~4.6:1), still visually the same brand blue.",
+        "legal-prose.tsx inline links used text-primary (tuned for button backgrounds, not bare text-on-background) at 4.17:1 on the dark page background -- switched to text-secondary (~9.7:1).",
+        "mobile-nav.tsx opened its dialog via a plain onClick instead of Radix's DialogTrigger, so Radix had no reference to restore focus to -- focus was dropping to <body> after closing with Escape. Fixed by using DialogTrigger (styled directly with buttonVariants, matching the safe pattern already used in showreel.tsx, since the Button component itself is not ref-forwarding)."
+      ]
+    },
+    { "id": 6, "title": "Performance, Media, and CDN Readiness", "status": "not_started" },
+    { "id": 7, "title": "Email and Communication", "status": "not_started" },
+    { "id": 8, "title": "Analytics, Search Verification, and Observability", "status": "not_started" },
+    { "id": 9, "title": "CMS Operability and Content Governance", "status": "not_started" },
+    { "id": 10, "title": "Privacy, Legal, and Disclosure Infrastructure", "status": "not_started" },
+    { "id": 11, "title": "Global Readiness Automation and CI", "status": "not_started" },
+    { "id": 12, "title": "Release Rehearsal and Launch Package", "status": "not_started" }
+  ]
+}

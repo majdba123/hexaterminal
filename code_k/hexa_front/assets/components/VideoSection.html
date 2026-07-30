@@ -1,0 +1,19 @@
+<!-- Video Section -->
+<section class="video-section" x-data="videoSection">
+    <div class="container-fluid p-0">
+
+        <!-- محتوى الفيديو -->
+        <div id="videoContainer" class="hidden">
+            <!-- مشغل الفيديو المضمن -->
+            <div class="video-player-fullscreen">
+                <iframe class="video-iframe-fullscreen"
+                        :src="embedUrl"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>

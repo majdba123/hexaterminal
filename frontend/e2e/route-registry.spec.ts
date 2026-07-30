@@ -1,0 +1,98 @@
+import { test, expect } from "@playwright/test";
+import en from "../messages/en.json";
+import ar from "../messages/ar.json";
+import {
+  ROUTES,
+  primaryNavRoutes,
+  footerRoutes,
+  sitemapStaticPaths,
+} from "../lib/routes/registry";
+
+/**
+ * Structural invariants for the single-source-of-truth route registry
+ * (lib/routes/registry.ts). These are pure-logic assertions -- they do not
+ * touch the browser -- guaranteeing navigation, footer, breadcrumbs, and the
+ * sitemap stay consistent and that no content-blocked page can be advertised
+ * or indexed.
+ */
+
+type Messages = Record<string, Record<string, string>>;
+const enM = en as unknown as Messages;
+const arM = ar as unknown as Messages;
+
+test.describe("Route registry consistency", () => {
+  test("ids and paths are unique", () => {
+    const ids = ROUTES.map((r) => r.id);
+    const paths = ROUTES.map((r) => r.path);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(new Set(paths).size).toBe(paths.length);
+  });
+
+  test("every nav key resolves in both en and ar", () => {
+    for (const r of ROUTES) {
+      if (!r.navKey) continue;
+      expect(enM.nav?.[r.navKey], `en nav.${r.navKey}`).toBeTruthy();
+      expect(arM.nav?.[r.navKey], `ar nav.${r.navKey}`).toBeTruthy();
+    }
+  });
+
+  test("every breadcrumb key resolves in nav or legal in both locales", () => {
+    for (const r of ROUTES) {
+      if (!r.breadcrumbKey) continue;
+      const key = r.breadcrumbKey;
+      const enHas = Boolean(enM.nav?.[key] ?? enM.legal?.[key]);
+      const arHas = Boolean(arM.nav?.[key] ?? arM.legal?.[key]);
+      expect(enHas, `en breadcrumb ${key}`).toBeTruthy();
+      expect(arHas, `ar breadcrumb ${key}`).toBeTruthy();
+    }
+  });
+
+  test("footer groups match message footer keys", () => {
+    // "legal" is a real footerGroup but footer.tsx renders it with no section
+    // title (see components/site/footer.tsx) -- its links use the `legal`
+    // message namespace directly, not a `footer.legal` title key. Every other
+    // group renders under a `footer.<group>` title and must have one.
+    for (const r of ROUTES) {
+      if (!r.footerGroup || r.footerGroup === "legal") continue;
+      expect(enM.footer?.[r.footerGroup], `footer.${r.footerGroup}`).toBeTruthy();
+    }
+  });
+
+  test("routes shown in nav/footer are content 'current'", () => {
+    for (const r of ROUTES) {
+      if (r.navKey || r.footerGroup) {
+        // Legal routes may sit in the footer while still content-blocked
+        // (privacy/terms awaiting legal review); everything else advertised
+        // in nav/footer must be live.
+        if (r.pageType === "legal") continue;
+        expect(r.contentState, `${r.id} advertised but not current`).toBe("current");
+      }
+    }
+  });
+
+  test("content-blocked routes are never indexable or in the sitemap", () => {
+    for (const r of ROUTES) {
+      if (r.contentState === "content-blocked") {
+        expect(r.indexable, `${r.id} content-blocked but indexable`).toBe(false);
+        expect(r.inSitemap, `${r.id} content-blocked but in sitemap`).toBe(false);
+      }
+    }
+  });
+
+  test("every sitemap route is also indexable", () => {
+    for (const r of ROUTES) {
+      if (r.inSitemap) {
+        expect(r.indexable, `${r.id} in sitemap but not indexable`).toBe(true);
+      }
+    }
+  });
+
+  test("selectors return non-empty, coherent sets", () => {
+    expect(primaryNavRoutes().length).toBeGreaterThan(0);
+    expect(footerRoutes("quickLinks").length).toBeGreaterThan(0);
+    expect(footerRoutes("company").length).toBeGreaterThan(0);
+    expect(footerRoutes("legal").length).toBeGreaterThan(0);
+    // Home ("") must be present in the sitemap paths.
+    expect(sitemapStaticPaths()).toContain("");
+  });
+});

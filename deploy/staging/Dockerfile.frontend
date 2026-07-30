@@ -1,0 +1,40 @@
+# =============================================================================
+# Next.js frontend — staging image.
+# IMPORTANT: `next build` fetches content from the Laravel API (SSG). The build
+# therefore requires a reachable API. In compose this is enforced by the
+# frontend service's `depends_on: api_web (service_healthy)`. If you build this
+# image in CI instead, pass a reachable API_URL as a build arg/env and fail the
+# build if the API is down — never ship empty pages.
+# =============================================================================
+FROM node:20-bookworm-slim AS build
+
+WORKDIR /app
+
+# API_URL must be reachable AT BUILD TIME for static generation.
+ARG API_URL
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_ALLOW_INDEXING=false
+ENV API_URL=${API_URL} \
+    NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL} \
+    NEXT_PUBLIC_ALLOW_INDEXING=${NEXT_PUBLIC_ALLOW_INDEXING}
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+# ---- runtime ----------------------------------------------------------------
+FROM node:20-bookworm-slim AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Copy only what `next start` needs.
+COPY --from=build /app/package.json /app/package-lock.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY --from=build /app/next.config.ts ./next.config.ts
+
+EXPOSE 3000
+CMD ["npm", "run", "start"]

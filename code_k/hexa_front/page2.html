@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" style="--scrollbar-width: 4px">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="keywords" content="HTML5 Template" />
+        <meta
+            name="description"
+            content="Hexa Terminal - IT Solutions and Services"
+        />
+        <meta name="author" content="hexaterminal.com" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <title>Hexa Terminal - Services</title>
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico" />
+
+        <!-- CSS Files -->
+        <!-- Font Awesome removed - using SVG icons instead -->
+        <link href="assets/style/css2.css" rel="stylesheet" />
+        <link href="assets/style/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/style/magnific-popup.css" rel="stylesheet" />
+        <link href="assets/style/owl.carousel.min.css" rel="stylesheet" />
+        <link href="assets/style/swiper.min.css" rel="stylesheet" />
+        <link href="assets/style/style.css" rel="stylesheet" type="text/css" />
+        <link href="assets/style/header.css" rel="stylesheet" type="text/css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Jost:ital,wght@0,100..900;1,100..900&family=Russo+One&display=swap"
+            rel="stylesheet"
+        />
+
+        <style>
+            body {
+                font-family: "Cairo", sans-serif;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-family: "Russo One", "Cairo", sans-serif;
+            }
+            .english-lang {
+                font-family: "Jost", sans-serif;
+                direction: ltr;
+            }
+            .arabic-lang {
+                font-family: "Cairo", sans-serif;
+                direction: rtl;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="page" class="main">
+            <!-- Include Header -->
+            <div id="header-container"></div>
+
+            <div class="site-content">
+                <div class="container-fluid">
+                    <div class="item-efftect">
+                        <div class="efftect overflow-hidden"></div>
+                        <div class="efftect overflow-hidden"></div>
+                        <div class="efftect overflow-hidden"></div>
+                        <div class="efftect overflow-hidden"></div>
+                        <div class="efftect overflow-hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Include Services Components -->
+                <div id="contact-section-container"></div>
+                <!-- <div id="join-team-section-container"></div> -->
+            </div>
+
+            <!-- Include Footer -->
+            <div id="footer-container"></div>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+        <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.js"></script>
+        <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- JavaScript Files -->
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.appear.js"></script>
+        <script src="assets/js/jquery.countTo.js"></script>
+        <script src="assets/js/jquery.magnific-popup.js"></script>
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/shuffle.min.js"></script>
+        <script src="assets/js/swiper.min.js"></script>
+        <script src="assets/js/SwiperAnimation.min.js"></script>
+        <script src="assets/js/translations.js"></script>
+        <script src="assets/js/config.js"></script>
+        <script src="assets/components/Services/ContactSection.js"></script>
+
+        <!-- Offcanvas Functions - Must be global for onclick handlers -->
+        <script>
+            /**
+             * Safely open Bootstrap Offcanvas
+             * @param {string} offcanvasId - The ID of the offcanvas element
+             */
+            function openOffcanvas(offcanvasId) {
+                try {
+                    if (typeof bootstrap === 'undefined') {
+                        console.warn('Bootstrap is not loaded yet');
+                        // Fallback: use data-bs-toggle attribute
+                        const element = document.getElementById(offcanvasId);
+                        if (element) {
+                            const toggleBtn = document.querySelector(`[data-bs-target="#${offcanvasId}"]`);
+                            if (toggleBtn) {
+                                toggleBtn.setAttribute('data-bs-toggle', 'offcanvas');
+                                toggleBtn.click();
+                            }
+                        }
+                        return;
+                    }
+
+                    const element = document.getElementById(offcanvasId);
+                    if (!element) {
+                        console.error('Offcanvas element not found:', offcanvasId);
+                        return;
+                    }
+
+                    // Check if Popper is available (required for backdrop)
+                    if (typeof bootstrap.Offcanvas === 'undefined') {
+                        console.warn('Bootstrap Offcanvas is not available');
+                        return;
+                    }
+
+                    // Get or create instance with safe options
+                    let offcanvas;
+                    try {
+                        offcanvas = bootstrap.Offcanvas.getOrCreateInstance(element, {
+                            backdrop: true,
+                            keyboard: true,
+                            scroll: false
+                        });
+                    } catch (error) {
+                        // If getOrCreateInstance fails, try without options
+                        console.warn('Failed to create instance with options, trying without:', error);
+                        try {
+                            offcanvas = bootstrap.Offcanvas.getOrCreateInstance(element);
+                        } catch (e) {
+                            console.error('Failed to create offcanvas instance:', e);
+                            return;
+                        }
+                    }
+
+                    // Show the offcanvas
+                    if (offcanvas && typeof offcanvas.show === 'function') {
+                        offcanvas.show();
+                    }
+                } catch (error) {
+                    console.error('Error opening offcanvas:', error);
+                }
+            }
+
+            /**
+             * Close mobile menu offcanvas
+             */
+            function closeMobileMenu() {
+                try {
+                    const menuOffcanvas = document.getElementById('menuOffcanvas');
+                    if (menuOffcanvas && typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
+                        const offcanvas = bootstrap.Offcanvas.getInstance(menuOffcanvas);
+                        if (offcanvas) {
+                            offcanvas.hide();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error closing mobile menu:', error);
+                }
+            }
+
+            // Make functions globally available
+            window.openOffcanvas = openOffcanvas;
+            window.closeMobileMenu = closeMobileMenu;
+        </script>
+
+        <!-- Component Loader -->
+        <script>
+            $(document).ready(function () {
+                let loadedComponents = 0;
+                const totalComponents = 9;
+
+                function checkAllLoaded(componentName) {
+                    loadedComponents++;
+
+                    // Scroll to #contact after contact section is loaded
+                    if (
+                        componentName === "ContactSection" &&
+                        window.location.hash === "#contact"
+                    ) {
+                        setTimeout(() => {
+                            const targetElement =
+                                document.getElementById("contact");
+                            if (targetElement) {
+                                targetElement.scrollIntoView({});
+                            } else {
+                                console.error(
+                                    "Contact section with id='contact' not found"
+                                );
+                            }
+                        }, 1100); // Delay to ensure DOM is updated
+                    }
+                }
+
+                function handleLoadError(componentName, xhr, status, error) {
+                    console.error(
+                        `Error loading ${componentName}.html: ${status} (${xhr.status}) - ${error}`
+                    );
+
+                    checkAllLoaded(componentName);
+                }
+
+                $("#header-container").load(
+                    "assets/components/Header.html",
+                    function (response, status, xhr) {
+                        if (status === "error")
+                            handleLoadError(
+                                "Header",
+                                xhr,
+                                status,
+                                xhr.statusText
+                            );
+                        else checkAllLoaded("Header");
+                    }
+                );
+                $("#advantages-section-container").load(
+                    "assets/components/Services/AdvantagesSection.html",
+                    function (response, status, xhr) {
+                        if (status === "error")
+                            handleLoadError(
+                                "AdvantagesSection",
+                                xhr,
+                                status,
+                                xhr.statusText
+                            );
+                        else checkAllLoaded("AdvantagesSection");
+                    }
+                );
+                $("#contact-section-container").load(
+                    "assets/components/Services/ContactSection.html",
+                    function (response, status, xhr) {
+                        if (status === "error")
+                            handleLoadError(
+                                "ContactSection",
+                                xhr,
+                                status,
+                                xhr.statusText
+                            );
+                        else {
+                            checkAllLoaded("ContactSection");
+                            if (typeof Alpine !== "undefined") {
+                                Alpine.initTree(
+                                    document.getElementById(
+                                        "contact-section-container"
+                                    )
+                                );
+                            } else {
+                                console.error("Alpine.js not loaded");
+                            }
+
+                        }
+
+                    }
+                );
+                $("#join-team-section-container").load(
+                    "assets/components/Services/JoinTeamSection.html",
+                    function (response, status, xhr) {
+                        if (status === "error")
+                            handleLoadError(
+                                "JoinTeamSection",
+                                xhr,
+                                status,
+                                xhr.statusText
+                            );
+                        else checkAllLoaded("JoinTeamSection");
+                    }
+                );
+                $("#footer-container").load(
+                    "assets/components/Footer.html",
+                    function (response, status, xhr) {
+                        if (status === "error")
+                            handleLoadError(
+                                "Footer",
+                                xhr,
+                                status,
+                                xhr.statusText
+                            );
+                        else checkAllLoaded("Footer");
+                    }
+                );
+            });
+        </script>
+    </body>
+</html>

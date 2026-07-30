@@ -1,0 +1,741 @@
+@import "tailwindcss";
+
+/*
+ * Hexa Terminal design tokens.
+ * Brand colors extracted from the official logo (icons/logo.svg):
+ * blue #3663D8, light blue #77BEFF, cyan #00D1FF, charcoal/near-black.
+ * Gold is deliberately absent -- the legacy site's gold identity did not
+ * match the real brand (see docs/architecture/current-system-audit.md).
+ *
+ * Theme strategy: data-theme="dark" | "light" on <html>, default dark
+ * (see app/[locale]/layout.tsx for the no-flash inline script).
+ *
+ * Dark-theme --color-primary is #3d6fe0, not the brighter #4a7bf0 it used
+ * to be: white text (--color-primary-foreground) on #4a7bf0 only reached a
+ * 3.9:1 contrast ratio, below the WCAG 2.2 AA 4.5:1 minimum for normal text
+ * (caught by e2e/accessibility.spec.ts's axe-core check on the primary CTA
+ * button). #3d6fe0 reaches ~4.6:1 while staying visually close to the
+ * original hue.
+ *
+ * DIVISION OF LABOUR between the two brand blues -- do not swap them:
+ *   --color-primary   is tuned as a BACKGROUND (paired with white
+ *                     --color-primary-foreground). As bare text it only
+ *                     reaches ~4.18:1 on the dark background and ~3.2:1 on a
+ *                     bg-primary/10 tint, so it must NOT be used for text
+ *                     below the WCAG large-text threshold (24px, or 18.66px
+ *                     bold). Large display numerals are fine at 3:1.
+ *   --color-secondary is tuned as TEXT at any size: ~7.4:1 on a primary tint
+ *                     and ~9.7:1 on the plain dark background. Badges, chips,
+ *                     eyebrows, inline links, and link-style buttons use it.
+ * Light --color-secondary is #2a63b8, not the #2f6fc9 it used to be: on a
+ * bg-primary/10 tint over the light page background #2f6fc9 measured 4.33:1,
+ * just under the 4.5:1 minimum. #2a63b8 reaches ~5.1:1 there, and also
+ * improves white-on-secondary for the secondary button (5.4:1 -> 5.9:1).
+ * e2e/contrast-tokens.spec.ts pins all of these ratios.
+ */
+
+:root[data-theme="dark"] {
+  --color-background: #0a0e1a;
+  --color-surface: #10162a;
+  --color-surface-elevated: #161d35;
+  --color-foreground: #f4f6fb;
+  --color-muted: #1c2440;
+  --color-muted-foreground: #9aa4c4;
+  --color-border: #232c4d;
+
+  --color-primary: #3d6fe0;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #77beff;
+  --color-secondary-foreground: #071022;
+  --color-accent: #00d1ff;
+  --color-accent-foreground: #071022;
+
+  --color-destructive: #f0576a;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #34d399;
+  --color-success-foreground: #05261c;
+  --color-warning: #f6b64c;
+  --color-warning-foreground: #241a03;
+
+  --color-ring: #3d6fe0;
+
+  --shadow-color: 220 60% 3%;
+}
+
+:root[data-theme="light"] {
+  --color-background: #f7f9fd;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-foreground: #10162a;
+  --color-muted: #eef1f8;
+  --color-muted-foreground: #4d5878;
+  --color-border: #dde3f0;
+
+  --color-primary: #3663d8;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #2a63b8;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #0090ad;
+  --color-accent-foreground: #ffffff;
+
+  /*
+   * Light success/warning are darker than a "web green"/"web amber" instinct
+   * suggests, because both are used as TEXT on a 10% tint of themselves (the
+   * form success panel, the Badge success/warning variants). At the old
+   * #0f9d68 / #b6740a that pairing measured 3.07:1 and 3.37:1 against the
+   * light page background -- both under the 4.5:1 AA floor for normal text.
+   * #0a7049 and #8a5600 reach 5.0:1 and 5.1:1 on their own tint over the page
+   * background (5.3:1 over a white surface), and also improve white-on-colour
+   * for any solid fill. Pinned by e2e/contrast-tokens.spec.ts -- an earlier
+   * #0b7a51 measured 4.43:1 and was caught by exactly that test.
+   */
+  --color-destructive: #d6314a;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #0a7049;
+  --color-success-foreground: #ffffff;
+  --color-warning: #8a5600;
+  --color-warning-foreground: #ffffff;
+
+  --color-ring: #3663d8;
+
+  --shadow-color: 220 30% 60%;
+}
+
+/* Fallback for the no-JS/no-flash-script window: match system preference. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-background: #0a0e1a;
+    --color-surface: #10162a;
+    --color-surface-elevated: #161d35;
+    --color-foreground: #f4f6fb;
+    --color-muted: #1c2440;
+    --color-muted-foreground: #9aa4c4;
+    --color-border: #232c4d;
+    --color-primary: #3d6fe0;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #77beff;
+    --color-secondary-foreground: #071022;
+    --color-accent: #00d1ff;
+    --color-accent-foreground: #071022;
+    --color-destructive: #f0576a;
+    --color-destructive-foreground: #ffffff;
+    --color-success: #34d399;
+    --color-success-foreground: #05261c;
+    --color-warning: #f6b64c;
+    --color-warning-foreground: #241a03;
+    --color-ring: #3d6fe0;
+  }
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-destructive: var(--color-destructive);
+  --color-destructive-foreground: var(--color-destructive-foreground);
+  --color-success: var(--color-success);
+  --color-success-foreground: var(--color-success-foreground);
+  --color-warning: var(--color-warning);
+  --color-warning-foreground: var(--color-warning-foreground);
+  --color-ring: var(--color-ring);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --container-content: 1200px;
+  --container-narrow: 800px;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --z-header: 40;
+  --z-overlay: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  [dir="rtl"] body {
+    font-family: var(--font-arabic);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .focus-ring {
+    outline: none;
+  }
+
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/*
+ * Hero entrance -- each element slides up into place, staggered by an inline
+ * animation-delay in components/site/hero.tsx.
+ *
+ * Declared at the top level, NOT inside `@layer utilities`: Tailwind v4
+ * tree-shakes utility-layer rules against class names it can find in the
+ * source, and this is applied through an inline `animation` shorthand, so
+ * there is no class name for it to detect and the rule would be dropped.
+ *
+ * Only `opacity` and `transform` animate, so every element stays on the
+ * compositor and nothing triggers layout. `translate3d` rather than
+ * `translateY` to keep it on its own layer for the duration.
+ *
+ * prefers-reduced-motion needs no special case here: the @layer base rule
+ * above already clamps every animation-duration to 0.01ms, and because the
+ * hero uses `both` fill mode the elements land on their final, visible state
+ * immediately rather than disappearing.
+ */
+@keyframes hexa-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/*
+ * Logo entrance (components/site/logo.tsx).
+ *
+ * The hexagon draws itself, then the terminal glyph and the wordmark fade in.
+ * This is not an invented flourish: it is the same gesture as the opening
+ * seconds of public/media/hero-intro.mp4, where the mark is drawn with a neon
+ * stroke before the type appears. The header echoes the film.
+ *
+ * stroke-dashoffset is a paint property, which the house rule normally keeps
+ * out of animations -- the exception is small, local UI, and this is a 32px
+ * icon. `--hexa-logo-path` is the measured perimeter of the hexagon path.
+ *
+ * All three land on their final state via `both` fill mode, so the global
+ * reduced-motion clamp in @layer base leaves a fully drawn, fully opaque logo
+ * rather than a half-drawn one.
+ */
+@keyframes hexa-logo-draw {
+  from {
+    stroke-dashoffset: var(--hexa-logo-path);
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hexa-logo-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * Terminal typing, for the wordmark inside the hexagon
+ * (components/site/hero-wordmark.tsx).
+ *
+ * `clip-path` rather than the usual `width` typewriter trick: animating width
+ * is a layout animation, and it would reflow the caret and the line beneath it
+ * on every one of the thirteen steps. Clipping touches neither layout nor
+ * paint geometry.
+ *
+ * The caret travels on its own transform with the SAME step count and duration,
+ * so the two stay locked without any JS keeping them in sync. That only works
+ * because the typed line is monospaced and sets no letter-spacing: one
+ * character is exactly 1ch, so `--hexa-type-len` (13ch for "HEXA TERMINAL")
+ * is both the clip distance and the caret's travel.
+ *
+ * All three land on their finished state via `both` fill mode, so the global
+ * reduced-motion clamp leaves fully typed text and a steady caret.
+ */
+@keyframes hexa-type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hexa-caret-travel {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(var(--hexa-type-len));
+  }
+}
+
+/*
+ * Hero motifs -- three small animated glyphs for what the company actually
+ * does: systems, AI, business (components/site/hero-motifs.tsx).
+ *
+ * Every one of these animates ONLY transform or opacity, so each stays on the
+ * compositor and none of them trigger layout or paint. They are also slow and
+ * low-amplitude on purpose: this sits under a headline, and anything faster
+ * reads as a loading spinner rather than as atmosphere.
+ */
+
+/* Systems: a packet travelling along the link between two nodes. */
+@keyframes hexa-motif-transit {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  15%,
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(var(--hexa-motif-run));
+    opacity: 0;
+  }
+}
+
+/* AI: a core breathing, with the ring around it expanding out of phase. */
+@keyframes hexa-motif-pulse {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes hexa-motif-halo {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Business: bars growing. scaleY from the baseline, never `height`. */
+@keyframes hexa-motif-grow {
+  0% {
+    transform: scaleY(0.25);
+  }
+
+  55%,
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes hexa-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/*
+ * Cinematic hero band (components/site/hero.tsx).
+ *
+ * hero-intro.mp4 is an intrinsically DARK asset: a near-black frame whose only
+ * bright elements are the neon hexagon and a faint grid. In light mode that
+ * cannot be "adapted" -- the previous build fed `--color-background` (#f7f9fd)
+ * into the readability wedge, which laid a near-WHITE wash over dark footage
+ * and turned it to mud, and the film still read as a dark rectangle dropped
+ * onto a white page.
+ *
+ * So the hero is deliberately dark in BOTH themes: a cinematic band the light
+ * page opens with, which is a normal premium-site device and the only
+ * treatment that keeps the brand film intact. The tokens are re-declared
+ * locally rather than hard-coded into the component, so every Tailwind colour
+ * utility inside the hero (text-foreground, text-secondary, border-border, the
+ * Button variants) resolves to the dark set automatically -- that works
+ * because `@theme inline` makes those utilities emit `var(--color-*)` and
+ * resolve at use time.
+ *
+ * These are the exact dark-theme values from :root[data-theme="dark"], so the
+ * contrast ratios pinned by e2e/contrast-tokens.spec.ts still hold here.
+ *
+ * --hero-bg / --hero-ink are what the backdrop's gradients read, so the film's
+ * scrim is always dark regardless of page theme.
+ */
+/*
+ * The hero follows the page theme -- it is NOT a permanently dark band.
+ *
+ * hero-intro.mp4 is authored dark: a near-black frame whose only bright
+ * elements are the neon hexagon and a faint grid. An earlier build concluded
+ * that this made a dark hero unavoidable and pinned the dark tokens here in
+ * both themes, which left the light theme opening on a black slab -- not a
+ * light theme at all.
+ *
+ * The film does not actually have to stay dark. `invert(1)` flips its
+ * luminance, so the near-black field becomes near-white; on its own that also
+ * flips every hue, turning the brand blue orange. `hue-rotate(180deg)` puts
+ * the hue back. The pair together is a luminance inversion that PRESERVES
+ * colour, so light mode gets the identical motion, identical geometry and
+ * identical brand blue -- rendered as a blue mark on white instead of on
+ * black. Same asset, no second export, nothing re-authored.
+ *
+ * Everything downstream reads these two variables, so the scrims, the bloom
+ * and the fades all follow the theme without any component knowing about it.
+ */
+.hero-cinematic {
+  --hero-bg: var(--color-background);
+  --hero-ink: var(--color-primary);
+
+  background-color: var(--hero-bg);
+}
+
+:root[data-theme="dark"] {
+  --hero-media-filter: brightness(1.3) saturate(1.15);
+  /* `screen` lifts the neon out of a dark frame. */
+  --hero-bloom-blend: screen;
+  --hero-bloom-strength: 30%;
+}
+
+:root[data-theme="light"] {
+  --hero-media-filter: invert(1) hue-rotate(180deg) brightness(1.02) saturate(1.25);
+  /* `multiply` is the light-field equivalent: screen would be invisible on
+     white, because screening anything onto white leaves white. */
+  --hero-bloom-blend: multiply;
+  --hero-bloom-strength: 16%;
+}
+
+/* No-JS / pre-hydration window: match the system preference, same as the
+   token fallback above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --hero-media-filter: brightness(1.3) saturate(1.15);
+    --hero-bloom-blend: screen;
+    --hero-bloom-strength: 30%;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --hero-media-filter: invert(1) hue-rotate(180deg) brightness(1.02) saturate(1.25);
+    --hero-bloom-blend: multiply;
+    --hero-bloom-strength: 16%;
+  }
+}
+
+.hero-media {
+  filter: var(--hero-media-filter);
+}
+
+
+/* ===========================================================================
+ * System Stack Hex -- the hero's right-side visual.
+ *
+ * All CSS: no animation library is installed, and the sequence only needs
+ * transform / opacity / stroke-dashoffset, which are all compositor properties.
+ * Timings arrive as custom properties from lib/hexa-motion.ts; per-element
+ * offsets come from an inline `--d`.
+ *
+ * FAIL-VISIBLE. The default (no `data-hexa-play` attribute) is the FINISHED
+ * artwork -- no-JS, no IntersectionObserver, prefers-reduced-motion and
+ * crawlers all see the complete visual. Only these states animate:
+ *
+ *   "playing" -- the build-out runs; each animation carries its own from-state
+ *                in its keyframes with `both` fill, so an element stays hidden
+ *                through its delay and then draws.
+ *   "settled" -- finished; the long idle pulse and the caret remain.
+ *
+ * Authoring the pre-entrance state as bare `opacity: 0` instead would make the
+ * whole visual blank whenever JS does not run, which is why it lives in the
+ * keyframes.
+ * ======================================================================== */
+
+.hexa-visual {
+  /* Pointer parallax target, written by rAF. Stays 0 unless a fine pointer is
+     present and the build-out has settled. */
+  --hexa-px: 0px;
+  --hexa-py: 0px;
+}
+
+.hexa-svg {
+  transform: translate3d(var(--hexa-px), var(--hexa-py), 0);
+  /* Slow follow, so parallax reads as depth rather than cursor-tracking. */
+  transition: transform 400ms var(--ease-out-soft);
+}
+
+.hexa-caret {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1.05em;
+  margin-inline-start: 0.15em;
+  vertical-align: text-bottom;
+  background: var(--color-secondary);
+}
+
+/* --- phase 1: environment (0-350ms) ------------------------------------- */
+[data-hexa-play="playing"] .hexa-grid {
+  animation: hexa-fade-in var(--hexa-grid-dur) ease-out both;
+}
+
+[data-hexa-play="playing"] .hexa-anchor {
+  animation: hexa-fade-in 260ms ease-out var(--d, 0ms) both;
+}
+
+/* --- phase 2: the six armoured panels extrude in sequence (250-1500ms) --- */
+.hexa-panel {
+  stroke-dasharray: 1;
+}
+
+[data-hexa-play="playing"] .hexa-panel {
+  animation: hexa-draw var(--hexa-edge-dur) cubic-bezier(0.4, 0, 0.2, 1) var(--d, 0ms) both;
+}
+
+/* --- phase 3: offset layers assemble inward and lock (700-1800ms) ------- */
+[data-hexa-play="playing"] .hexa-layer-outer {
+  animation: hexa-lock-outer var(--hexa-layer-dur) var(--ease-out-soft) var(--hexa-layer-start) both;
+}
+
+[data-hexa-play="playing"] .hexa-layer-inner {
+  animation: hexa-lock-inner var(--hexa-layer-dur) var(--ease-out-soft) var(--hexa-layer-start) both;
+}
+
+/* --- phase 4: system activation (1450-2100ms) -------------------------- */
+[data-hexa-play="playing"] .hexa-node,
+[data-hexa-play="playing"] .hexa-accent {
+  animation: hexa-fade-in var(--hexa-node-dur) ease-out
+    calc(var(--hexa-node-start) + var(--d, 0ms)) both;
+}
+
+[data-hexa-play="playing"] .hexa-circuit {
+  animation: hexa-fade-in 420ms ease-out var(--hexa-node-start) both;
+}
+
+[data-hexa-play="playing"] .hexa-pulse {
+  animation: hexa-travel var(--hexa-pulse-dur) cubic-bezier(0.45, 0, 0.35, 1)
+    calc(var(--hexa-pulse-start) + var(--d, 0ms)) both;
+}
+
+/* --- phase 5: terminal (1900-3900ms) ----------------------------------- */
+[data-hexa-play="playing"] .hexa-prompt {
+  animation: hexa-fade-in var(--hexa-prompt-dur) ease-out var(--hexa-prompt-start) both;
+}
+
+[data-hexa-play="playing"] .hexa-status {
+  animation: hexa-status-in 320ms var(--ease-out-soft) var(--d, 0ms) both;
+}
+
+/* --- phase 6: closing statement (3500-4300ms) -------------------------- */
+[data-hexa-play="playing"] .hexa-statement {
+  animation: hexa-rise-sm var(--hexa-statement-dur) var(--ease-out-soft)
+    var(--hexa-statement-start) both;
+}
+
+/* --- settled: idle only ------------------------------------------------ */
+/* The travelling dash is at rest; the pulse loop lights it briefly once per
+   period. Nothing else moves, and the whole hex never scales or rotates. */
+.hexa-pulse {
+  stroke-dasharray: 0.06 0.94;
+  stroke-dashoffset: 0;
+}
+
+[data-hexa-play="settled"] .hexa-pulse {
+  animation: hexa-travel-idle var(--hexa-idle-period) cubic-bezier(0.45, 0, 0.35, 1)
+    var(--d, 0ms) infinite;
+}
+
+[data-hexa-play] .hexa-caret {
+  animation: hexa-caret-blink 1.06s steps(1, end) var(--hexa-prompt-start) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No parallax follow, no idle loop, no caret blink -- the artwork is simply
+     present. The global clamp in @layer base already collapses durations. */
+  .hexa-svg {
+    transform: none;
+    transition: opacity 200ms linear;
+  }
+
+  [data-hexa-play] .hexa-caret,
+  [data-hexa-play="settled"] .hexa-pulse {
+    animation: none;
+  }
+}
+
+@keyframes hexa-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hexa-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Layers arrive from a few px outside/inside and decelerate into place --
+   small translation and scale only, no bounce. */
+@keyframes hexa-lock-outer {
+  from {
+    opacity: 0;
+    transform: scale(1.045);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hexa-lock-inner {
+  from {
+    opacity: 0;
+    transform: scale(0.955);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hexa-status-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hexa-rise-sm {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* One pass of the lit dash along the wire during activation. */
+@keyframes hexa-travel {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Idle: traverse in the first ~16% of the period, dark for the rest. */
+@keyframes hexa-travel-idle {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  3% {
+    opacity: 1;
+  }
+
+  16% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  22%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes hexa-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}

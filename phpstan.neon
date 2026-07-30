@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+
+    level: 5
+
+    excludePaths:
+        - app/Http/Controllers/Registration/*
+        - app/Services/registartion/*
+
+    ignoreErrors:
+        - '#Unsafe usage of new static#'

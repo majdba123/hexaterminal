@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="no-js">
+    <head>
+        <!-- ============================================
+             Document Metadata & SEO
+             ============================================ -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+        />
+        <meta name="format-detection" content="telephone=no" />
+
+        <!-- Primary Meta Tags -->
+        <title>Project Details | HexaTerminal</title>
+        <meta
+            name="title"
+            content="Project Details | HexaTerminal"
+        />
+        <meta
+            name="description"
+            content="Explore detailed insights into HexaTerminal's cutting-edge technology projects and innovative solutions."
+        />
+        <meta
+            name="keywords"
+            content="HexaTerminal, Tech Projects, Innovation, Technology Solutions, Software Development, Web Development"
+        />
+        <meta name="author" content="HexaTerminal Team" />
+        <meta name="robots" content="index, follow" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hexa-terminal.com/project.html" />
+        <meta property="og:title" content="Project Details | HexaTerminal" />
+        <meta
+            property="og:description"
+            content="Explore detailed insights into our cutting-edge technology projects."
+        />
+        <meta property="og:image" content="https://hexa-terminal.com/assets/images/og-image.jpg" />
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico" />
+        <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
+
+        <!-- ============================================
+             Stylesheets
+             ============================================ -->
+        <link href="assets/libs/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="assets/libs/css/cairo-font.css" rel="stylesheet" />
+        <link href="assets/style/css2.css" rel="stylesheet" />
+        <link href="assets/style/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/style/magnific-popup.css" rel="stylesheet" />
+        <link href="assets/style/owl.carousel.min.css" rel="stylesheet" />
+        <link href="assets/style/swiper.min.css" rel="stylesheet" />
+        <link href="assets/style/style.css" rel="stylesheet" type="text/css" />
+        <link href="assets/style/header.css" rel="stylesheet" type="text/css" />
+        <link href="assets/libs/css/sweetalert2.min.css" rel="stylesheet" />
+
+        <style>
+            /**
+             * ============================================
+             * Project Detail Page - Professional Styling
+             * ============================================
+             */
+
+            :root {
+                --primary-color: #00c4cc;
+                --secondary-color: #ff6b81;
+                --accent-color: #77beff;
+                --dark-bg: #0a0a15;
+                --card-bg: #1a1a2e;
+                --text-primary: #ffffff;
+                --text-secondary: #b3b3c7;
+                --border-color: rgba(255, 255, 255, 0.1);
+                --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+                --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+                --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, #ff8c94 100%);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Cairo", "Jost", sans-serif;
+                background: var(--dark-bg);
+                color: var(--text-secondary);
+                line-height: 1.7;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-family: "Russo One", "Cairo", sans-serif;
+                color: var(--text-primary);
+                margin-bottom: 1rem;
+                font-weight: 700;
+            }
+
+            /* ============================================
+               Hero Section
+               ============================================ */
+            .project-hero {
+                position: relative;
+                min-height: 60vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #1c1c2e 0%, #2a2a4a 50%, #1c1c2e 100%);
+                background-size: 200% 200%;
+                animation: gradientShift 15s ease infinite;
+                overflow: hidden;
+                padding: 120px 0 80px;
+            }
+
+            @keyframes gradientShift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+
+            .project-hero::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: 
+                    radial-gradient(circle at 20% 50%, rgba(0, 196, 204, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(119, 190, 255, 0.1) 0%, transparent 50%);
+                z-index: 1;
+            }
+
+            .project-hero::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+                opacity: 0.3;
+                z-index: 1;
+            }
+
+            .project-hero .container {
+                position: relative;
+                z-index: 2;
+                text-align: center;
+            }
+
+            .project-hero__badge {
+                display: inline-block;
+                padding: 8px 20px;
+                background: var(--gradient-primary);
+                color: var(--text-primary);
+                border-radius: 50px;
+                font-size: 0.875rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 1.5rem;
+                animation: fadeInDown 0.8s ease-out;
+                box-shadow: var(--shadow-md);
+            }
+
+            .project-hero__title {
+                font-size: clamp(2rem, 5vw, 4rem);
+                font-weight: 800;
+                margin: 0 0 1.5rem;
+                background: var(--gradient-primary);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                animation: fadeInUp 1s ease-out 0.2s backwards;
+                line-height: 1.2;
+            }
+
+            .project-hero__meta {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 2rem;
+                margin-top: 2rem;
+                animation: fadeInUp 1s ease-out 0.4s backwards;
+            }
+
+            .project-hero__meta-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+            }
+
+            .project-hero__meta-item svg {
+                width: 20px;
+                height: 20px;
+                fill: var(--primary-color);
+            }
+
+            /* ============================================
+               Content Section
+               ============================================ */
+            .project-content {
+                padding: 80px 0;
+                background: var(--dark-bg);
+            }
+
+            /* ============================================
+               Image Gallery
+               ============================================ */
+            .project-gallery {
+                margin-bottom: 4rem;
+            }
+
+            .project-gallery__main {
+                position: relative;
+                border-radius: 16px;
+                overflow: hidden;
+                margin-bottom: 1.5rem;
+                box-shadow: var(--shadow-lg);
+                background: var(--card-bg);
+                aspect-ratio: 16 / 9;
+            }
+
+            .project-gallery__main img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .project-gallery__main:hover img {
+                transform: scale(1.05);
+            }
+
+            .project-gallery__thumbnails {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+
+            .project-gallery__thumbnail {
+                position: relative;
+                border-radius: 12px;
+                overflow: hidden;
+                cursor: pointer;
+                aspect-ratio: 16 / 9;
+                background: var(--card-bg);
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+
+            .project-gallery__thumbnail:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-md);
+            }
+
+            .project-gallery__thumbnail.active {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(0, 196, 204, 0.2);
+            }
+
+            .project-gallery__thumbnail img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            /* ============================================
+               Project Cards
+               ============================================ */
+            .project-card {
+                background: var(--card-bg);
+                border-radius: 16px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border: 1px solid var(--border-color);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .project-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--gradient-primary);
+                transform: scaleY(0);
+                transition: transform 0.4s ease;
+            }
+
+            .project-card:hover {
+                transform: translateY(-8px);
+                box-shadow: var(--shadow-lg);
+                border-color: var(--primary-color);
+            }
+
+            .project-card:hover::before {
+                transform: scaleY(1);
+            }
+
+            .project-card__title {
+                color: var(--primary-color);
+                margin-bottom: 1.5rem;
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .project-card__title svg {
+                width: 24px;
+                height: 24px;
+                fill: var(--primary-color);
+            }
+
+            .project-card__content {
+                color: var(--text-secondary);
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+            }
+
+            .project-card__link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                background: rgba(0, 196, 204, 0.1);
+            }
+
+            .project-card__link:hover {
+                color: var(--text-primary);
+                background: var(--gradient-primary);
+                transform: translateX(4px);
+            }
+
+            .project-card__link svg {
+                width: 16px;
+                height: 16px;
+                fill: currentColor;
+            }
+
+            /* ============================================
+               Feature List
+               ============================================ */
+            .feature-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .feature-list__item {
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+                background: rgba(0, 196, 204, 0.05);
+                border-radius: 12px;
+                border-left: 3px solid var(--primary-color);
+                transition: all 0.3s ease;
+            }
+
+            .feature-list__item:hover {
+                background: rgba(0, 196, 204, 0.1);
+                transform: translateX(8px);
+            }
+
+            .feature-list__icon {
+                width: 24px;
+                height: 24px;
+                fill: var(--primary-color);
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+
+            .feature-list__text {
+                color: var(--text-secondary);
+                margin: 0;
+                flex: 1;
+            }
+
+            /* ============================================
+               Video Wrapper
+               ============================================ */
+            .video-wrapper {
+                position: relative;
+                padding-bottom: 56.25%;
+                border-radius: 16px;
+                overflow: hidden;
+                background: var(--card-bg);
+                box-shadow: var(--shadow-lg);
+                margin-top: 1.5rem;
+            }
+
+            .video-wrapper iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+
+            /* ============================================
+               Back Button
+               ============================================ */
+            .btn-back {
+                position: fixed;
+                bottom: 2rem;
+                left: 2rem;
+                background: var(--gradient-secondary);
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 50px;
+                font-weight: 600;
+                color: var(--text-primary);
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: var(--shadow-lg);
+                z-index: 100;
+                font-size: 1rem;
+            }
+
+            .btn-back:hover {
+                transform: translateY(-4px) scale(1.05);
+                box-shadow: 0 12px 32px rgba(255, 107, 129, 0.4);
+            }
+
+            .btn-back svg {
+                width: 20px;
+                height: 20px;
+                fill: currentColor;
+                transition: transform 0.3s ease;
+            }
+
+            .btn-back:hover svg {
+                transform: translateX(-4px);
+            }
+
+            /* ============================================
+               Loading & Error States
+               ============================================ */
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 10, 21, 0.95);
+                backdrop-filter: blur(10px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                color: var(--primary-color);
+            }
+
+            .loading-spinner {
+                width: 60px;
+                height: 60px;
+                border: 4px solid rgba(0, 196, 204, 0.2);
+                border-top-color: var(--primary-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 1.5rem;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            .error-overlay {
+                text-align: center;
+                padding: 3rem;
+                background: var(--card-bg);
+                border-radius: 16px;
+                margin: 3rem auto;
+                max-width: 600px;
+                border: 2px solid var(--secondary-color);
+            }
+
+            .error-overlay__message {
+                color: var(--secondary-color);
+                font-size: 1.25rem;
+                margin-bottom: 2rem;
+            }
+
+            .error-overlay__button {
+                background: var(--gradient-secondary);
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 50px;
+                color: var(--text-primary);
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: var(--shadow-md);
+            }
+
+            .error-overlay__button:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-lg);
+            }
+
+            /* ============================================
+               Animations
+               ============================================ */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* ============================================
+               Responsive Design
+               ============================================ */
+            @media (max-width: 991px) {
+                .project-hero {
+                    min-height: 50vh;
+                    padding: 100px 0 60px;
+                }
+
+                .project-hero__meta {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+
+                .project-content {
+                    padding: 60px 0;
+                }
+
+                .project-card {
+                    padding: 1.5rem;
+                }
+
+                .btn-back {
+                    position: static;
+                    margin-top: 2rem;
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .project-hero {
+                    padding: 80px 0 40px;
+                }
+
+                .project-gallery__thumbnails {
+                    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                    gap: 0.75rem;
+                }
+
+                .project-card {
+                    padding: 1.25rem;
+                }
+            }
+
+            /* ============================================
+               Accessibility
+               ============================================ */
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+
+            .skip-to-main-content {
+                position: absolute;
+                top: -100px;
+                left: 0;
+                background: var(--dark-bg);
+                color: var(--text-primary);
+                padding: 1rem;
+                text-decoration: none;
+                z-index: 10000;
+                border: 2px solid var(--primary-color);
+            }
+
+            .skip-to-main-content:focus {
+                top: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="#main-content" class="skip-to-main-content">
+            التخطي إلى المحتوى الرئيسي
+        </a>
+
+        <div id="page" class="main">
+            <!-- Header -->
+            <header id="header-container" role="banner"></header>
+
+            <!-- Main Content -->
+            <main id="main-content" class="site-content" x-data="projectDetail" role="main">
+                <!-- Hero Section -->
+                <section class="project-hero" aria-labelledby="project-title">
+                    <div class="container">
+                        <div class="project-hero__badge" x-show="!isLoading && !errorMessage" data-i18n="project.category">
+                            <span x-text="projectData.category || i18next.t('project.category')"></span>
+                        </div>
+                        <h1 class="project-hero__title" id="project-title" x-text="projectData.title || i18next.t('project.loading')"></h1>
+                        <div class="project-hero__meta" x-show="!isLoading && !errorMessage && projectData.service">
+                            <div class="project-hero__meta-item">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span x-text="projectData.service?.title || i18next.t('project.service')"></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Loading State -->
+                <div class="loading-overlay" x-show="isLoading" role="status" aria-live="polite">
+                    <div class="loading-spinner" aria-hidden="true"></div>
+                    <p data-i18n="project.loading">جاري تحميل المشروع...</p>
+                </div>
+
+                <!-- Error State -->
+                <div class="error-overlay" x-show="errorMessage" role="alert">
+                    <p class="error-overlay__message" x-text="errorMessage"></p>
+                    <button class="error-overlay__button" @click="fetchProjectData()" data-i18n="project.retry">
+                        إعادة المحاولة
+                    </button>
+                </div>
+
+                <!-- Project Content -->
+                <section class="project-content" x-show="!isLoading && !errorMessage">
+                    <div class="container">
+                        <!-- Image Gallery -->
+                        <div class="project-gallery" x-show="projectData.images && projectData.images.length > 0">
+                            <div class="project-gallery__main">
+                                <img
+                                    :src="selectedImage || getDefaultImage()"
+                                    :alt="projectData.title || 'Project Image'"
+                                    @error="handleImageError($event)"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <div class="project-gallery__thumbnails">
+                                <template x-for="(image, index) in projectData.images" :key="index">
+                                    <div
+                                        class="project-gallery__thumbnail"
+                                        :class="{ 'active': selectedImage === image.image_path }"
+                                        @click="selectedImage = image.image_path"
+                                        role="button"
+                                        tabindex="0"
+                                        @keydown.enter="selectedImage = image.image_path"
+                                        @keydown.space.prevent="selectedImage = image.image_path"
+                                    >
+                                        <img
+                                            :src="image.image_path"
+                                            :alt="`${projectData.title} - Image ${index + 1}`"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Left Column -->
+                            <div class="col-lg-8">
+                                <!-- Project Overview -->
+                                <div class="project-card">
+                                    <h3 class="project-card__title">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+                                        </svg>
+                                        <span data-i18n="project.overview">نظرة عامة على المشروع</span>
+                                    </h3>
+                                    <div class="project-card__content" x-html="projectData.description || (typeof i18next !== 'undefined' ? i18next.t('project.no_description') : 'لا يوجد وصف متاح')"></div>
+                                    <template x-if="projectData.project_url">
+                                        <a
+                                            :href="projectData.project_url"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="project-card__link"
+                                            :aria-label="typeof i18next !== 'undefined' ? i18next.t('project.visit_project') : 'زيارة المشروع'"
+                                            data-i18n="project.visit_project"
+                                        >
+                                            زيارة المشروع
+                                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                                            </svg>
+                                        </a>
+                                    </template>
+                                </div>
+
+                                <!-- Video Presentation -->
+                                <div class="project-card" x-show="isValidVideoUrl(projectData.video_url)">
+                                    <h3 class="project-card__title">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        <span data-i18n="project.video">عرض فيديو</span>
+                                    </h3>
+                                    <div class="video-wrapper">
+                                        <iframe
+                                            :src="getVideoEmbedUrl(projectData.video_url)"
+                                            frameborder="0"
+                                            allow="autoplay; encrypted-media; picture-in-picture"
+                                            allowfullscreen
+                                            :title="`${projectData.title} - Video`"
+                                            loading="lazy"
+                                        ></iframe>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-lg-4">
+                                <!-- Project Details -->
+                                <div class="project-card">
+                                    <h3 class="project-card__title">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                        <span data-i18n="project.details">تفاصيل المشروع</span>
+                                    </h3>
+                                    <div class="project-card__content">
+                                        <p><strong data-i18n="project.title_label">العنوان:</strong> <span x-text="projectData.title || (typeof i18next !== 'undefined' ? i18next.t('project.not_available') : 'غير متاح')"></span></p>
+                                        <p><strong data-i18n="project.service_label">الخدمة:</strong> <span x-text="projectData.service?.title || (typeof i18next !== 'undefined' ? i18next.t('project.not_available') : 'غير متاح')"></span></p>
+                                        <p x-show="projectData.service?.description">
+                                            <strong data-i18n="project.service_description">وصف الخدمة:</strong>
+                                            <span x-text="projectData.service?.description"></span>
+                                        </p>
+                                    </div>
+                                    <div x-show="projectData.service?.image_path" class="mt-3">
+                                        <img
+                                            :src="projectData.service?.image_path"
+                                            :alt="projectData.service?.title || 'Service Image'"
+                                            class="img-fluid"
+                                            style="border-radius: 12px; max-height: 200px; object-fit: cover; width: 100%;"
+                                            @error="handleImageError($event)"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Key Features -->
+                                <div class="project-card" x-show="projectData.features && projectData.features.length > 0">
+                                    <h3 class="project-card__title">
+                                        <svg viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <span data-i18n="project.features">المميزات الرئيسية</span>
+                                    </h3>
+                                    <ul class="feature-list">
+                                        <template x-for="(feature, index) in projectData.features" :key="index">
+                                            <li class="feature-list__item">
+                                                <svg class="feature-list__icon" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                                </svg>
+                                                <p class="feature-list__text" x-text="feature.feature_text || 'N/A'"></p>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Back Button -->
+                        <a
+                            href="index.html#projects"
+                            class="btn-back"
+                            role="button"
+                            :aria-label="typeof i18next !== 'undefined' ? i18next.t('project.back_to_projects') : 'العودة إلى قائمة المشاريع'"
+                            data-i18n="project.back_to_projects"
+                        >
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                            </svg>
+                            العودة إلى المشاريع
+                        </a>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer id="footer-container" role="contentinfo"></footer>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script src="assets/js/jquery-3.7.1.min.js"></script>
+        <script src="assets/js/font-loader.js"></script>
+        <script src="assets/libs/js/i18next.min.js"></script>
+        <script src="assets/libs/js/i18next-browser-languagedetector.min.js"></script>
+        <script src="assets/libs/js/i18next-http-backend.min.js"></script>
+        <!-- Ensure CSS files are loaded on server -->
+        <script>
+            // Force load CSS files if they fail to load
+            (function() {
+                'use strict';
+                
+                function ensureCSSLoaded() {
+                    const cssFiles = [
+                        'assets/style/style.css',
+                        'assets/style/header.css'
+                    ];
+                    
+                    cssFiles.forEach(function(cssFile) {
+                        const link = document.querySelector('link[href="' + cssFile + '"]');
+                        if (link) {
+                            // Check if CSS is loaded
+                            const testLink = document.createElement('link');
+                            testLink.rel = 'stylesheet';
+                            testLink.href = cssFile;
+                            testLink.onerror = function() {
+                                console.warn('CSS file failed to load:', cssFile);
+                                // Try to reload with absolute path
+                                const absolutePath = window.location.origin + '/' + cssFile;
+                                const newLink = document.createElement('link');
+                                newLink.rel = 'stylesheet';
+                                newLink.href = absolutePath;
+                                newLink.type = 'text/css';
+                                document.head.appendChild(newLink);
+                            };
+                            // If link doesn't have type, add it
+                            if (!link.getAttribute('type')) {
+                                link.setAttribute('type', 'text/css');
+                            }
+                        } else {
+                            // CSS link not found, create it
+                            const newLink = document.createElement('link');
+                            newLink.rel = 'stylesheet';
+                            newLink.href = cssFile;
+                            newLink.type = 'text/css';
+                            document.head.appendChild(newLink);
+                        }
+                    });
+                }
+                
+                // Run on DOM ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', ensureCSSLoaded);
+                } else {
+                    ensureCSSLoaded();
+                }
+                
+                // Also run after a short delay to catch late-loading issues
+                setTimeout(ensureCSSLoaded, 100);
+            })();
+        </script>
+
+        <script src="assets/libs/js/alpinejs.min.js" defer></script>
+        <script src="assets/libs/js/sweetalert2.min.js"></script>
+
+        <!-- JavaScript Files -->
+        <!-- Popper.js must be loaded before Bootstrap -->
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.appear.js"></script>
+        <script src="assets/js/jquery.countTo.js"></script>
+        <script src="assets/js/jquery.magnific-popup.js"></script>
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <script src="assets/js/shuffle.min.js"></script>
+        <script src="assets/js/swiper.min.js"></script>
+        <script src="assets/js/SwiperAnimation.min.js"></script>
+        <script src="assets/js/translations.js"></script>
+        <script src="assets/js/config.js"></script>
+
+        <!-- Offcanvas Functions - Must be global for onclick handlers -->
+        <script>
+            /**
+             * Safely open Bootstrap Offcanvas
+             * @param {string} offcanvasId - The ID of the offcanvas element
+             */
+            function openOffcanvas(offcanvasId) {
+                try {
+                    if (typeof bootstrap === 'undefined') {
+                        console.warn('Bootstrap is not loaded yet');
+                        // Fallback: use data-bs-toggle attribute
+                        const element = document.getElementById(offcanvasId);
+                        if (element) {
+                            const toggleBtn = document.querySelector(`[data-bs-target="#${offcanvasId}"]`);
+                            if (toggleBtn) {
+                                toggleBtn.setAttribute('data-bs-toggle', 'offcanvas');
+                                toggleBtn.click();
+                            }
+                        }
+                        return;
+                    }
+
+                    const element = document.getElementById(offcanvasId);
+                    if (!element) {
+                        console.error('Offcanvas element not found:', offcanvasId);
+                        return;
+                    }
+
+                    // Check if Popper is available (required for backdrop)
+                    if (typeof bootstrap.Offcanvas === 'undefined') {
+                        console.warn('Bootstrap Offcanvas is not available');
+                        return;
+                    }
+
+                    // Get or create instance with safe options
+                    let offcanvas;
+                    try {
+                        offcanvas = bootstrap.Offcanvas.getOrCreateInstance(element, {
+                            backdrop: true,
+                            keyboard: true,
+                            scroll: false
+                        });
+                    } catch (error) {
+                        // If getOrCreateInstance fails, try without options
+                        console.warn('Failed to create instance with options, trying without:', error);
+                        try {
+                            offcanvas = bootstrap.Offcanvas.getOrCreateInstance(element);
+                        } catch (e) {
+                            console.error('Failed to create offcanvas instance:', e);
+                            return;
+                        }
+                    }
+
+                    // Show the offcanvas
+                    if (offcanvas && typeof offcanvas.show === 'function') {
+                        // Prevent any code from hiding it immediately after showing
+                        const element = document.getElementById(offcanvasId);
+                        if (element) {
+                            // Mark that we're showing this offcanvas
+                            element.setAttribute('data-offcanvas-opening', 'true');
+                            element.setAttribute('aria-hidden', 'false');
+                            // Ensure body has offcanvas-open class
+                            document.body.classList.add('offcanvas-open');
+                            
+                            // Force visibility before showing
+                            element.style.visibility = 'visible';
+                            element.style.display = 'flex';
+                            element.style.opacity = '1';
+                            element.style.zIndex = '1045';
+                            
+                            // Remove the flag after offcanvas is fully shown
+                            const removeFlag = function() {
+                                setTimeout(function() {
+                                    if (element.classList.contains('show')) {
+                                        element.removeAttribute('data-offcanvas-opening');
+                                    }
+                                }, 500);
+                            };
+                            
+                            // Listen for shown event
+                            element.addEventListener('shown.bs.offcanvas', function() {
+                                // Force visibility again after Bootstrap shows it
+                                element.style.visibility = 'visible';
+                                element.style.display = 'flex';
+                                element.style.opacity = '1';
+                                element.style.zIndex = '1045';
+                                removeFlag();
+                            }, { once: true });
+                        }
+                        
+                        offcanvas.show();
+                        
+                        // Force visibility after a short delay as backup
+                        setTimeout(function() {
+                            if (element) {
+                                element.style.visibility = 'visible';
+                                element.style.display = 'flex';
+                                element.style.opacity = '1';
+                                element.style.zIndex = '1045';
+                            }
+                        }, 100);
+                    }
+                } catch (error) {
+                    console.error('Error opening offcanvas:', error);
+                }
+            }
+
+            /**
+             * Close mobile menu offcanvas
+             */
+            function closeMobileMenu() {
+                try {
+                    const menuOffcanvas = document.getElementById('menuOffcanvas');
+                    if (menuOffcanvas && typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
+                        const offcanvas = bootstrap.Offcanvas.getInstance(menuOffcanvas);
+                        if (offcanvas) {
+                            offcanvas.hide();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error closing mobile menu:', error);
+                }
+            }
+
+            // Make functions globally available
+            window.openOffcanvas = openOffcanvas;
+            window.closeMobileMenu = closeMobileMenu;
+        </script>
+
+        <!-- Initialize Bootstrap Offcanvas after DOM is ready -->
+        <script>
+            // Fix Bootstrap backdrop issue by ensuring Popper is loaded
+            // Note: We don't initialize offcanvas here to prevent auto-opening
+            // Offcanvas will be initialized when user clicks the hamburger button
+            let offcanvasInitialized = false;
+            
+            function initializeOffcanvasOnLoad() {
+                // Only run once on initial page load, not after components are loaded
+                if (offcanvasInitialized) return;
+                offcanvasInitialized = true;
+                
+                // Ensure all offcanvas elements are hidden by default (only on initial load)
+                const offcanvasElements = document.querySelectorAll('.offcanvas');
+                offcanvasElements.forEach(function(element) {
+                    // Only hide if not already showing and not currently being opened
+                    if (!element.classList.contains('show') && 
+                        !element.classList.contains('showing') &&
+                        !element.hasAttribute('data-offcanvas-opening')) {
+                        // Remove 'show' class if present (Bootstrap uses this to show offcanvas)
+                        element.classList.remove('show');
+                        // Ensure offcanvas is hidden
+                        element.setAttribute('aria-hidden', 'true');
+                        // Remove any inline styles that might show it
+                        if (element.style.display === 'block') {
+                            element.style.display = '';
+                        }
+                    }
+                });
+            }
+            
+            document.addEventListener('DOMContentLoaded', initializeOffcanvasOnLoad);
+            
+            // Prevent hiding offcanvas when it's being shown
+            document.addEventListener('show.bs.offcanvas', function(event) {
+                // Offcanvas is about to show, don't interfere
+                console.log('Offcanvas is showing:', event.target.id);
+                const element = event.target;
+                // Mark that this offcanvas is opening
+                element.setAttribute('data-offcanvas-opening', 'true');
+                element.setAttribute('aria-hidden', 'false');
+                // Ensure body has offcanvas-open class for Bootstrap
+                document.body.classList.add('offcanvas-open');
+            });
+            
+            document.addEventListener('shown.bs.offcanvas', function(event) {
+                // Offcanvas is now shown, ensure it stays visible
+                console.log('Offcanvas is shown:', event.target.id);
+                const element = event.target;
+                // Ensure it stays visible
+                element.setAttribute('aria-hidden', 'false');
+                element.classList.add('show');
+                // Force visibility with inline styles as backup
+                element.style.visibility = 'visible';
+                element.style.display = 'flex';
+                element.style.opacity = '1';
+                element.style.zIndex = '1045';
+                // Ensure body has offcanvas-open class
+                document.body.classList.add('offcanvas-open');
+                // Remove the opening flag after a delay
+                setTimeout(function() {
+                    if (element.classList.contains('show')) {
+                        element.removeAttribute('data-offcanvas-opening');
+                    }
+                }, 1000);
+            });
+            
+            // When offcanvas is hidden, remove body class
+            document.addEventListener('hidden.bs.offcanvas', function(event) {
+                console.log('Offcanvas is hidden:', event.target.id);
+                document.body.classList.remove('offcanvas-open', 'modal-open');
+            });
+            
+            // Prevent hiding offcanvas when it's being hidden
+            document.addEventListener('hide.bs.offcanvas', function(event) {
+                // Only allow hiding if user explicitly closes it
+                console.log('Offcanvas is hiding:', event.target.id);
+            });
+        </script>
+
+        <!-- Project Detail Script -->
+        <script>
+            /**
+             * ============================================
+             * Project Detail Component
+             * ============================================
+             * Alpine.js component for displaying project details
+             * ============================================
+             */
+            
+            'use strict';
+
+            document.addEventListener("alpine:init", () => {
+                Alpine.data("projectDetail", () => ({
+                    projectData: {},
+                    isLoading: true,
+                    errorMessage: "",
+                    selectedImage: null,
+                    apiBaseUrl: typeof API_CONFIG !== "undefined" && API_CONFIG.BASE_URL_Renter
+                        ? API_CONFIG.BASE_URL_Renter
+                        : "http://62.84.188.239",
+
+                    async init() {
+                        await this.$nextTick();
+                        await this.fetchProjectData();
+                    },
+
+                    getDefaultImage() {
+                        if (this.projectData && this.projectData.images && this.projectData.images.length > 0) {
+                            return this.projectData.images[0].image_path;
+                        }
+                        return 'assets/images/placeholder.jpg';
+                    },
+
+                    async fetchProjectData() {
+                        try {
+                            this.isLoading = true;
+                            this.errorMessage = "";
+                            
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const projectId = urlParams.get("id");
+                            
+                            if (!projectId) {
+                                const errorMsg = typeof i18next !== 'undefined' ? i18next.t('project.project_id_missing') : "معرف المشروع غير موجود";
+                                throw new Error(errorMsg);
+                            }
+
+                            const token = localStorage.getItem("authToken") || "your-test-token";
+                            
+                            if (!token) {
+                                const errorMsg = typeof i18next !== 'undefined' ? i18next.t('project.auth_missing') : "رمز المصادقة غير موجود";
+                                throw new Error(errorMsg);
+                            }
+
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+                            const response = await fetch(
+                                `${this.apiBaseUrl}/api/projects/show/${projectId}`,
+                                {
+                                    method: "GET",
+                                    headers: {
+                                        Accept: "application/json",
+                                        Authorization: `Bearer ${token}`,
+                                    },
+                                    signal: controller.signal,
+                                }
+                            );
+
+                            clearTimeout(timeoutId);
+
+                            if (!response.ok) {
+                                throw new Error(`خطأ HTTP! الحالة: ${response.status}`);
+                            }
+
+                            const data = await response.json();
+                            
+                            if (data.status === "success" && data.data) {
+                                this.projectData = data.data;
+                                
+                                // Set first image as selected
+                                if (this.projectData.images && this.projectData.images.length > 0) {
+                                    this.selectedImage = this.projectData.images[0].image_path;
+                                }
+                                
+                                this.isLoading = false;
+                                
+                                // Update page title
+                                if (this.projectData.title) {
+                                    document.title = `${this.projectData.title} | HexaTerminal`;
+                                }
+                            } else {
+                                throw new Error(data.message || "تنسيق الاستجابة غير صحيح");
+                            }
+                        } catch (error) {
+                            if (error.name === 'AbortError') {
+                                this.errorMessage = typeof i18next !== 'undefined' ? i18next.t('project.timeout_error') : "انتهت مهلة الاتصال. يرجى المحاولة مرة أخرى.";
+                            } else {
+                                const defaultMsg = typeof i18next !== 'undefined' ? i18next.t('project.fetch_error') : "فشل في جلب تفاصيل المشروع";
+                                this.errorMessage = error.message || defaultMsg;
+                            }
+                            this.isLoading = false;
+                            this.showToast("danger", this.errorMessage);
+                            console.error("Fetch Error:", error);
+                        }
+                    },
+
+                    isValidVideoUrl(url) {
+                        if (!url) return false;
+                        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                        const vimeoRegex = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/;
+                        return youtubeRegex.test(url) || vimeoRegex.test(url);
+                    },
+
+                    getVideoEmbedUrl(url) {
+                        if (!url) return "";
+                        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                        const vimeoRegex = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/;
+                        
+                        if (youtubeRegex.test(url)) {
+                            const match = url.match(youtubeRegex);
+                            return match ? `https://www.youtube.com/embed/${match[1]}?rel=0&modestbranding=1` : "";
+                        } else if (vimeoRegex.test(url)) {
+                            const match = url.match(vimeoRegex);
+                            return match ? `https://player.vimeo.com/video/${match[1]}?title=0&byline=0&portrait=0` : "";
+                        }
+                        return "";
+                    },
+
+                    handleImageError(event) {
+                        if (event && event.target) {
+                            console.warn("Image load failed:", event.target.src);
+                            event.target.src = "assets/images/placeholder.jpg";
+                        }
+                    },
+
+                    showToast(color, message) {
+                        if (typeof Swal !== "undefined") {
+                            const toast = Swal.mixin({
+                                toast: true,
+                                position: "bottom-start",
+                                icon: color === "success" ? "success" : "error",
+                                title: message,
+                                showConfirmButton: false,
+                                timer: 3000,
+                                showCloseButton: true,
+                                customClass: { popup: `color-${color}` },
+                            });
+                            toast.fire();
+                        }
+                    },
+                }));
+            });
+        </script>
+
+        <!-- Component Loader -->
+        <script>
+            /**
+             * ============================================
+             * Component Loader
+             * ============================================
+             * Loads Header and Footer components
+             * ============================================
+             */
+            
+            'use strict';
+
+            /**
+             * Get base path for assets
+             * Works correctly on server whether in root or subdirectory
+             */
+            function getBasePath() {
+                const path = window.location.pathname;
+                const pathArray = path.split('/');
+                pathArray.pop(); // Remove filename
+                let basePath = pathArray.join('/') || '/';
+                
+                if (basePath && !basePath.startsWith('/')) {
+                    basePath = '/' + basePath;
+                }
+                
+                if (basePath.endsWith('/') && basePath !== '/') {
+                    basePath = basePath.slice(0, -1);
+                }
+                
+                return basePath || '';
+            }
+            
+            /**
+             * Normalize URL to work on server
+             */
+            function normalizeUrl(url) {
+                if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
+                    return url;
+                }
+                
+                if (url.startsWith('/')) {
+                    return url;
+                }
+                
+                const basePath = getBasePath();
+                if (basePath && basePath !== '/') {
+                    const cleanUrl = url.replace(/^\.\//, '');
+                    return basePath + '/' + cleanUrl;
+                }
+                
+                return url;
+            }
+
+            $(document).ready(function() {
+                const components = [
+                    { id: "#header-container", url: "assets/components/Header.html" },
+                    { id: "#footer-container", url: "assets/components/Footer.html" }
+                ];
+
+                let loadedCount = 0;
+
+                components.forEach(({ id, url }) => {
+                    const normalizedUrl = normalizeUrl(url);
+                    
+                    // Try fetch first (more reliable)
+                    fetch(normalizedUrl)
+                        .then(response => {
+                            if (!response.ok) {
+                                // Fallback to original URL
+                                if (normalizedUrl !== url) {
+                                    return fetch(url);
+                                }
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response;
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            if (html && html.trim()) {
+                                $(id).html(html);
+                                loadedCount++;
+                            } else {
+                                throw new Error('Empty response');
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`Error loading ${normalizedUrl}:`, error);
+                            // Fallback to jQuery load
+                            $(id).load(url, function(response, status, xhr) {
+                                if (status === "error") {
+                                    console.error(`Error loading ${url}:`, xhr.status, xhr.statusText);
+                                } else {
+                                    loadedCount++;
+                                }
+                            });
+                        });
+                });
+            });
+
+            // Remove no-js class
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
+        </script>
+    </body>
+</html>

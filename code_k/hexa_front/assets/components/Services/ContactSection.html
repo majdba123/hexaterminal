@@ -1,0 +1,364 @@
+<section class="contact-section" id="contact">
+    <div class="container">
+        <div class="row align-items-start">
+            <!-- Left Info -->
+            <div class="col-lg-5 col-xl-6 contact-info">
+                <div class="section-header">
+                    <span class="contact-subtitle">
+                        <img src="assets/images/icon2.png" alt="" />
+                        <span data-i18n="contact.subtitle"></span>
+                    </span>
+                    <h2 class="contact-title" data-i18n="contact.title"></h2>
+                </div>
+
+                <ul class="contact-list">
+                    <li>
+                        <i class="fas fa-envelope icon"></i>
+                        <div>
+                            <p data-i18n="contact.email"></p>
+                            <span data-i18n="contact.email_label"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone icon"></i>
+                        <div>
+                            <p data-i18n="contact.phone"></p>
+                            <span data-i18n="contact.phone_label"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fab fa-whatsapp icon"></i>
+                        <div>
+                            <p data-i18n="contact.whatsapp"></p>
+                            <span data-i18n="contact.whatsapp_label"></span>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="social">
+                    <h4 data-i18n="contact.social"></h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"
+                            ><i class="fab fa-facebook-f"></i
+                        ></a>
+                        <a
+                            href="#"
+                            aria-label="Instagram"
+                            ><i class="fab fa-instagram"></i
+                        ></a>
+                        <a href="#" aria-label="Twitter"
+                            ><i class="fab fa-twitter"></i
+                        ></a>
+                        <a href="#" aria-label="LinkedIn"
+                            ><i class="fab fa-linkedin-in"></i
+                        ></a>
+                    </div>
+                </div>
+
+                <div class="process">
+                    <h4 data-i18n="contact.process.title"></h4>
+                    <p data-i18n="contact.locations"></p>
+                    <ul>
+                        <li>
+                            <span>01</span
+                            ><span data-i18n="contact.process.1"></span>
+                        </li>
+                        <li>
+                            <span>02</span
+                            ><span data-i18n="contact.process.2"></span>
+                        </li>
+                        <li>
+                            <span>03</span
+                            ><span data-i18n="contact.process.3"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Form -->
+            <div class="col-lg-7 col-xl-6">
+                <div class="contact-form-box" x-data="contactForm">
+                    <h4 data-i18n="contact.form.title"></h4>
+                    <p class="subtext" data-i18n="contact.form.description"></p>
+
+                    <form class="contact-form" @submit.prevent="submitForm">
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <input
+                                    type="text"
+                                    placeholder="Full Name*"
+                                    data-i18n-placeholder="contact.form.name"
+                                    x-model="formData.name"
+                                    required
+                                />
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <input
+                                    type="email"
+                                    placeholder="Email Address*"
+                                    data-i18n-placeholder="contact.form.email"
+                                    x-model="formData.email"
+                                    required
+                                />
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <input
+                                    type="tel"
+                                    placeholder="Phone Number*"
+                                    data-i18n-placeholder="contact.form.phone"
+                                    x-model="formData.phone"
+                                    required
+                                />
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <input
+                                    type="text"
+                                    placeholder="Subject*"
+                                    data-i18n-placeholder="contact.form.subject"
+                                    x-model="formData.subject"
+                                    required
+                                />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <textarea
+                                    rows="5"
+                                    placeholder="Message"
+                                    data-i18n-placeholder="contact.form.message"
+                                    x-model="formData.message"
+                                ></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button
+                                    type="submit"
+                                    :disabled="isSubmitting"
+                                    class="btn-submit"
+                                >
+                                    <span
+                                        data-i18n="contact.form.submit"
+                                    ></span>
+                                    <span class="spinner" x-show="isSubmitting"
+                                        ><i class="fas fa-spinner fa-spin"></i
+                                    ></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* ===== Contact Section ===== */
+    .contact-section {
+        background: linear-gradient(180deg, #0b0b0b, #161616);
+        color: #fff;
+        padding: 160px 0 100px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-header img {
+        width: 55px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    .contact-subtitle {
+        font-size: 15px;
+        color: #00d084;
+        letter-spacing: 1px;
+    }
+
+    .contact-title {
+        font-size: 42px;
+        font-weight: 700;
+        margin-top: 15px;
+        line-height: 1.3;
+    }
+
+    .contact-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 35px;
+    }
+
+    .contact-list li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 22px;
+    }
+
+    .contact-list .icon {
+        color: #00d084;
+        font-size: 22px;
+        margin-right: 14px;
+        flex-shrink: 0;
+        margin-top: 3px;
+    }
+
+    .contact-list p {
+        margin: 0;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .contact-list span {
+        font-size: 14px;
+        color: #aaa;
+    }
+
+    /* Social */
+    .social {
+        margin-top: 50px;
+    }
+
+    .social h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .social-links a {
+        display: inline-block;
+        margin-right: 16px;
+        color: #bbb;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #00d084;
+        transform: translateY(-4px);
+    }
+
+    /* Process */
+    .process {
+        margin-top: 60px;
+    }
+
+    .process h4 {
+        font-size: 19px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .process p {
+        color: #999;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .process ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .process li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .process li span:first-child {
+        background-color: #00d084;
+        color: #000;
+        font-weight: 700;
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin-right: 12px;
+    }
+
+    /* Right Form */
+    .contact-form-box {
+        background: #0e0e0e;
+        padding: 50px 50px 60px;
+        border-radius: 18px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-form-box::before {
+        content: "";
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, #00d08430 0%, transparent 80%);
+        border-radius: 50%;
+    }
+
+    .contact-form-box h4 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .contact-form-box .subtext {
+        color: #bbb;
+        margin-bottom: 25px;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    /* Inputs */
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        border: 1px solid #333;
+        background: #111;
+        color: #fff;
+        padding: 14px 16px;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #00d084;
+        box-shadow: 0 0 8px #00d08440;
+        outline: none;
+    }
+
+    /* Button */
+    .btn-submit {
+        background-color: #00d084;
+        color: #000;
+        font-weight: 600;
+        border: none;
+        padding: 14px 36px;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #00e89a;
+        transform: translateY(-3px);
+    }
+
+    .spinner {
+        margin-left: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .contact-section {
+            padding: 120px 0 80px;
+        }
+        .contact-form-box {
+            padding: 40px 30px;
+        }
+        .contact-title {
+            font-size: 34px;
+        }
+    }
+</style>

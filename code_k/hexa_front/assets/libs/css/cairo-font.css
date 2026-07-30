@@ -1,0 +1,64 @@
+/**
+ * Cairo Font Configuration
+ * Primary source: Google Fonts (works immediately, no 404 errors)
+ * 
+ * Note: Local font files are commented out to avoid 404 errors
+ * Uncomment these when you have downloaded the font files
+ */
+
+/* Primary: Use Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
+
+/* ========================================
+   Local Fonts (Commented Out)
+   ========================================
+   Uncomment these when font files are available in assets/libs/fonts/
+   
+   @font-face {
+       font-family: 'Cairo';
+       font-style: normal;
+       font-weight: 400;
+       font-display: swap;
+       src: url('../fonts/cairo-regular.woff2') format('woff2'),
+            url('../fonts/cairo-regular.woff') format('woff'),
+            url('../fonts/cairo-regular.ttf') format('truetype');
+   }
+   
+   @font-face {
+       font-family: 'Cairo';
+       font-style: normal;
+       font-weight: 500;
+       font-display: swap;
+       src: url('../fonts/cairo-medium.woff2') format('woff2'),
+            url('../fonts/cairo-medium.woff') format('woff'),
+            url('../fonts/cairo-medium.ttf') format('truetype');
+   }
+   
+   @font-face {
+       font-family: 'Cairo';
+       font-style: normal;
+       font-weight: 600;
+       font-display: swap;
+       src: url('../fonts/cairo-semibold.woff2') format('woff2'),
+            url('../fonts/cairo-semibold.woff') format('woff'),
+            url('../fonts/cairo-semibold.ttf') format('truetype');
+   }
+   
+   @font-face {
+       font-family: 'Cairo';
+       font-style: normal;
+       font-weight: 700;
+       font-display: swap;
+       src: url('../fonts/cairo-bold.woff2') format('woff2'),
+            url('../fonts/cairo-bold.woff') format('woff'),
+            url('../fonts/cairo-bold.ttf') format('truetype');
+   }
+*/
+
+/* ========================================
+   Font Fallback
+   ======================================== */
+
+body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+}
