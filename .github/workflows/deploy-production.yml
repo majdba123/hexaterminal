@@ -35,6 +35,8 @@ jobs:
 
             cd /var/www/hexaterminal/frontend
             git config --global --add safe.directory /var/www/hexaterminal/frontend
+            cp .env.production .env
+
             npm install
             npm run build
 
