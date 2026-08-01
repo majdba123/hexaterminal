@@ -1,0 +1,430 @@
+{
+  "audit_package_version": "2.0",
+  "generated_at": "2026-08-01T00:00:00Z",
+  "audited_git_branch": "main",
+  "audited_git_commit": "b09a197f1ace0fb4c5f865703a9a65f087d99cc2",
+  "repository_identity": {
+    "repository_root": "C:\\Users\\impos\\Desktop\\Projects\\hexaterminal",
+    "working_tree_status_before": "?? docs/hexaterminal-codebase-audit/",
+    "canonical_execution_state_file": null,
+    "canonical_execution_state_status": "NOT FOUND IN REPOSITORY DURING THIS AUDIT"
+  },
+  "review_status": "REVISION_REQUIRED",
+  "remaining_blockers": [
+    "Canonical execution-state JSON file was not found safely in the repository, so Step 11 could not be completed.",
+    "Frontend dependencies are not installed under frontend/node_modules, blocking typecheck, lint, and build validation.",
+    "Several broader Laravel test paths still depend on a safe local environment baseline such as APP_KEY and .env-backed settings.",
+    "CMS/data quality and production-equivalent content state remain unverified."
+  ],
+  "applications": {
+    "backend": {
+      "framework": "Laravel",
+      "version": "12.64.0",
+      "php_version": "8.3.30",
+      "entrypoints": [
+        "public/index.php",
+        "artisan"
+      ],
+      "route_files": [
+        "routes/web.php",
+        "routes/api.php",
+        "routes/api_v1.php",
+        "routes/health.php"
+      ]
+    },
+    "frontend": {
+      "framework": "Next.js",
+      "version": "16.2.10",
+      "react_version": "19.2.4",
+      "root": "frontend",
+      "router": "App Router",
+      "dependencies_installed": false
+    },
+    "filament": {
+      "package": "filament/filament",
+      "version_constraint": "^4.0",
+      "panel_path": "/cms",
+      "panel_provider": "app/Providers/Filament/CmsPanelProvider.php"
+    }
+  },
+  "versions": {
+    "composer": "2.10.0",
+    "node": "v24.11.0",
+    "npm": "11.6.1"
+  },
+  "backend": {
+    "providers": [
+      "App\\Providers\\AppServiceProvider",
+      "App\\Providers\\AuthServiceProvider",
+      "App\\Providers\\BroadcastServiceProvider",
+      "App\\Providers\\EventServiceProvider",
+      "App\\Providers\\RouteCacheServiceProvider",
+      "App\\Providers\\RouteServiceProvider",
+      "App\\Providers\\Filament\\CmsPanelProvider"
+    ],
+    "middleware": [
+      "App\\Http\\Middleware\\AdminMiddleware",
+      "App\\Http\\Middleware\\LegacySurface",
+      "App\\Http\\Middleware\\ResponseCache",
+      "App\\Http\\Middleware\\SecurityHeaders",
+      "App\\Http\\Middleware\\SetApiLocale"
+    ],
+    "services": [
+      "App\\Services\\ContentCompletenessReport",
+      "App\\Services\\LeadScoringService",
+      "App\\Services\\PreviewTokenService",
+      "App\\Services\\RevalidationService"
+    ],
+    "observers": [
+      "App\\Observers\\ClearsPublicApiCache"
+    ],
+    "notifications": [
+      "App\\Notifications\\NewLeadNotification"
+    ],
+    "jobs": [
+      "ProcessProjectImage"
+    ],
+    "authentication": {
+      "sanctum_installed": true,
+      "filament_login": true,
+      "legacy_auth_routes_present": true
+    },
+    "authorization": {
+      "spatie_permission_installed": true,
+      "auth_service_provider_policy_map": "empty",
+      "resource_policy_inventory": "not centrally declared"
+    }
+  },
+  "frontend": {
+    "layout": "frontend/app/[locale]/layout.tsx",
+    "route_registry": "frontend/lib/routes/registry.ts",
+    "api_client": "frontend/lib/api/client.ts",
+    "route_handlers": [
+      "frontend/app/api/leads/route.ts",
+      "frontend/app/api/estimates/route.ts",
+      "frontend/app/api/estimates/[uuid]/lead/route.ts",
+      "frontend/app/api/revalidate/route.ts",
+      "frontend/app/api/health/route.ts",
+      "frontend/app/api/csp-report/route.ts"
+    ],
+    "pages": [
+      "frontend/app/[locale]/page.tsx",
+      "frontend/app/[locale]/services/(list)/page.tsx",
+      "frontend/app/[locale]/services/[slug]/page.tsx",
+      "frontend/app/[locale]/systems/(list)/page.tsx",
+      "frontend/app/[locale]/systems/[slug]/page.tsx",
+      "frontend/app/[locale]/case-studies/(list)/page.tsx",
+      "frontend/app/[locale]/case-studies/[slug]/page.tsx",
+      "frontend/app/[locale]/industries/(list)/page.tsx",
+      "frontend/app/[locale]/industries/[slug]/page.tsx",
+      "frontend/app/[locale]/insights/(list)/page.tsx",
+      "frontend/app/[locale]/insights/[slug]/page.tsx",
+      "frontend/app/[locale]/about/page.tsx",
+      "frontend/app/[locale]/team/page.tsx",
+      "frontend/app/[locale]/pricing/page.tsx",
+      "frontend/app/[locale]/estimate/page.tsx",
+      "frontend/app/[locale]/estimate/[uuid]/page.tsx",
+      "frontend/app/[locale]/contact/page.tsx",
+      "frontend/app/[locale]/start-a-project/page.tsx",
+      "frontend/app/[locale]/search/page.tsx",
+      "frontend/app/[locale]/preview/[token]/page.tsx"
+    ],
+    "components": [
+      "frontend/components/site/hero.tsx",
+      "frontend/components/site/showreel.tsx",
+      "frontend/components/site/lead-form.tsx",
+      "frontend/components/site/cost-estimator.tsx",
+      "frontend/components/site/estimate-result.tsx",
+      "frontend/components/site/trust-page-view.tsx",
+      "frontend/components/site/view-tracker.tsx"
+    ]
+  },
+  "database": {
+    "safe_test_connection": {
+      "driver": "sqlite",
+      "database": ":memory:"
+    },
+    "modern_tables": [
+      "service_offerings",
+      "systems",
+      "case_studies",
+      "industries",
+      "articles",
+      "article_categories",
+      "article_tags",
+      "team_members",
+      "testimonials",
+      "faqs",
+      "contact_leads",
+      "engagement_models",
+      "pricing_profiles",
+      "estimator_versions",
+      "estimator_questions",
+      "estimator_rules",
+      "cost_estimates",
+      "trust_pages",
+      "public_claims",
+      "seo_meta",
+      "company_settings"
+    ],
+    "legacy_tables": [
+      "services",
+      "projects",
+      "teams",
+      "about__us",
+      "contact__us",
+      "reviews",
+      "videos"
+    ],
+    "model_table_map": [
+      { "model": "Service", "table": "service_offerings" },
+      { "model": "System", "table": "systems" },
+      { "model": "CaseStudy", "table": "case_studies" },
+      { "model": "Industry", "table": "industries" },
+      { "model": "Article", "table": "articles" },
+      { "model": "TeamMember", "table": "team_members" },
+      { "model": "TrustPage", "table": "trust_pages" },
+      { "model": "ContactLead", "table": "contact_leads" }
+    ]
+  },
+  "routes": {
+    "legacy_web_routes_present": true,
+    "public_api_prefix": "/api/v1/public",
+    "filament_prefix": "/cms",
+    "health_routes": [
+      "/api/health",
+      "/api/health/ready",
+      "/api/health (Next route handler)"
+    ]
+  },
+  "api_endpoints": [
+    { "method": "GET", "uri": "/api/v1/public/home", "controller": "HomeController@index", "tests": ["Api V1 suite broad coverage"] },
+    { "method": "GET", "uri": "/api/v1/public/services", "controller": "ServiceController@index", "tests": ["Api V1 suite broad coverage"] },
+    { "method": "GET", "uri": "/api/v1/public/services/{slug}", "controller": "ServiceController@show", "tests": ["PublishedContentVisibilityTest"] },
+    { "method": "GET", "uri": "/api/v1/public/systems", "controller": "SystemController@index", "tests": ["Api V1 suite broad coverage"] },
+    { "method": "GET", "uri": "/api/v1/public/systems/{slug}", "controller": "SystemController@show", "tests": ["PublishedContentVisibilityTest"] },
+    { "method": "GET", "uri": "/api/v1/public/case-studies", "controller": "CaseStudyController@index", "tests": ["Api V1 suite broad coverage"] },
+    { "method": "GET", "uri": "/api/v1/public/case-studies/{slug}", "controller": "CaseStudyController@show", "tests": ["Api V1 suite broad coverage"] },
+    { "method": "GET", "uri": "/api/v1/public/industries", "controller": "IndustryController@index", "tests": ["Api V1 suite broad coverage"] },
+    { "method": "GET", "uri": "/api/v1/public/articles", "controller": "ArticleController@index", "tests": ["ArticleCategoryTest", "LocaleAndPaginationTest"] },
+    { "method": "GET", "uri": "/api/v1/public/search", "controller": "SearchController@index", "tests": ["SearchTest"] },
+    { "method": "GET", "uri": "/api/v1/public/settings", "controller": "SettingsController@index", "tests": ["SettingsTest"] },
+    { "method": "GET", "uri": "/api/v1/public/trust-pages/{slug}", "controller": "TrustPageController@show", "tests": ["TrustPageVisibilityTest"] },
+    { "method": "GET", "uri": "/api/v1/public/pricing", "controller": "PricingController@index", "tests": ["PricingApiTest"] },
+    { "method": "GET", "uri": "/api/v1/public/estimator", "controller": "EstimatorController@config", "tests": ["EstimatorApiTest"] },
+    { "method": "POST", "uri": "/api/v1/public/estimates", "controller": "EstimatorController@store", "tests": ["EstimatorApiTest"] },
+    { "method": "GET", "uri": "/api/v1/public/estimates/{uuid}", "controller": "EstimatorController@show", "tests": ["EstimatorApiTest"] },
+    { "method": "POST", "uri": "/api/v1/public/estimates/{uuid}/lead", "controller": "EstimatorController@submitLead", "tests": ["EstimatorApiTest"] },
+    { "method": "GET", "uri": "/api/v1/public/preview/{token}", "controller": "PreviewController@show", "tests": ["PreviewControllerTest"] },
+    { "method": "POST", "uri": "/api/v1/public/leads", "controller": "LeadController@store", "tests": ["LeadsTest", "LeadIntentAndAttributionTest", "RateLimitingTest"] },
+    { "method": "POST", "uri": "/api/v1/public/newsletter", "controller": "NewsletterController@store", "tests": ["NewsletterTest"] }
+  ],
+  "pages": [
+    { "route": "/{locale}", "status": "current", "page_file": "frontend/app/[locale]/page.tsx" },
+    { "route": "/{locale}/services", "status": "current", "page_file": "frontend/app/[locale]/services/(list)/page.tsx" },
+    { "route": "/{locale}/services/[slug]", "status": "current", "page_file": "frontend/app/[locale]/services/[slug]/page.tsx" },
+    { "route": "/{locale}/systems", "status": "current", "page_file": "frontend/app/[locale]/systems/(list)/page.tsx" },
+    { "route": "/{locale}/systems/[slug]", "status": "current", "page_file": "frontend/app/[locale]/systems/[slug]/page.tsx" },
+    { "route": "/{locale}/case-studies", "status": "current", "page_file": "frontend/app/[locale]/case-studies/(list)/page.tsx" },
+    { "route": "/{locale}/insights", "status": "current", "page_file": "frontend/app/[locale]/insights/(list)/page.tsx" },
+    { "route": "/{locale}/team", "status": "technically-ready", "page_file": "frontend/app/[locale]/team/page.tsx" },
+    { "route": "/{locale}/pricing", "status": "current", "page_file": "frontend/app/[locale]/pricing/page.tsx" },
+    { "route": "/{locale}/contact", "status": "current", "page_file": "frontend/app/[locale]/contact/page.tsx" },
+    { "route": "/{locale}/start-a-project", "status": "current", "page_file": "frontend/app/[locale]/start-a-project/page.tsx" },
+    { "route": "/{locale}/search", "status": "current_non_indexed", "page_file": "frontend/app/[locale]/search/page.tsx" },
+    { "route": "/{locale}/security", "status": "technically-ready", "page_file": "frontend/app/[locale]/security/page.tsx" },
+    { "route": "/{locale}/privacy", "status": "content-blocked", "page_file": "frontend/app/[locale]/privacy/page.tsx" },
+    { "route": "/{locale}/terms", "status": "content-blocked", "page_file": "frontend/app/[locale]/terms/page.tsx" }
+  ],
+  "filament": {
+    "resources": [
+      { "resource": "AiGenerationResource", "model": "AiGeneration", "table": "ai_generations" },
+      { "resource": "ArticleCategoryResource", "model": "ArticleCategory", "table": "article_categories" },
+      { "resource": "ArticleResource", "model": "Article", "table": "articles" },
+      { "resource": "ArticleTagResource", "model": "ArticleTag", "table": "article_tags" },
+      { "resource": "CaseStudyResource", "model": "CaseStudy", "table": "case_studies" },
+      { "resource": "ContactLeadResource", "model": "ContactLead", "table": "contact_leads" },
+      { "resource": "CostEstimateResource", "model": "CostEstimate", "table": "cost_estimates" },
+      { "resource": "EngagementModelResource", "model": "EngagementModel", "table": "engagement_models" },
+      { "resource": "EstimatorVersionResource", "model": "EstimatorVersion", "table": "estimator_versions" },
+      { "resource": "FaqItemResource", "model": "FaqItem", "table": "faqs" },
+      { "resource": "IndustryResource", "model": "Industry", "table": "industries" },
+      { "resource": "PricingProfileResource", "model": "PricingProfile", "table": "pricing_profiles" },
+      { "resource": "PublicClaimResource", "model": "PublicClaim", "table": "public_claims" },
+      { "resource": "RedirectResource", "model": "Redirect", "table": "redirects" },
+      { "resource": "ServiceResource", "model": "Service", "table": "service_offerings" },
+      { "resource": "SystemResource", "model": "System", "table": "systems" },
+      { "resource": "TeamMemberResource", "model": "TeamMember", "table": "team_members" },
+      { "resource": "TestimonialResource", "model": "Testimonial", "table": "testimonials" },
+      { "resource": "TrustPageResource", "model": "TrustPage", "table": "trust_pages" }
+    ],
+    "pages": [
+      "CompanySettingsPage"
+    ],
+    "widgets": [
+      "ContentQualityWidget",
+      "MarketingOverviewWidget"
+    ]
+  },
+  "localization": {
+    "locales": ["en", "ar"],
+    "default_locale": "en",
+    "fallback_locale": "en",
+    "route_mode": "locale prefix always",
+    "api_locale_middleware": "App\\Http\\Middleware\\SetApiLocale"
+  },
+  "seo": {
+    "metadata_helper": "frontend/lib/seo/page-metadata.ts",
+    "alternates_helper": "frontend/lib/seo/alternates.ts",
+    "jsonld_helper": "frontend/lib/seo/jsonld.ts",
+    "cms_seo_model": "SeoMeta",
+    "route_registry_controls_indexing": true
+  },
+  "security": {
+    "verified_controls": [
+      "Security headers middleware on Laravel origin",
+      "Filament MFA requirement for admin role",
+      "Lead/newsletter/estimate endpoint throttles",
+      "Lead honeypot and deduplication",
+      "Optional Turnstile verification",
+      "Preview token flow for draft previews",
+      "Shared-secret revalidation endpoint"
+    ],
+    "static_risks": [
+      "Laravel CSP remains report-only by current design",
+      "Legacy surfaces remain present and rely on fail-closed config flags",
+      "Deployment-state verification of secrets and headers is incomplete"
+    ]
+  },
+  "performance": {
+    "measured_in_code": [
+      "Public API cached reads use route cache headers and application-level remember calls",
+      "Search and preview intentionally bypass cache",
+      "Server component data fetching avoids client waterfalls on major routes"
+    ],
+    "static_code_risks": [
+      "Observer/revalidation freshness still depends on environment correctness",
+      "Filament widgets use live counts/grouped queries",
+      "Showreel/video size was not runtime measured"
+    ],
+    "not_verified": [
+      "Frontend build output and bundle analysis",
+      "Production/staging runtime metrics"
+    ]
+  },
+  "testing": {
+    "commands_executed": [
+      "composer validate --no-check-publish",
+      "php artisan route:list --json",
+      "vendor\\bin\\pint --test",
+      "vendor\\bin\\phpstan analyse --no-progress",
+      "php artisan test tests/Feature/Api/V1 --compact",
+      "php artisan test tests/Feature/Security --compact",
+      "php artisan test tests/Feature/Cms tests/Feature/RevalidationTest.php tests/Feature/Pricing --compact",
+      "APP_KEY=... php artisan test tests/Feature/Security/FilamentAuthorizationTest.php tests/Feature/Security/FilamentMfaTest.php tests/Feature/Security/RateLimitingTest.php --compact",
+      "APP_KEY=... php artisan test tests/Feature/Cms/AllResourcesRenderTest.php tests/Feature/Cms/ServiceResourceTest.php --compact",
+      "APP_KEY=... php artisan test tests/Feature/Pricing/EstimatorApiTest.php tests/Feature/Pricing/PricingApiTest.php tests/Feature/RevalidationTest.php --compact",
+      "cd frontend && npm run typecheck",
+      "cd frontend && npm run lint",
+      "cd frontend && npm run build"
+    ],
+    "command_results": [
+      { "command": "composer validate --no-check-publish", "status": "pass", "exit_code": 0 },
+      { "command": "php artisan route:list --json", "status": "pass", "exit_code": 0 },
+      { "command": "vendor\\bin\\pint --test", "status": "fail", "exit_code": 1, "classification": "code failure in pre-existing files" },
+      { "command": "vendor\\bin\\phpstan analyse --no-progress", "status": "timeout", "classification": "environment/time blocker" },
+      { "command": "php artisan test tests/Feature/Api/V1 --compact", "status": "pass_with_warnings", "assertions": 153, "warnings": 49 },
+      { "command": "php artisan test tests/Feature/Security --compact", "status": "fail", "classification": "environment blocker due missing APP_KEY/.env" },
+      { "command": "php artisan test tests/Feature/Cms tests/Feature/RevalidationTest.php tests/Feature/Pricing --compact", "status": "fail", "classification": "environment blocker due missing APP_KEY/.env" },
+      { "command": "APP_KEY security slice", "status": "pass_with_warnings", "assertions": 33, "warnings": 14 },
+      { "command": "APP_KEY cms slice", "status": "pass_with_warnings", "assertions": 59, "warnings": 43 },
+      { "command": "APP_KEY pricing/revalidation slice", "status": "pass_with_warnings", "assertions": 57, "warnings": 25 },
+      { "command": "cd frontend && npm run typecheck", "status": "blocked", "classification": "missing dependency" },
+      { "command": "cd frontend && npm run lint", "status": "blocked", "classification": "missing dependency" },
+      { "command": "cd frontend && npm run build", "status": "blocked", "classification": "missing dependency" }
+    ]
+  },
+  "deployment": {
+    "staging_compose": "deploy/staging/docker-compose.staging.yml",
+    "nginx_files": [
+      "deploy/staging/nginx/api-staging.conf",
+      "deploy/staging/nginx/frontend-staging.conf"
+    ],
+    "verified_operational_evidence": [
+      "staging topology files exist"
+    ],
+    "missing_operational_evidence": [
+      "worker supervision",
+      "scheduler operation",
+      "monitoring",
+      "backups",
+      "rollback process"
+    ]
+  },
+  "coverage_summary": {
+    "audit_markdown_documents": 6,
+    "audit_findings_expected": 35,
+    "audit_findings_in_json": 35,
+    "public_api_surface_mapped": true,
+    "filament_resources_mapped": 19,
+    "main_report_mermaid_diagrams": 9
+  },
+  "document_hashes": {
+    "HexaTerminal_Codebase_Architecture_Report.md": "37D49B639DEB762343BF3D1D290F770CB697D9F2EAB5D8E4804AA6732E584BF2",
+    "HexaTerminal_Audit_Issue_To_Code_Map.md": "05407FB6E7B2747B72E989701F7943893E59BFC1F27D9AD56FAFA5AF61F994DB",
+    "HexaTerminal_Page_Feature_Map.md": "6DED98442BC45EDD708B5D9A0F8637FF0D0F769B270D5ABCC9C99C603B9545EC",
+    "HexaTerminal_Filament_Dashboard_Audit.md": "78C5448619C73C249461983A333069B4EB6226413512C4734330BAE9E3418EBC",
+    "HexaTerminal_Implementation_Readiness_Report.md": "C19EE3E61DAF70E5274C76AE25017F1C4F8567CC8D62406027181192E3FAD79B",
+    "HexaTerminal_Codebase_Inventory.json": null
+  },
+  "recommended_next_actions": [
+    "Locate or restore the canonical execution-state JSON file before claiming package completion.",
+    "Run frontend dependency-backed validation in a safe environment.",
+    "Perform Phase 0 CMS/staging verification for bilingual content, trust pages, team publication, placeholder URLs, and public claims.",
+    "Only after Phase 0, open a focused implementation prompt against confirmed findings."
+  ],
+  "audit_issue_map": [
+    { "id": "F01", "name": "Empty Systems page", "external_observation": "Systems listing looked empty", "code_status": "CODE_PATH_VALID_DATA_UNVERIFIED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "No code defect proven; listing is data-driven", "backend_files": ["app/Http/Controllers/Api/V1/Public/SystemController.php", "app/Models/System.php"], "frontend_files": ["frontend/app/[locale]/systems/(list)/page.tsx"], "filament_files": ["app/Filament/Resources/Systems/SystemResource.php"], "database_entities": ["systems"], "tests": ["API V1 suite broad coverage"], "missing_tests": ["Seeded non-empty systems listing assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Published systems exist and render intentionally" },
+    { "id": "F02", "name": "Empty Industries page", "external_observation": "Industries listing looked empty", "code_status": "CODE_PATH_VALID_DATA_UNVERIFIED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "No code defect proven; listing is data-driven", "backend_files": ["app/Http/Controllers/Api/V1/Public/IndustryController.php"], "frontend_files": ["frontend/app/[locale]/industries/(list)/page.tsx"], "filament_files": ["app/Filament/Resources/Industries/IndustryResource.php"], "database_entities": ["industries"], "tests": ["API V1 suite broad coverage"], "missing_tests": ["Seeded industries rendering assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Published industries exist and render intentionally" },
+    { "id": "F03", "name": "Empty Insights page", "external_observation": "Insights listing looked empty", "code_status": "CODE_PATH_VALID_DATA_UNVERIFIED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "No code defect proven; listing depends on published articles", "backend_files": ["app/Http/Controllers/Api/V1/Public/ArticleController.php"], "frontend_files": ["frontend/app/[locale]/insights/(list)/page.tsx"], "filament_files": ["app/Filament/Resources/Articles/ArticleResource.php"], "database_entities": ["articles"], "tests": ["ArticleCategoryTest", "LocaleAndPaginationTest"], "missing_tests": ["Seeded public article rendering assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Published insights exist or the route is intentionally withheld" },
+    { "id": "F04", "name": "Empty Team section", "external_observation": "Team area appeared empty", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Team requires publish plus publication consent and the route is technically-ready", "backend_files": ["app/Http/Controllers/Api/V1/Public/TeamMemberController.php", "app/Models/TeamMember.php"], "frontend_files": ["frontend/app/[locale]/about/page.tsx", "frontend/app/[locale]/team/page.tsx", "frontend/lib/routes/registry.ts"], "filament_files": ["app/Filament/Resources/TeamMembers/TeamMemberResource.php"], "database_entities": ["team_members"], "tests": ["PublishedContentVisibilityTest"], "missing_tests": ["Seeded /team rendering assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Approved team members render intentionally" },
+    { "id": "F05", "name": "Arabic content under /en", "external_observation": "English route showed Arabic content", "code_status": "NOT_REPRODUCED_IN_CODE", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Fallback locale is en; likely a data-entry or migration quality issue", "backend_files": ["config/app.php", "app/Http/Middleware/SetApiLocale.php"], "frontend_files": ["frontend/app/[locale]/layout.tsx", "frontend/lib/api/client.ts"], "filament_files": ["app/Providers/Filament/CmsPanelProvider.php"], "database_entities": ["translatable content tables"], "tests": ["Content/i18n tests broadly relevant"], "missing_tests": ["Seeded bilingual route assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "English pages show English content only" },
+    { "id": "F06", "name": "Transliterated slugs", "external_observation": "Public URLs use Latin/transliterated slugs", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Shared slug generation policy appears intentional", "backend_files": ["app/Models/Concerns/HasAutoSlug.php"], "frontend_files": ["frontend/app/[locale]/services/[slug]/page.tsx"], "filament_files": ["app/Filament/Support/Slugs.php"], "database_entities": ["slug columns across content tables"], "tests": ["Slug/security tests broadly relevant"], "missing_tests": ["Explicit accepted slug-policy assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Slug policy is explicitly accepted or replaced with redirects/migration" },
+    { "id": "F07", "name": "Duplicate case studies", "external_observation": "Case study hub showed duplicates", "code_status": "NOT_REPRODUCED_IN_CODE", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "No duplicate-producing list logic found", "backend_files": ["app/Http/Controllers/Api/V1/Public/CaseStudyController.php"], "frontend_files": ["frontend/app/[locale]/case-studies/(list)/page.tsx"], "filament_files": ["app/Filament/Resources/CaseStudies/CaseStudyResource.php"], "database_entities": ["case_studies"], "tests": ["API V1 suite broad coverage"], "missing_tests": ["Seeded uniqueness assertion"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "No duplicate rows render publicly" },
+    { "id": "F08", "name": "Incorrect related-service mappings", "external_observation": "Case study showed wrong related service", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Mapping is foreign-key driven and likely data-assignment dependent", "backend_files": ["app/Models/CaseStudy.php"], "frontend_files": ["frontend/app/[locale]/case-studies/[slug]/page.tsx"], "filament_files": ["app/Filament/Resources/CaseStudies/Schemas/CaseStudyForm.php"], "database_entities": ["case_studies.service_offering_id"], "tests": ["No direct targeted test verified"], "missing_tests": ["Seeded relation assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Each case study links to the intended service" },
+    { "id": "F09", "name": "example.com project URLs", "external_observation": "Placeholder URLs leaked publicly", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Placeholder/demo URLs likely survive in seed or imported content", "backend_files": ["database/seeders/ProjectsSeeder.php"], "frontend_files": ["frontend/app/[locale]/case-studies/[slug]/page.tsx"], "filament_files": ["app/Filament/Resources/CaseStudies/CaseStudyResource.php"], "database_entities": ["projects", "case_studies.project_url"], "tests": ["No direct targeted test verified"], "missing_tests": ["Placeholder-domain guard tests"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "No placeholder domains in published records" },
+    { "id": "F10", "name": "Unclear project classification", "external_observation": "Project/service/system classification felt unclear", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Broad taxonomy split between Service and System with legacy overlap", "backend_files": ["app/Models/Service.php", "app/Models/System.php"], "frontend_files": ["frontend/lib/routes/registry.ts"], "filament_files": ["app/Filament/Resources/Services/ServiceResource.php", "app/Filament/Resources/Systems/SystemResource.php"], "database_entities": ["service_offerings", "systems"], "tests": ["No direct targeted test verified"], "missing_tests": ["Taxonomy/filter expectations"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Taxonomy is consistent across IA, content, and code" },
+    { "id": "F11", "name": "Thin service pages", "external_observation": "Service pages felt thin", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Current model/template shape is leaner than a richer proof-led service page", "backend_files": ["app/Models/Service.php"], "frontend_files": ["frontend/app/[locale]/services/[slug]/page.tsx"], "filament_files": ["app/Filament/Resources/Services/Schemas/ServiceForm.php"], "database_entities": ["service_offerings"], "tests": ["No direct targeted test verified"], "missing_tests": ["Extended service detail rendering tests"], "roadmap_phase": "Future implementation after Phase 0", "risk": "medium", "definition_of_done": "Service pages have the required content architecture or thinness is explicitly accepted" },
+    { "id": "F12", "name": "Missing ERP page", "external_observation": "No dedicated ERP public page", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "No dedicated ERP route verified; content relies on generic service taxonomy", "backend_files": ["app/Models/Service.php"], "frontend_files": ["frontend/app/[locale]/services/[slug]/page.tsx"], "filament_files": ["app/Filament/Resources/Services/ServiceResource.php"], "database_entities": ["service_offerings"], "tests": ["No direct targeted test verified"], "missing_tests": ["Dedicated ERP slug coverage if adopted"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "ERP has an intentional dedicated surface or is explicitly out of scope" },
+    { "id": "F13", "name": "Missing CRM page", "external_observation": "No dedicated CRM public page", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "No dedicated CRM route verified; content relies on generic service taxonomy", "backend_files": ["app/Models/Service.php"], "frontend_files": ["frontend/app/[locale]/services/[slug]/page.tsx"], "filament_files": ["app/Filament/Resources/Services/ServiceResource.php"], "database_entities": ["service_offerings"], "tests": ["No direct targeted test verified"], "missing_tests": ["Dedicated CRM slug coverage if adopted"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "CRM has an intentional dedicated surface or is explicitly out of scope" },
+    { "id": "F14", "name": "Overly broad service taxonomy", "external_observation": "Taxonomy felt broad", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Current content model intentionally groups offerings broadly", "backend_files": ["app/Models/Service.php", "app/Models/System.php"], "frontend_files": ["frontend/lib/routes/registry.ts"], "filament_files": ["app/Filament/Resources/Services/ServiceResource.php", "app/Filament/Resources/Systems/SystemResource.php"], "database_entities": ["service_offerings", "systems"], "tests": ["No direct targeted test verified"], "missing_tests": ["Taxonomy regression tests"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Taxonomy matches business positioning and navigation strategy" },
+    { "id": "F15", "name": "Pricing mentions estimator without one", "external_observation": "Pricing page implied estimator might exist when unavailable", "code_status": "NOT_REPRODUCED_IN_CODE", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Estimator CTA is gated by API-provided availability", "backend_files": ["app/Http/Controllers/Api/V1/Public/PricingController.php", "app/Http/Controllers/Api/V1/Public/EstimatorController.php"], "frontend_files": ["frontend/app/[locale]/pricing/page.tsx"], "filament_files": ["app/Filament/Resources/EstimatorVersions/EstimatorVersionResource.php"], "database_entities": ["estimator_versions"], "tests": ["PricingApiTest", "EstimatorApiTest"], "missing_tests": ["Full page integration assertion"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "CTA always matches estimator availability" },
+    { "id": "F16", "name": "Contact and Start-a-Project overlap", "external_observation": "Two funnels felt duplicated", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Both pages share LeadForm and LeadController", "backend_files": ["app/Http/Controllers/Api/V1/Public/LeadController.php"], "frontend_files": ["frontend/app/[locale]/contact/page.tsx", "frontend/app/[locale]/start-a-project/page.tsx", "frontend/components/site/lead-form.tsx"], "filament_files": ["app/Filament/Resources/ContactLeads/ContactLeadResource.php"], "database_entities": ["contact_leads"], "tests": ["LeadIntentAndAttributionTest"], "missing_tests": ["Route-specific UX assertions"], "roadmap_phase": "Future implementation after Phase 0", "risk": "medium", "definition_of_done": "Funnel distinction or intentional merge is explicit" },
+    { "id": "F17", "name": "Generic Send CTA", "external_observation": "Lead-form CTA copy felt generic", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Shared translation copy in common lead form", "backend_files": [], "frontend_files": ["frontend/components/site/lead-form.tsx"], "filament_files": [], "database_entities": [], "tests": ["No direct targeted test verified"], "missing_tests": ["Locale copy snapshot tests"], "roadmap_phase": "Future implementation after Phase 0", "risk": "low", "definition_of_done": "CTA copy communicates the intended action" },
+    { "id": "F18", "name": "Missing next-step messaging", "external_observation": "Lead flows lacked clear follow-up expectations", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Shared lead flow has limited next-step messaging", "backend_files": [], "frontend_files": ["frontend/app/[locale]/contact/page.tsx", "frontend/app/[locale]/start-a-project/page.tsx", "frontend/components/site/lead-form.tsx"], "filament_files": [], "database_entities": [], "tests": ["No direct targeted test verified"], "missing_tests": ["Content assertions for next-step messaging"], "roadmap_phase": "Future implementation after Phase 0", "risk": "low", "definition_of_done": "Pages and success state clearly explain next steps and timing" },
+    { "id": "F19", "name": "Incomplete success state", "external_observation": "Success experience felt thin", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Shared success state is minimal", "backend_files": ["app/Http/Controllers/Api/V1/Public/LeadController.php"], "frontend_files": ["frontend/components/site/lead-form.tsx"], "filament_files": ["app/Filament/Resources/ContactLeads/ContactLeadResource.php"], "database_entities": ["contact_leads"], "tests": ["No direct targeted test verified"], "missing_tests": ["Success-state integration tests"], "roadmap_phase": "Future implementation after Phase 0", "risk": "low", "definition_of_done": "Success state includes useful next-step information" },
+    { "id": "F20", "name": "Missing confirmation email", "external_observation": "Submitter did not appear to receive confirmation mail", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Only internal new-lead notification was verified", "backend_files": ["app/Http/Controllers/Api/V1/Public/LeadController.php", "app/Notifications/NewLeadNotification.php"], "frontend_files": ["frontend/components/site/lead-form.tsx"], "filament_files": ["app/Filament/Pages/CompanySettingsPage.php"], "database_entities": ["contact_leads", "company_settings"], "tests": ["No direct targeted test verified"], "missing_tests": ["User confirmation mail tests"], "roadmap_phase": "Future implementation after Phase 0", "risk": "medium", "definition_of_done": "User confirmation mail exists or is explicitly not required" },
+    { "id": "F21", "name": "Missing lead reference ID", "external_observation": "Submitter lacked a clear lead reference", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Backend returns an id but frontend does not surface a user-safe reference clearly", "backend_files": ["app/Http/Controllers/Api/V1/Public/LeadController.php"], "frontend_files": ["frontend/components/site/lead-form.tsx"], "filament_files": ["app/Filament/Resources/ContactLeads/ContactLeadResource.php"], "database_entities": ["contact_leads"], "tests": ["No direct targeted test verified"], "missing_tests": ["Success-state reference assertions"], "roadmap_phase": "Future implementation after Phase 0", "risk": "low", "definition_of_done": "A safe reference is shown or intentionally omitted" },
+    { "id": "F22", "name": "Missing spam protection", "external_observation": "Public forms looked under-protected", "code_status": "NOT_REPRODUCED_IN_CODE", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Rate limits, honeypot, dedupe, and optional Turnstile exist", "backend_files": ["app/Http/Controllers/Api/V1/Public/LeadController.php", "app/Http/Controllers/Api/V1/Public/EstimatorController.php", "routes/api_v1.php"], "frontend_files": ["frontend/components/site/lead-form.tsx"], "filament_files": [], "database_entities": ["contact_leads"], "tests": ["RateLimitingTest", "ReplayAndAbuseTest"], "missing_tests": ["Deployed environment verification"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Anti-spam controls remain active and verified in deployment" },
+    { "id": "F23", "name": "Missing analytics funnel events", "external_observation": "Conversion tracking looked incomplete", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Some events exist but full funnel coverage was not fully verified", "backend_files": [], "frontend_files": ["frontend/components/site/analytics-script.tsx", "frontend/components/site/lead-form.tsx", "frontend/components/site/showreel.tsx", "frontend/components/site/view-tracker.tsx"], "filament_files": ["app/Filament/Pages/CompanySettingsPage.php"], "database_entities": ["company_settings"], "tests": ["No direct targeted test verified"], "missing_tests": ["Analytics mock/E2E assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Key funnel milestones emit agreed analytics events" },
+    { "id": "F24", "name": "Weak SEO metadata", "external_observation": "SEO output looked weak or incomplete", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Metadata architecture exists, but record completeness is content-dependent", "backend_files": ["app/Models/SeoMeta.php"], "frontend_files": ["frontend/lib/seo/page-metadata.ts"], "filament_files": ["app/Filament/Resources/TrustPages/TrustPageResource.php"], "database_entities": ["seo_meta"], "tests": ["SeoAuditCommandTest", "SeoAuditReportTest"], "missing_tests": ["Route-level metadata assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "All indexable routes have complete metadata or explicit defaults" },
+    { "id": "F25", "name": "Missing hreflang", "external_observation": "Alternate-language signals might be missing", "code_status": "NOT_REPRODUCED_IN_CODE", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Alternates helper and route registry are present", "backend_files": [], "frontend_files": ["frontend/lib/seo/alternates.ts", "frontend/lib/seo/page-metadata.ts", "frontend/app/sitemap.ts"], "filament_files": [], "database_entities": [], "tests": ["Route-registry tests implied by repo comments"], "missing_tests": ["Rendered alternates assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Alternates remain correct for all public locales/routes" },
+    { "id": "F26", "name": "Weak language and direction handling", "external_observation": "Arabic/English behavior felt inconsistent", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Framework wiring exists; remaining risk is content/data and page-level QA", "backend_files": ["app/Http/Middleware/SetApiLocale.php"], "frontend_files": ["frontend/app/[locale]/layout.tsx", "frontend/i18n/routing.ts"], "filament_files": ["app/Providers/Filament/CmsPanelProvider.php"], "database_entities": ["translatable content tables"], "tests": ["Content/i18n tests broadly relevant"], "missing_tests": ["Sampled bilingual route assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Correct language and direction behavior on sampled public pages" },
+    { "id": "F27", "name": "Missing structured data", "external_observation": "Structured data coverage looked incomplete", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Helpers exist, but not every route was runtime-verified", "backend_files": [], "frontend_files": ["frontend/lib/seo/jsonld.ts"], "filament_files": [], "database_entities": [], "tests": ["No direct targeted test verified"], "missing_tests": ["Route-level JSON-LD assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Strategic routes emit intended schema nodes" },
+    { "id": "F28", "name": "Showreel performance risk", "external_observation": "Video/showreel might be heavy", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Component mitigates load, but transfer/runtime was not measured", "backend_files": [], "frontend_files": ["frontend/components/site/showreel.tsx"], "filament_files": [], "database_entities": [], "tests": ["No direct targeted test verified"], "missing_tests": ["Performance measurement"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Measured performance is acceptable in production-like environment" },
+    { "id": "F29", "name": "Hydration or client-loading risks", "external_observation": "Potential client-side instability", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Server components reduce risk, but frontend build/runtime verification is blocked", "backend_files": [], "frontend_files": ["frontend/lib/api/client.ts", "frontend/app/[locale]/page.tsx"], "filament_files": [], "database_entities": [], "tests": ["No direct targeted test verified"], "missing_tests": ["Dependency-backed build and E2E run"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Frontend builds cleanly and renders without major hydration issues" },
+    { "id": "F30", "name": "Accessibility risks", "external_observation": "Navigation/forms may have accessibility issues", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Accessibility patterns exist but full runtime route review was not done", "backend_files": [], "frontend_files": ["frontend/app/[locale]/layout.tsx", "frontend/components/site/lead-form.tsx"], "filament_files": [], "database_entities": [], "tests": ["Frontend accessibility suite present in repo"], "missing_tests": ["Rendered-build accessibility verification"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Critical accessibility issues are verified and guarded" },
+    { "id": "F31", "name": "Missing security headers", "external_observation": "Security headers may be absent", "code_status": "NOT_REPRODUCED_IN_CODE", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Header middleware and frontend security surfaces are present", "backend_files": ["app/Http/Middleware/SecurityHeaders.php"], "frontend_files": ["frontend/app/api/csp-report/route.ts"], "filament_files": [], "database_entities": [], "tests": ["SecurityHeadersTest"], "missing_tests": ["Deployed-header verification"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Headers are present in deployment as well as code" },
+    { "id": "F32", "name": "Missing trust information", "external_observation": "Company/team trust content felt missing", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Trust/team infrastructure exists but depends on approved content", "backend_files": ["app/Models/TrustPage.php", "app/Models/TeamMember.php"], "frontend_files": ["frontend/app/[locale]/team/page.tsx", "frontend/app/[locale]/security/page.tsx"], "filament_files": ["app/Filament/Resources/TrustPages/TrustPageResource.php", "app/Filament/Resources/TeamMembers/TeamMemberResource.php"], "database_entities": ["trust_pages", "team_members"], "tests": ["TrustPageVisibilityTest", "PublishedContentVisibilityTest"], "missing_tests": ["Full route rendering with approved content"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Approved trust and team content is publicly available intentionally" },
+    { "id": "F33", "name": "Unsupported public claims", "external_observation": "Statistics/claims looked weakly sourced", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Some proof text lives in translations rather than fully governed PublicClaim records", "backend_files": ["app/Models/PublicClaim.php"], "frontend_files": ["frontend/app/[locale]/page.tsx"], "filament_files": ["app/Filament/Resources/PublicClaims/PublicClaimResource.php"], "database_entities": ["public_claims"], "tests": ["No direct targeted test verified"], "missing_tests": ["Claim-source audit tests"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "medium", "definition_of_done": "Public claims are traceable, reviewed, and supported" },
+    { "id": "F34", "name": "Missing support and maintenance content", "external_observation": "Support/maintenance messaging lacked a dedicated home", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Trust-page architecture can support it, but a current approved public page was not verified", "backend_files": ["app/Models/TrustPage.php"], "frontend_files": ["frontend/app/[locale]/pricing/page.tsx"], "filament_files": ["app/Filament/Resources/TrustPages/TrustPageResource.php"], "database_entities": ["trust_pages"], "tests": ["No direct targeted test verified"], "missing_tests": ["Support-page publish/visibility tests"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Support/maintenance information is published intentionally" },
+    { "id": "F35", "name": "Missing real case-study outcomes", "external_observation": "Case studies lacked strong outcomes/evidence", "code_status": "PARTIALLY_CONFIRMED", "data_status": "NOT VERIFIED", "production_status": "REQUIRES_PRODUCTION_DATA_VERIFICATION", "root_cause": "Model supports outcomes/evidence, but content completeness is record-dependent", "backend_files": ["app/Models/CaseStudy.php", "app/Services/ContentCompletenessReport.php"], "frontend_files": ["frontend/app/[locale]/case-studies/[slug]/page.tsx"], "filament_files": ["app/Filament/Resources/CaseStudies/Schemas/CaseStudyForm.php"], "database_entities": ["case_studies"], "tests": ["ContentCompletenessReportTest"], "missing_tests": ["Case-study evidence completeness assertions"], "roadmap_phase": "Phase 0 baseline and content verification", "risk": "low", "definition_of_done": "Published case studies contain substantive outcomes/evidence or remain unpublished" }
+  ],
+  "unknowns": [
+    "Canonical execution-state JSON file location",
+    "Actual staging/production content quality",
+    "Queue worker and scheduler runtime state",
+    "Mail transport and analytics provider deployment state",
+    "Frontend build health in a dependency-installed environment"
+  ]
+}
