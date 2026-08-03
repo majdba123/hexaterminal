@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -21,23 +22,19 @@ use Throwable;
  *                                     balancer should only route to instances
  *                                     that pass this.
  *
- * Responses expose only safe operational state -- a boolean per dependency,
- * the environment name, and the build/commit SHA (from APP_VERSION, if set).
- * No credentials, connection strings, or exception traces are ever returned;
- * failures are reduced to `"error"` and logged server-side instead.
+ * Responses expose only safe operational state. No credentials, connection
+ * strings, environment names, version identifiers, or exception traces are
+ * ever returned to callers.
  */
 class HealthController extends Controller
 {
     /** Liveness: process is up. Cheap, dependency-free, always 200 when reachable. */
     public function live(): JsonResponse
     {
-        return response()->json([
+        return $this->healthResponse([
             'status' => 'ok',
-            'service' => 'hexa-terminal-api',
-            'environment' => app()->environment(),
-            'version' => (string) config('app.version', 'unknown'),
-            'time' => now()->toIso8601String(),
-        ]);
+            'service' => 'hexaterminal-backend',
+        ], 200);
     }
 
     /** Readiness: dependencies reachable. 200 only when every check passes. */
@@ -48,32 +45,31 @@ class HealthController extends Controller
             'cache' => $this->checkCache(),
         ];
 
-        $healthy = ! in_array(false, $checks, true);
+        $healthy = ! in_array('failed', $checks, true);
 
-        return response()->json([
-            'status' => $healthy ? 'ok' : 'degraded',
-            'environment' => app()->environment(),
-            'version' => (string) config('app.version', 'unknown'),
+        return $this->healthResponse([
+            'status' => $healthy ? 'ready' : 'not_ready',
+            'service' => 'hexaterminal-backend',
             'checks' => $checks,
-            'time' => now()->toIso8601String(),
         ], $healthy ? 200 : 503);
     }
 
-    private function checkDatabase(): bool
+    private function checkDatabase(): string
     {
         try {
-            DB::connection()->getPdo();
-            DB::select('select 1');
+            DB::connection()->select('select 1');
 
-            return true;
+            return 'ok';
         } catch (Throwable $e) {
-            report($e);
+            Log::warning('Backend readiness database check failed.', [
+                'exception' => $e,
+            ]);
 
-            return false;
+            return 'failed';
         }
     }
 
-    private function checkCache(): bool
+    private function checkCache(): string
     {
         try {
             $token = 'health:'.bin2hex(random_bytes(8));
@@ -81,11 +77,20 @@ class HealthController extends Controller
             $ok = Cache::get($token) === 1;
             Cache::forget($token);
 
-            return $ok;
+            return $ok ? 'ok' : 'failed';
         } catch (Throwable $e) {
-            report($e);
+            Log::warning('Backend readiness cache check failed.', [
+                'exception' => $e,
+            ]);
 
-            return false;
+            return 'failed';
         }
+    }
+
+    private function healthResponse(array $payload, int $status): JsonResponse
+    {
+        return response()->json($payload, $status, [
+            'Cache-Control' => 'no-store',
+        ]);
     }
 }

@@ -6,9 +6,183 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: hexaterminal-production-deploy
+  cancel-in-progress: false
+
 jobs:
-  deploy:
+  validate:
+    name: Validate HexaTerminal Production Build
     runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Install backend dependencies
+        env:
+          COMPOSER_ALLOW_SUPERUSER: 1
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Prepare validation environment
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache .ci
+          touch .ci/validate.sqlite
+          cat > .env <<EOF
+          APP_NAME="Hexa Terminal"
+          APP_ENV=testing
+          APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          APP_DEBUG=false
+          APP_URL=http://127.0.0.1:8000
+          LOG_CHANNEL=stack
+          LOG_DEPRECATIONS_CHANNEL=null
+          LOG_LEVEL=warning
+          DB_CONNECTION=sqlite
+          DB_DATABASE=$GITHUB_WORKSPACE/.ci/validate.sqlite
+          BROADCAST_DRIVER=log
+          CACHE_DRIVER=array
+          CACHE_STORE=array
+          FILESYSTEM_DISK=local
+          QUEUE_CONNECTION=sync
+          SESSION_DRIVER=array
+          SESSION_LIFETIME=120
+          MEMCACHED_HOST=127.0.0.1
+          REDIS_HOST=127.0.0.1
+          REDIS_PASSWORD=null
+          REDIS_PORT=6379
+          MAIL_MAILER=array
+          MAIL_HOST=127.0.0.1
+          MAIL_PORT=2525
+          MAIL_USERNAME=null
+          MAIL_PASSWORD=null
+          MAIL_ENCRYPTION=null
+          MAIL_FROM_ADDRESS="hello@example.com"
+          MAIL_FROM_NAME="Hexa Terminal"
+          ADMIN_NAME="CI Administrator"
+          ADMIN_EMAIL=ci-admin@example.com
+          ADMIN_PASSWORD=ci-admin-password-1234
+          TURNSTILE_SECRET_KEY=
+          AI_SEO_PROVIDER=anthropic
+          ANTHROPIC_API_KEY=
+          AI_SEO_MODEL=claude-opus-4-8
+          AI_SEO_TIMEOUT=30
+          LEGACY_PUBLIC_WEB_ENABLED=true
+          LEGACY_ADMIN_ENABLED=true
+          LEGACY_API_ENABLED=true
+          CSP_ENABLED=true
+          CSP_ENFORCE=false
+          HSTS_ENABLED=false
+          HSTS_INCLUDE_SUBDOMAINS=false
+          HSTS_PRELOAD=false
+          SESSION_SECURE_COOKIE=false
+          VITE_APP_NAME="Hexa Terminal"
+          PHP_CLI_SERVER_WORKERS=8
+          EOF
+
+      - name: Install Laravel asset dependencies
+        run: npm ci
+
+      - name: Build Laravel assets
+        run: npx vite build
+
+      - name: Run database setup
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          php artisan migrate --force
+          php artisan db:seed --force
+          php artisan hexa:migrate-legacy-content
+
+      - name: Run Laravel validation suite
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          php artisan test \
+            tests/Feature/HealthTest.php \
+            tests/Feature/Api/V1 \
+            tests/Feature/Security/CorsPolicyTest.php \
+            tests/Feature/Security/ErrorLeakageTest.php \
+            tests/Feature/Security/FilamentAuthorizationTest.php \
+            tests/Feature/Security/FilamentMfaTest.php \
+            tests/Feature/Security/RateLimitingTest.php \
+            tests/Feature/Security/ReplayAndAbuseTest.php \
+            tests/Feature/Security/ReviewModerationTest.php \
+            tests/Feature/Security/SecurityHeadersTest.php \
+            tests/Feature/Security/SlugValidationTest.php \
+            tests/Feature/Security/StorageRouteTest.php \
+            tests/Feature/Security/UploadAllowlistTest.php \
+            tests/Feature/Pricing \
+            tests/Feature/RevalidationTest.php
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Start Laravel validation server
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/validate-server.log 2>&1 &
+          echo $! > .ci/validate-server.pid
+
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8000/api/health > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Laravel validation server failed to start" >&2
+          cat storage/logs/validate-server.log >&2 || true
+          exit 1
+
+      - name: Run frontend typecheck
+        run: npm run typecheck
+        working-directory: frontend
+
+      - name: Run frontend lint
+        run: npm run lint -- .
+        working-directory: frontend
+
+      - name: Run frontend build
+        env:
+          API_URL: http://127.0.0.1:8000/api/v1/public
+          NEXT_PUBLIC_SITE_URL: https://hexaterminal.com
+          NEXT_PUBLIC_ALLOW_INDEXING: true
+          REVALIDATE_SECRET: ci-validation-secret
+        run: npm run build
+        working-directory: frontend
+
+  deploy:
+    name: Deploy HexaTerminal Production
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
 
     steps:
       - name: Deploy backend and frontend
@@ -18,27 +192,85 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script_stop: true
+          timeout: 30s
+          command_timeout: 30m
           script: |
-            set -e
+            set -Eeuo pipefail
 
-            cd /var/www/hexaterminal
-            git config --global --add safe.directory /var/www/hexaterminal
+            APP_DIR="/var/www/hexaterminal"
+            FRONTEND_DIR="$APP_DIR/frontend"
+            BACKEND_HEALTH_URL="https://api.hexaterminal.com/api/health/ready"
+            FRONTEND_HEALTH_URL="https://hexaterminal.com/api/health"
+            PUBLIC_PAGE_URL="https://hexaterminal.com/en"
+
+            cd "$APP_DIR"
+            git config --global --add safe.directory "$APP_DIR"
             git fetch origin main
             git reset --hard origin/main
+            git rev-parse HEAD
 
             export COMPOSER_ALLOW_SUPERUSER=1
-            composer install --no-dev --optimize-autoloader --no-interaction
+            composer install \
+              --no-dev \
+              --prefer-dist \
+              --optimize-autoloader \
+              --no-interaction
+
+            cd "$FRONTEND_DIR"
+            test -f package.json
+            test -f package-lock.json
+            test -f .env.production
+            grep -q '^API_URL=https://api\.hexaterminal\.com/api/v1/public$' .env.production
+            grep -q '^NEXT_PUBLIC_SITE_URL=https://hexaterminal\.com$' .env.production
+            cp .env.production .env
+
+            npm ci
+            if npm run | grep -q " typecheck"; then
+              npm run typecheck
+            fi
+            if npm run | grep -q " lint"; then
+              npm run lint -- .
+            fi
+            npm run build
+
+            cd "$APP_DIR"
             php artisan migrate --force
             php artisan optimize:clear
             php artisan optimize
-
-            cd /var/www/hexaterminal/frontend
-            git config --global --add safe.directory /var/www/hexaterminal/frontend
-            cp .env.production .env
-
-            npm install
-            npm run build
+            php artisan queue:restart
 
             systemctl restart hexa-frontend
+            systemctl is-active --quiet hexa-frontend
+            nginx -t
             systemctl reload nginx
+
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --retry 5 \
+              --retry-delay 3 \
+              --retry-connrefused \
+              --max-time 15 \
+              "$BACKEND_HEALTH_URL"
+
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --retry 5 \
+              --retry-delay 3 \
+              --retry-connrefused \
+              --max-time 15 \
+              "$FRONTEND_HEALTH_URL"
+
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --retry 5 \
+              --retry-delay 3 \
+              --retry-connrefused \
+              --max-time 20 \
+              "$PUBLIC_PAGE_URL" \
+              > /dev/null
