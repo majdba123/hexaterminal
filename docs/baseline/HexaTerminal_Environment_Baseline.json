@@ -1,0 +1,323 @@
+{
+  "task_id": "BASE-001A",
+  "status": "IN_PROGRESS",
+  "repository": {
+    "top_level": "C:/Users/impos/Desktop/Projects/hexaterminal",
+    "branch": "main",
+    "commit": "73e8e1b441cf365615dbc88cdcc1f5f987bbfd18",
+    "matches_known_production_baseline_commit": true,
+    "working_tree_status": "clean",
+    "remotes": [
+      {
+        "name": "origin",
+        "fetch": "https://github.com/majdba123/hexaterminal.git",
+        "push": "https://github.com/majdba123/hexaterminal.git"
+      }
+    ],
+    "latest_commit": {
+      "author": "Majd Bayer <137396563+majdba123@users.noreply.github.com>",
+      "author_date": "2026-08-03 21:50:48 +0300",
+      "commit_date": "2026-08-03 21:50:48 +0300",
+      "subject": "hjk"
+    }
+  },
+  "known_production": {
+    "branch": "main",
+    "repository_path": "/var/www/hexaterminal",
+    "frontend_path": "/var/www/hexaterminal/frontend",
+    "frontend_origin": "https://hexaterminal.com",
+    "api_origin": "https://api.hexaterminal.com",
+    "frontend_service": "hexa-frontend",
+    "successful_actions_run": {
+      "run_number": 11,
+      "status": "SUCCESS",
+      "commit": "73e8e1b",
+      "duration": "4m 6s",
+      "validation_job_succeeded": true,
+      "deployment_job_succeeded": true
+    },
+    "owner_confirmed_urls": [
+      "https://hexaterminal.com/en",
+      "https://hexaterminal.com/api/health",
+      "https://api.hexaterminal.com/api/health/ready"
+    ],
+    "non_blocking_warning": "Node.js runtime deprecation for action internals"
+  },
+  "technology_versions": {
+    "required": {
+      "php": "^8.2",
+      "laravel_framework": "^12.0",
+      "filament": "^4.0",
+      "node_docs": "20.x or 22.x LTS",
+      "npm_docs": "10+"
+    },
+    "locked_or_manifest": {
+      "next": "16.2.10",
+      "react": "19.2.4",
+      "react_dom": "19.2.4",
+      "next_intl": "^4.13.2",
+      "phpunit": "^11.0",
+      "vite": "^5.0.0"
+    },
+    "local_runtime": {
+      "php": "8.3.30",
+      "composer": "2.10.0",
+      "laravel": "12.64.0",
+      "node": "24.11.0",
+      "npm": "11.6.1"
+    },
+    "production_runtime": {
+      "php": "NOT VERIFIED",
+      "composer": "NOT VERIFIED",
+      "node": "NOT VERIFIED",
+      "npm": "NOT VERIFIED",
+      "nginx": "NOT VERIFIED"
+    }
+  },
+  "deployment": {
+    "workflow_path": ".github/workflows/deploy-production.yml",
+    "workflow_name": "Deploy Production",
+    "triggers": {
+      "push_branches": [
+        "main"
+      ],
+      "workflow_dispatch": true
+    },
+    "permissions": {
+      "contents": "read"
+    },
+    "concurrency": {
+      "group": "hexaterminal-production-deploy",
+      "cancel_in_progress": false
+    },
+    "jobs": {
+      "validate": {
+        "runs_on": "ubuntu-latest",
+        "timeout_minutes": 35,
+        "php_setup": "shivammathur/setup-php@v2",
+        "php_version": "8.3",
+        "node_setup": "actions/setup-node@v4",
+        "node_version": "22",
+        "laravel_validation_commands": [
+          "composer install --prefer-dist --no-interaction",
+          "npm install --include=optional",
+          "npx vite build",
+          "php artisan migrate --force",
+          "php artisan db:seed --force",
+          "php artisan hexa:migrate-legacy-content",
+          "php artisan test tests/Feature/HealthTest.php tests/Feature/Api/V1 tests/Feature/Security/CorsPolicyTest.php tests/Feature/Security/ErrorLeakageTest.php tests/Feature/Security/FilamentAuthorizationTest.php tests/Feature/Security/FilamentMfaTest.php tests/Feature/Security/RateLimitingTest.php tests/Feature/Security/ReplayAndAbuseTest.php tests/Feature/Security/ReviewModerationTest.php tests/Feature/Security/SecurityHeadersTest.php tests/Feature/Security/SlugValidationTest.php tests/Feature/Security/StorageRouteTest.php tests/Feature/Security/UploadAllowlistTest.php tests/Feature/Pricing tests/Feature/RevalidationTest.php"
+        ],
+        "frontend_validation_commands": [
+          "npm install --include=optional",
+          "php artisan serve --host=127.0.0.1 --port=8000",
+          "npm run typecheck",
+          "npm run lint -- .",
+          "npm run build"
+        ]
+      },
+      "deploy": {
+        "needs": [
+          "validate"
+        ],
+        "ssh_action": "appleboy/ssh-action@v1.2.0",
+        "production_directory": "/var/www/hexaterminal",
+        "frontend_directory": "/var/www/hexaterminal/frontend",
+        "composer_command": "composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction",
+        "frontend_commands": [
+          "npm install --include=optional",
+          "npm run typecheck",
+          "npm run lint -- .",
+          "npm run build"
+        ],
+        "migration_command": "php artisan migrate --force",
+        "optimization_commands": [
+          "php artisan optimize:clear",
+          "php artisan optimize"
+        ],
+        "queue_restart": "php artisan queue:restart",
+        "frontend_restart": "systemctl restart hexa-frontend",
+        "frontend_active_check": "systemctl is-active --quiet hexa-frontend",
+        "nginx_validation": "nginx -t",
+        "nginx_reload": "systemctl reload nginx",
+        "backend_health_url": "https://api.hexaterminal.com/api/health/ready",
+        "frontend_health_url": "https://hexaterminal.com/api/health",
+        "public_page_url": "https://hexaterminal.com/en"
+      }
+    }
+  },
+  "health_checks": {
+    "laravel_liveness": {
+      "route": "/api/health",
+      "source_file": "routes/health.php",
+      "handler": "App\\Http\\Controllers\\HealthController::live",
+      "status": 200,
+      "cache_control": "no-store",
+      "dependencies_checked": [],
+      "tests": [
+        "tests/Feature/HealthTest.php"
+      ],
+      "sensitive_information_excluded": true
+    },
+    "laravel_readiness": {
+      "route": "/api/health/ready",
+      "source_file": "routes/health.php",
+      "handler": "App\\Http\\Controllers\\HealthController::ready",
+      "status_success": 200,
+      "status_failure": 503,
+      "cache_control": "no-store",
+      "dependencies_checked": [
+        "database",
+        "cache"
+      ],
+      "tests": [
+        "tests/Feature/HealthTest.php"
+      ],
+      "sensitive_information_excluded": true
+    },
+    "nextjs_health": {
+      "route": "/api/health",
+      "source_file": "frontend/app/api/health/route.ts",
+      "handler": "GET route handler",
+      "status": 200,
+      "cache_control": "no-store",
+      "dependencies_checked": [],
+      "tests": [],
+      "sensitive_information_excluded": true
+    },
+    "public_get_verification": [
+      {
+        "url": "https://hexaterminal.com/api/health",
+        "status": 200,
+        "content_type": "application/json",
+        "cache_control": "no-store",
+        "elapsed_ms": 17621,
+        "sanitized_body": {
+          "status": "ok",
+          "service": "hexaterminal-frontend"
+        }
+      },
+      {
+        "url": "https://api.hexaterminal.com/api/health/ready",
+        "status": 200,
+        "content_type": "application/json",
+        "cache_control": "no-store, private",
+        "elapsed_ms": 15518,
+        "sanitized_body": {
+          "status": "ready",
+          "service": "hexaterminal-backend",
+          "checks": {
+            "database": "ok",
+            "cache": "ok"
+          }
+        }
+      },
+      {
+        "url": "https://hexaterminal.com/en",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "cache_control": "s-maxage=300, stale-while-revalidate=31535700",
+        "elapsed_ms": 10904
+      }
+    ]
+  },
+  "runtime_drivers": {
+    "database.default": "mysql",
+    "database.supported": [
+      "sqlite",
+      "mysql",
+      "pgsql",
+      "sqlsrv"
+    ],
+    "cache.default": "file",
+    "queue.default": "sync",
+    "session.driver": "file",
+    "mail.default": "smtp",
+    "filesystems.default": "local",
+    "logging.default": "stack",
+    "broadcasting.default": "null",
+    "revalidation_mechanism": "config/revalidation.php + App\\Services\\RevalidationService + frontend/app/api/revalidate/route.ts",
+    "health_mechanism": "routes/health.php + App\\Http\\Controllers\\HealthController + frontend/app/api/health/route.ts"
+  },
+  "services": {
+    "frontend_systemd_service": "hexa-frontend",
+    "committed_service_example": "deploy/staging/systemd/hexa-frontend.service",
+    "committed_nginx_examples": [
+      "deploy/staging/nginx/api-staging.conf",
+      "deploy/staging/nginx/frontend-staging.conf"
+    ],
+    "known_log_locations": [
+      "storage/logs/laravel.log"
+    ],
+    "safe_log_commands": [
+      "journalctl -u hexa-frontend --since \"30 minutes ago\" --no-pager",
+      "tail -n 100 storage/logs/laravel.log"
+    ]
+  },
+  "verified_facts": [
+    "Current branch is main.",
+    "Current commit is 73e8e1b441cf365615dbc88cdcc1f5f987bbfd18.",
+    "Current commit matches known production baseline commit 73e8e1b.",
+    "Working tree was clean during execution.",
+    "The only workflow file present is deploy-production.yml.",
+    "The production workflow currently includes validate and deploy jobs.",
+    "Laravel and Next.js health endpoints are present in repository code.",
+    "Public GET requests to the frontend health URL, backend readiness URL, and public English page all returned HTTP 200."
+  ],
+  "owner_confirmed_facts": [
+    "Production frontend origin is https://hexaterminal.com.",
+    "Production API origin is https://api.hexaterminal.com.",
+    "Production repository path is /var/www/hexaterminal.",
+    "Production frontend path is /var/www/hexaterminal/frontend.",
+    "Systemd frontend service is hexa-frontend.",
+    "GitHub Actions Run #11 succeeded for commit 73e8e1b.",
+    "Run #11 duration was 4m 6s.",
+    "All three public production URLs are working.",
+    "A non-blocking Node.js runtime deprecation warning exists for action internals."
+  ],
+  "production_verification_required": [
+    "Run scripts/baseline/collect-production-environment.sh from /var/www/hexaterminal.",
+    "Capture production PHP, Composer, Laravel, Node, npm, and Nginx versions.",
+    "Capture hexa-frontend ActiveState, SubState, and FragmentPath.",
+    "Capture whitelisted Laravel runtime driver values from the live server.",
+    "Capture production git branch, commit, and working-tree status."
+  ],
+  "unknowns": [
+    "Exact production OS distribution and version.",
+    "Exact production PHP runtime version.",
+    "Exact production Composer version.",
+    "Exact production Node.js version.",
+    "Exact production npm version.",
+    "Exact production Nginx version.",
+    "Exact production hexa-frontend FragmentPath.",
+    "Exact current GitHub Actions action-runtime deprecation warning text."
+  ],
+  "risks": [
+    "Repository docs and current workflow/health implementation are not perfectly synchronized in all places.",
+    "Production-host runtime facts remain unverified until the collector is executed manually.",
+    "Sampled public health/page responses were successful but relatively slow and should be monitored.",
+    "The current workflow uses npm install --include=optional rather than a fully lockfile-stable npm ci baseline."
+  ],
+  "commands": [
+    "git rev-parse --show-toplevel",
+    "git branch --show-current",
+    "git rev-parse HEAD",
+    "git status --short",
+    "git remote -v",
+    "git log -1 --date=iso --pretty=fuller",
+    "php --version",
+    "composer --version",
+    "php artisan --version",
+    "node --version",
+    "npm --version",
+    "Invoke-WebRequest https://hexaterminal.com/api/health",
+    "Invoke-WebRequest https://api.hexaterminal.com/api/health/ready",
+    "Invoke-WebRequest https://hexaterminal.com/en"
+  ],
+  "files_created": [
+    "docs/baseline/HexaTerminal_Environment_Baseline.md",
+    "docs/baseline/HexaTerminal_Environment_Baseline.json",
+    "docs/baseline/evidence/PRODUCTION_COLLECTION_REQUIRED.md",
+    "scripts/baseline/collect-production-environment.sh"
+  ],
+  "files_modified": []
+}
