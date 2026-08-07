@@ -9,7 +9,13 @@ import { Field, fieldProps } from "@/components/ui/field";
 import type { LeadIntent, LeadPayload } from "@/lib/api/types";
 import { getAttribution } from "@/lib/attribution";
 import { trackEvent } from "@/components/site/analytics-script";
-import { focusFirstError, validateContactFields, type FieldErrors } from "@/lib/validate";
+import {
+  focusFirstError,
+  leadIntentRequiresSummary,
+  mapLeadApiValidationErrors,
+  validateContactFields,
+  type FieldErrors,
+} from "@/lib/validate";
 
 type Status = "idle" | "submitting" | "success" | "error" | "invalid";
 
@@ -27,6 +33,7 @@ export function LeadForm({
   const [status, setStatus] = React.useState<Status>("idle");
   const [errors, setErrors] = React.useState<FieldErrors>({});
   const startedRef = React.useRef(false);
+  const summaryRequired = leadIntentRequiresSummary(intent);
 
   function handleFocusOnce() {
     if (startedRef.current) return;
@@ -53,16 +60,21 @@ export function LeadForm({
     const formEl = event.currentTarget;
     const form = new FormData(formEl);
 
-    // This form is `noValidate`, so the `required` attributes below are not
-    // enforcement -- without this check an empty form POSTed to the API and
-    // came back as a generic failure with no indication of which field was
-    // wrong.
+    // This form is `noValidate`, so HTML validation attributes are only hints
+    // for input semantics and assistive tech. Keep this client contract aligned
+    // with Laravel before any request leaves the browser.
     const fieldErrors = validateContactFields(
       {
         name: String(form.get("name") ?? ""),
         email: String(form.get("email") ?? ""),
+        summary: String(form.get("summary") ?? ""),
       },
-      { required: tc("fieldRequired"), email: tc("fieldEmail") },
+      {
+        required: tc("fieldRequired"),
+        email: tc("fieldEmail"),
+        summaryMin: t("formValidationError"),
+      },
+      intent,
     );
 
     if (Object.keys(fieldErrors).length > 0) {
@@ -100,6 +112,22 @@ export function LeadForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
+      if (res.status === 422) {
+        const apiErrors = mapLeadApiValidationErrors(await res.json().catch(() => null), {
+          invalid: t("formValidationError"),
+          email: tc("fieldEmail"),
+          summary: t("formValidationError"),
+        });
+
+        if (Object.keys(apiErrors).length > 0) {
+          setErrors(apiErrors);
+          setStatus("invalid");
+          focusFirstError(formEl, apiErrors);
+          return;
+        }
+      }
+
       if (!res.ok) throw new Error(`Lead submission failed: ${res.status}`);
       setStatus("success");
       trackEvent("lead_form_submit", { intent, source_page: sourcePage });
@@ -155,28 +183,71 @@ export function LeadForm({
             {...fieldProps("email", errors.email)}
           />
         </Field>
-        <Field id="phone" label={t("formPhone")}>
-          <Input id="phone" name="phone" type="tel" autoComplete="tel" />
+        <Field id="phone" label={t("formPhone")} error={errors.phone}>
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            onChange={clearError("phone")}
+            {...fieldProps("phone", errors.phone)}
+          />
         </Field>
-        <Field id="company" label={t("formCompany")}>
-          <Input id="company" name="company" autoComplete="organization" />
+        <Field id="company" label={t("formCompany")} error={errors.company}>
+          <Input
+            id="company"
+            name="company"
+            autoComplete="organization"
+            onChange={clearError("company")}
+            {...fieldProps("company", errors.company)}
+          />
         </Field>
-        <Field id="country" label={t("formCountry")}>
-          <Input id="country" name="country" autoComplete="country-name" />
+        <Field id="country" label={t("formCountry")} error={errors.country}>
+          <Input
+            id="country"
+            name="country"
+            autoComplete="country-name"
+            onChange={clearError("country")}
+            {...fieldProps("country", errors.country)}
+          />
         </Field>
-        <Field id="project_type" label={t("formProjectType")}>
-          <Input id="project_type" name="project_type" placeholder={t("formProjectTypePlaceholder")} />
+        <Field id="project_type" label={t("formProjectType")} error={errors.project_type}>
+          <Input
+            id="project_type"
+            name="project_type"
+            placeholder={t("formProjectTypePlaceholder")}
+            onChange={clearError("project_type")}
+            {...fieldProps("project_type", errors.project_type)}
+          />
         </Field>
-        <Field id="budget_range" label={t("formBudget")}>
-          <Input id="budget_range" name="budget_range" />
+        <Field id="budget_range" label={t("formBudget")} error={errors.budget_range}>
+          <Input
+            id="budget_range"
+            name="budget_range"
+            onChange={clearError("budget_range")}
+            {...fieldProps("budget_range", errors.budget_range)}
+          />
         </Field>
-        <Field id="timeline" label={t("formTimeline")}>
-          <Input id="timeline" name="timeline" />
+        <Field id="timeline" label={t("formTimeline")} error={errors.timeline}>
+          <Input
+            id="timeline"
+            name="timeline"
+            onChange={clearError("timeline")}
+            {...fieldProps("timeline", errors.timeline)}
+          />
         </Field>
       </div>
 
-      <Field id="summary" label={t("formSummary")}>
-        <Textarea id="summary" name="summary" placeholder={t("formSummaryPlaceholder")} />
+      <Field id="summary" label={t("formSummary")} error={errors.summary}>
+        <Textarea
+          id="summary"
+          name="summary"
+          required={summaryRequired}
+          minLength={summaryRequired ? 10 : undefined}
+          placeholder={t("formSummaryPlaceholder")}
+          onChange={clearError("summary")}
+          {...fieldProps("summary", errors.summary)}
+        />
       </Field>
 
       {/* Two distinct failures, two distinct messages: `invalid` means the
