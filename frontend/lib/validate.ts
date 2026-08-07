@@ -43,8 +43,8 @@ export function leadIntentRequiresSummary(intent: LeadIntent): boolean {
 
 export function validateContactFields(
   values: { name: string; email: string; summary?: string },
-  messages: { required: string; email: string; summaryMin: string },
-  intent: LeadIntent = "start_project",
+  messages: { required: string; email: string; summaryMin?: string },
+  intent?: LeadIntent,
 ): FieldErrors {
   const errors: FieldErrors = {};
 
@@ -56,12 +56,16 @@ export function validateContactFields(
     errors.email = messages.email;
   }
 
-  if (leadIntentRequiresSummary(intent)) {
+  // Only enforce summary rules when the caller explicitly supplies a lead
+  // intent that requires them. This preserves the existing name/email-only
+  // contract for other forms (for example the cost estimator) that reuse this
+  // helper but submit through a different API with an optional summary.
+  if (intent && leadIntentRequiresSummary(intent)) {
     const summary = (values.summary ?? "").trim();
     if (!summary) {
       errors.summary = messages.required;
     } else if (summary.length < SUMMARY_MIN_LENGTH) {
-      errors.summary = messages.summaryMin;
+      errors.summary = messages.summaryMin ?? messages.required;
     }
   }
 
