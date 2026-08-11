@@ -147,11 +147,16 @@ export function LeadForm({
 
   return (
     <form
+      action="/api/leads"
+      method="post"
       onSubmit={handleSubmit}
       onFocusCapture={handleFocusOnce}
       className="flex flex-col gap-5"
       noValidate
     >
+      <input type="hidden" name="intent" value={intent} />
+      <input type="hidden" name="locale" value={locale} />
+      <input type="hidden" name="source_page" value={sourcePage} />
       <input
         type="text"
         name="website"
