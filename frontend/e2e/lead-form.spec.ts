@@ -6,6 +6,45 @@ async function fillEnglishLead(page: Page, summary: string) {
   if (summary) await page.getByLabel("Tell us about the project").fill(summary);
 }
 
+async function submitNativeLead(page: Page, path: string, javaScriptEnabled: boolean | undefined) {
+  const stamp = Date.now();
+  const name = `Native Tester ${stamp}`;
+  const email = `native-${stamp}@example.com`;
+  const summary = `Native lead summary ${stamp}`;
+
+  expect(javaScriptEnabled).toBe(false);
+
+  await page.goto(path);
+  await page.locator('input[name="name"]').fill(name);
+  await page.locator('input[name="email"]').fill(email);
+  await page.locator('textarea[name="summary"]').fill(summary);
+
+  const requestPromise = page.waitForRequest(
+    (request) => request.url().includes("/api/leads") && request.method() === "POST",
+  );
+  await page.locator('input[name="email"]').press("Enter");
+  const request = await requestPromise;
+  const response = await request.response();
+  const submitted = new URLSearchParams(request.postData() ?? "");
+
+  expect(submitted.get("name")).toBe(name);
+  expect(submitted.get("email")).toBe(email);
+  expect(submitted.get("summary")).toBe(summary);
+  expect(response?.status()).toBe(303);
+  const redirect = new URL(response?.headers().location ?? "");
+  expect(`${redirect.pathname}${redirect.search}`).toBe(`${path}?lead=success`);
+  await expect
+    .poll(() => new URL(page.url()).search)
+    .toBe("?lead=success");
+
+  const finalUrl = new URL(page.url());
+  expect(finalUrl.search).toBe("?lead=success");
+  expect(finalUrl.href).not.toContain(name);
+  expect(finalUrl.href).not.toContain(email);
+  expect(finalUrl.href).not.toContain(summary);
+  expect(finalUrl.href).not.toContain(encodeURIComponent(summary));
+}
+
 test("project inquiry form exposes required semantics for name, email, and summary", async ({ page }) => {
   await page.goto("/en/start-a-project");
 
@@ -107,4 +146,24 @@ test("valid project inquiry still submits and shows the success state", async ({
   await page.getByRole("button", { name: "Send", exact: true }).click();
 
   await expect(page.getByText("we've received your request", { exact: false })).toBeVisible();
+});
+
+test.describe("native lead submission without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("English project inquiry posts natively and redirects without PII", async ({ page, javaScriptEnabled }) => {
+    await submitNativeLead(page, "/en/start-a-project", javaScriptEnabled);
+  });
+
+  test("Arabic project inquiry posts natively and redirects without PII", async ({ page, javaScriptEnabled }) => {
+    await submitNativeLead(page, "/ar/start-a-project", javaScriptEnabled);
+  });
+
+  test("English contact form posts natively and redirects without PII", async ({ page, javaScriptEnabled }) => {
+    await submitNativeLead(page, "/en/contact", javaScriptEnabled);
+  });
+
+  test("Arabic contact form posts natively and redirects without PII", async ({ page, javaScriptEnabled }) => {
+    await submitNativeLead(page, "/ar/contact", javaScriptEnabled);
+  });
 });
