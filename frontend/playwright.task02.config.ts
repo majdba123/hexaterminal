@@ -7,7 +7,9 @@ export default defineConfig({
     name: "chromium",
     use: {
       ...devices["Desktop Chrome"],
-      executablePath: "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+      launchOptions: {
+        executablePath: "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+      },
     },
   }],
 });
