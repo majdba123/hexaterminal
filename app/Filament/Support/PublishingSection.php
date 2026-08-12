@@ -33,6 +33,7 @@ class PublishingSection
                 ->required()
                 ->helperText('Publishing is explicit: content is public only when Published (or Scheduled with a future date, once the date passes).'),
             DateTimePicker::make('published_at')
+                ->native(false)
                 ->helperText('Required for Scheduled; defaults to now when publishing.'),
         ];
 
