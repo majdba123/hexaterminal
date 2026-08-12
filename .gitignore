@@ -1,23 +1,55 @@
+# PHP / Laravel
+/vendor/
 /.phpunit.cache
-/node_modules
-/public/build
+.phpunit.result.cache
+
+# Node / Frontend
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Frontend build output
+/frontend/.next/
+/frontend/out/
+/frontend/dist/
+/frontend/build/
+
+# Laravel build / runtime
+/public/build/
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
+
+# Environment files
 .env
-.env.backup
-.env.production
-.phpunit.result.cache
+.env.*
+!.env.example
+
+# Local SQLite databases
+/hexa_terminal
+/database/*.sqlite
+/database/*.sqlite3
+
+# IDE / Editor
+/.fleet/
+/.idea/
+/.vscode/
+/.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Homestead
 Homestead.json
 Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
-/.claude
 
-# Local SQLite dev database (DB_CONNECTION=sqlite, DB_DATABASE=hexa_terminal in .env)
-/hexa_terminal
+# Composer auth
+auth.json
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
