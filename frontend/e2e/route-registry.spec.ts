@@ -61,12 +61,37 @@ test.describe("Route registry consistency", () => {
   test("routes shown in nav/footer are content 'current'", () => {
     for (const r of ROUTES) {
       if (r.navKey || r.footerGroup) {
-        // Legal routes may sit in the footer while still content-blocked
-        // (privacy/terms awaiting legal review); everything else advertised
-        // in nav/footer must be live.
-        if (r.pageType === "legal") continue;
         expect(r.contentState, `${r.id} advertised but not current`).toBe("current");
       }
+    }
+  });
+
+  test("unfinished routes remain registered but hidden from navigation", () => {
+    const hiddenRouteIds = ["case-studies", "insights", "privacy", "terms"];
+    const primaryIds = new Set(primaryNavRoutes().map((r) => r.id));
+    const footerIds = new Set(
+      (["quickLinks", "company", "legal"] as const).flatMap((group) =>
+        footerRoutes(group).map((r) => r.id),
+      ),
+    );
+
+    for (const id of hiddenRouteIds) {
+      const route = ROUTES.find((r) => r.id === id);
+      expect(route, `${id} route must remain registered`).toBeTruthy();
+      expect(primaryIds, `${id} exposed in primary navigation`).not.toContain(id);
+      expect(footerIds, `${id} exposed in footer navigation`).not.toContain(id);
+    }
+  });
+
+  test("unfinished routes are non-indexable and absent from the static sitemap", () => {
+    const unfinishedRouteIds = ["case-studies", "insights", "privacy", "terms"];
+    const sitemapPaths = new Set(sitemapStaticPaths());
+
+    for (const id of unfinishedRouteIds) {
+      const route = ROUTES.find((r) => r.id === id);
+      expect(route, `${id} route must remain registered`).toBeTruthy();
+      expect(route?.indexable, `${id} must be noindex`).toBe(false);
+      expect(sitemapPaths, `${id} exposed in static sitemap`).not.toContain(route?.path);
     }
   });
 
@@ -91,7 +116,6 @@ test.describe("Route registry consistency", () => {
     expect(primaryNavRoutes().length).toBeGreaterThan(0);
     expect(footerRoutes("quickLinks").length).toBeGreaterThan(0);
     expect(footerRoutes("company").length).toBeGreaterThan(0);
-    expect(footerRoutes("legal").length).toBeGreaterThan(0);
     // Home ("") must be present in the sitemap paths.
     expect(sitemapStaticPaths()).toContain("");
   });

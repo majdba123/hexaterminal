@@ -51,10 +51,34 @@ test.describe("Legal pages", () => {
     await expect(page.locator("h1")).toContainText(/terms/i);
   });
 
-  test("footer links to privacy and terms", async ({ page }) => {
-    await page.goto("/en");
-    await expect(page.getByRole("link", { name: /privacy policy/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /terms of service/i })).toBeVisible();
+  test("unfinished legal pages are noindex with localized canonical and hreflang", async ({ page }) => {
+    for (const locale of ["en", "ar"]) {
+      for (const path of ["privacy", "terms"]) {
+        await page.goto(`/${locale}/${path}`);
+        await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/i);
+        await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+          "href",
+          new RegExp(`/${locale}/${path}$`),
+        );
+        await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
+        await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveCount(1);
+      }
+    }
+  });
+});
+
+test.describe("Unfinished content routes", () => {
+  test("case studies and insights listings are noindex in both locales", async ({ page }) => {
+    for (const locale of ["en", "ar"]) {
+      for (const path of ["case-studies", "insights"]) {
+        await page.goto(`/${locale}/${path}`);
+        await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/i);
+        await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+          "href",
+          new RegExp(`/${locale}/${path}$`),
+        );
+      }
+    }
   });
 });
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageMetadata } from "@/lib/seo/page-metadata";
+import { resolveRobots } from "@/lib/seo/indexing";
 import { getCompanySettings } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
@@ -18,6 +19,7 @@ export async function generateMetadata({
     locale,
     path: "/privacy",
     title: t("privacyTitle"),
+    robots: resolveRobots(true),
   });
 }
 

@@ -44,7 +44,7 @@ export async function generateMetadata({
     description: caseStudy.seo?.description ?? caseStudy.summary ?? undefined,
     canonical: caseStudy.seo?.canonical_url,
     image: caseStudy.seo?.og_image ?? caseStudy.cover_image,
-    robots: resolveRobots(caseStudy.seo?.noindex),
+    robots: resolveRobots(true),
   });
 }
 

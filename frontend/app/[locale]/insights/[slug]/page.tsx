@@ -40,7 +40,7 @@ export async function generateMetadata({
     description: article.seo?.description ?? article.excerpt ?? undefined,
     canonical: article.seo?.canonical_url,
     image: article.seo?.og_image ?? article.cover_image,
-    robots: resolveRobots(article.seo?.noindex),
+    robots: resolveRobots(true),
     ogType: "article",
     publishedTime: article.published_at,
     modifiedTime: article.updated_content_at ?? article.published_at,

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
-import { sitemapStaticPaths } from "@/lib/routes/registry";
+import { routeByPath, sitemapStaticPaths } from "@/lib/routes/registry";
 import {
   getServices,
   getSystems,
@@ -144,12 +144,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dynamicEntries: Entry[] = [
     ...notNoindexed(services).map((s) => ({ path: `/services/${slugSegment(s.slug)}`, lastModified: s.updated_at })),
     ...notNoindexed(systems).map((s) => ({ path: `/systems/${slugSegment(s.slug)}`, lastModified: s.updated_at })),
-    ...notNoindexed(caseStudies).map((c) => ({ path: `/case-studies/${slugSegment(c.slug)}`, lastModified: c.updated_at })),
+    ...(routeByPath("/case-studies")?.indexable
+      ? notNoindexed(caseStudies).map((c) => ({
+          path: `/case-studies/${slugSegment(c.slug)}`,
+          lastModified: c.updated_at,
+        }))
+      : []),
     ...notNoindexed(industries).map((i) => ({ path: `/industries/${slugSegment(i.slug)}`, lastModified: i.updated_at })),
-    ...notNoindexed(articles).map((a) => ({
-      path: `/insights/${slugSegment(a.slug)}`,
-      lastModified: a.updated_content_at ?? a.published_at,
-    })),
+    ...(routeByPath("/insights")?.indexable
+      ? notNoindexed(articles).map((a) => ({
+          path: `/insights/${slugSegment(a.slug)}`,
+          lastModified: a.updated_content_at ?? a.published_at,
+        }))
+      : []),
   ];
 
   return [...staticEntries, ...dynamicEntries].map((entry) =>

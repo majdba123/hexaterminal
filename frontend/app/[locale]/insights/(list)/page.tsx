@@ -5,6 +5,7 @@ import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { pageMetadata } from "@/lib/seo/page-metadata";
+import { resolveRobots } from "@/lib/seo/indexing";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 import { ArticleCard } from "@/components/site/article-card";
 import { EmptyState } from "@/components/site/empty-state";
@@ -24,6 +25,7 @@ export async function generateMetadata({
     path: "/insights",
     title: t("title"),
     description: t("subtitle"),
+    robots: resolveRobots(true),
   });
 }
 
