@@ -29,7 +29,8 @@ class CaseStudyResource extends JsonResource
             'evidence' => $this->evidence,
             'features' => $this->features,
             'client_name' => $this->client_name,
-            'project_url' => $this->project_url,
+            'project_classification' => $this->project_classification,
+            'project_url' => $this->publicProjectUrl(),
             'video_url' => $this->video_url,
             'cover_image' => $this->cover_image,
             'cover_image_alt' => $this->cover_image_alt,
@@ -41,5 +42,24 @@ class CaseStudyResource extends JsonResource
             'updated_at' => $this->updated_at?->toIso8601String(),
             'seo' => $this->seoMeta(),
         ];
+    }
+
+    private function publicProjectUrl(): ?string
+    {
+        $url = $this->project_url;
+        if (! is_string($url) || $url === '') {
+            return null;
+        }
+
+        $host = parse_url($url, PHP_URL_HOST);
+        if (! is_string($host)) {
+            return null;
+        }
+
+        $host = strtolower(rtrim($host, '.'));
+
+        return $host === 'example.com' || str_ends_with($host, '.example.com')
+            ? null
+            : $url;
     }
 }

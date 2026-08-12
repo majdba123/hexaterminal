@@ -3,9 +3,9 @@
 namespace Tests\Feature\Security;
 
 use App\Models\User;
-use Database\Seeders\RolesSeeder;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -29,7 +29,6 @@ class FilamentAuthorizationTest extends TestCase
 
     public function test_user_without_cms_role_cannot_access_panel(): void
     {
-        $this->seed(RolesSeeder::class);
         $panel = Filament::getPanel('cms');
 
         $this->assertFalse($this->makeUser('norole@hexaterminal.test')->canAccessPanel($panel));
@@ -37,7 +36,8 @@ class FilamentAuthorizationTest extends TestCase
 
     public function test_admin_and_editor_roles_can_access_panel(): void
     {
-        $this->seed(RolesSeeder::class);
+        Role::findOrCreate('admin', 'web');
+        Role::findOrCreate('editor', 'web');
         $panel = Filament::getPanel('cms');
 
         $admin = $this->makeUser('admin@hexaterminal.test');

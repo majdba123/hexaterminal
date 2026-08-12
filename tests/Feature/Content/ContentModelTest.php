@@ -9,11 +9,49 @@ use App\Models\Service;
 use App\Models\System;
 use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class ContentModelTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_case_study_project_classification_schema_is_nullable(): void
+    {
+        $this->assertTrue(Schema::hasColumn('case_studies', 'project_classification'));
+
+        $caseStudy = CaseStudy::create([
+            'slug' => 'unclassified-project',
+            'title' => ['en' => 'Unclassified project'],
+            'is_published' => false,
+        ]);
+
+        $this->assertNull($caseStudy->fresh()->project_classification);
+    }
+
+    public function test_case_study_project_classification_can_be_created_and_updated(): void
+    {
+        $caseStudy = CaseStudy::create([
+            'slug' => 'classified-project',
+            'title' => ['en' => 'Classified project'],
+            'project_classification' => CaseStudy::CLASSIFICATION_CUSTOM_ERP_CRM,
+            'is_published' => false,
+        ]);
+
+        $this->assertSame(
+            CaseStudy::CLASSIFICATION_CUSTOM_ERP_CRM,
+            $caseStudy->fresh()->project_classification,
+        );
+
+        $caseStudy->update([
+            'project_classification' => CaseStudy::CLASSIFICATION_WEB_MOBILE_PLATFORM,
+        ]);
+
+        $this->assertSame(
+            CaseStudy::CLASSIFICATION_WEB_MOBILE_PLATFORM,
+            $caseStudy->fresh()->project_classification,
+        );
+    }
 
     public function test_translatable_fields_round_trip_en_and_ar(): void
     {

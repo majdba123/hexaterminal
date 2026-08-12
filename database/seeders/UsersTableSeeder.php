@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -34,7 +35,11 @@ class UsersTableSeeder extends Seeder
             return;
         }
 
+        if (strlen($password) < 12) {
+            throw new \RuntimeException('ADMIN_PASSWORD must be at least 12 characters.');
+        }
 
+        Role::findOrCreate('admin', 'web');
 
         $user = User::firstOrCreate(
             ['email' => $email],

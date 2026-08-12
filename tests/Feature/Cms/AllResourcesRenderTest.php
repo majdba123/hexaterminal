@@ -12,9 +12,9 @@ use App\Models\System;
 use App\Models\TeamMember;
 use App\Models\TrustPage;
 use App\Models\User;
-use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class AllResourcesRenderTest extends TestCase
@@ -23,7 +23,7 @@ class AllResourcesRenderTest extends TestCase
 
     private function makeCmsAdmin(): User
     {
-        $this->seed(RolesSeeder::class);
+        Role::findOrCreate('admin', 'web');
 
         $user = User::create([
             'name' => 'CMS Admin',

@@ -123,6 +123,11 @@ export interface CaseStudy {
   evidence: string | null;
   features: string | null;
   client_name: string | null;
+  project_classification:
+    | "custom_erp_crm"
+    | "web_mobile_platform"
+    | "ecommerce_business_website"
+    | null;
   project_url: string | null;
   video_url: string | null;
   cover_image: string | null;

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CaseStudies\Tables;
 
+use App\Models\CaseStudy;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -24,6 +25,9 @@ class CaseStudiesTable
                     ->sortable(),
                 TextColumn::make('client_name')
                     ->searchable(),
+                TextColumn::make('project_classification')
+                    ->label('Classification')
+                    ->formatStateUsing(fn (?string $state): string => CaseStudy::CLASSIFICATION_OPTIONS[$state] ?? 'Unclassified'),
                 TextColumn::make('serviceOffering.slug')
                     ->label('Service'),
                 TextColumn::make('system.slug')

@@ -2,7 +2,8 @@
 
 namespace Tests\Feature\Security;
 
-use Database\Seeders\RolesSeeder;
+use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\UsersTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -11,12 +12,28 @@ class AdminSeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
+    public function test_database_seeder_bootstraps_only_the_admin_account(): void
     {
-        parent::setUp();
+        config([
+            'app.admin_email' => 'bootstrap-admin@hexaterminal.test',
+            'app.admin_password' => 'a-long-secure-password',
+        ]);
 
-        // UsersTableSeeder assigns the 'admin' role, which must exist first.
-        $this->seed(RolesSeeder::class);
+        $this->seed(DatabaseSeeder::class);
+
+        $admin = User::where('email', 'bootstrap-admin@hexaterminal.test')->firstOrFail();
+        $this->assertTrue($admin->hasRole('admin'));
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('roles', 1);
+        $this->assertDatabaseCount('systems', 0);
+        $this->assertDatabaseCount('case_studies', 0);
+        $this->assertDatabaseCount('projects', 0);
+        $this->assertDatabaseCount('service_offerings', 0);
+        $this->assertDatabaseCount('industries', 0);
+        $this->assertDatabaseCount('articles', 0);
+        $this->assertDatabaseCount('testimonials', 0);
+        $this->assertDatabaseCount('faqs', 0);
+        $this->assertDatabaseCount('engagement_models', 0);
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void
@@ -58,7 +75,7 @@ class AdminSeederTest extends TestCase
 
         $this->assertDatabaseHas('users', ['email' => 'boss@hexaterminal.test', 'type' => 1]);
         $this->assertTrue(
-            \App\Models\User::where('email', 'boss@hexaterminal.test')->first()->hasRole('admin')
+            User::where('email', 'boss@hexaterminal.test')->first()->hasRole('admin')
         );
     }
 }

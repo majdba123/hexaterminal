@@ -144,6 +144,8 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "case-studies",
     path: "/case-studies",
+    navKey: "caseStudies",
+    footerGroup: "quickLinks",
     breadcrumbKey: "caseStudies",
     pageType: "hub",
     indexable: false,

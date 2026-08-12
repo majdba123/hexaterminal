@@ -3,11 +3,8 @@
 namespace Tests\Feature\Cms;
 
 use App\Models\User;
-use Database\Seeders\DemoContentSeeder;
-use Database\Seeders\FounderContentSeeder;
-use Database\Seeders\PricingEstimatorFixtureSeeder;
-use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -25,9 +22,6 @@ use Tests\TestCase;
  * uses to prove these pages return 200. The throwaway admin below lives only
  * inside RefreshDatabase's transaction, so the real dev database is untouched
  * and no account is left behind.
- *
- * The demo seeders run first so the tables and forms are captured with content
- * in them rather than as empty states.
  *
  * frontend/e2e/tools/screenshot-cms-html.ts turns these files into PNGs.
  */
@@ -84,15 +78,7 @@ class CaptureCmsHtmlTest extends TestCase
 
     public function test_capture_every_cms_screen(): void
     {
-        $this->seed(RolesSeeder::class);
-        // DemoContentSeeder covers Article/ArticleCategory/CaseStudy/Industry/
-        // System. FounderContentSeeder is what supplies Service, Testimonial,
-        // FaqItem, SeoMeta and CompanySetting -- without it the Services,
-        // Testimonials and FAQ screens captured as empty tables, which looked
-        // like a seeding gap in the project and was really a gap here.
-        $this->seed(DemoContentSeeder::class);
-        $this->seed(FounderContentSeeder::class);
-        $this->seed(PricingEstimatorFixtureSeeder::class);
+        Role::findOrCreate('admin', 'web');
 
         $admin = User::create([
             'name' => 'Capture Bot',

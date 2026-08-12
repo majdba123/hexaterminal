@@ -6,9 +6,9 @@ use App\Filament\Resources\Services\Pages\CreateService;
 use App\Filament\Resources\Services\Pages\EditService;
 use App\Models\Service;
 use App\Models\User;
-use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class ServiceResourceTest extends TestCase
@@ -17,7 +17,7 @@ class ServiceResourceTest extends TestCase
 
     private function makeCmsAdmin(): User
     {
-        $this->seed(RolesSeeder::class);
+        Role::findOrCreate('admin', 'web');
 
         $user = User::create([
             'name' => 'CMS Admin',
@@ -31,7 +31,6 @@ class ServiceResourceTest extends TestCase
 
     public function test_non_role_user_cannot_access_the_cms(): void
     {
-        $this->seed(RolesSeeder::class);
         $user = User::create([
             'name' => 'Rando',
             'email' => 'rando@hexaterminal.test',

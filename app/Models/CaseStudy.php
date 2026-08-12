@@ -24,11 +24,29 @@ class CaseStudy extends Model
 {
     use HasAutoSlug, HasEditorialWorkflow, HasFactory, HasTranslations, Publishable;
 
+    public const CLASSIFICATION_CUSTOM_ERP_CRM = 'custom_erp_crm';
+
+    public const CLASSIFICATION_WEB_MOBILE_PLATFORM = 'web_mobile_platform';
+
+    public const CLASSIFICATION_ECOMMERCE_BUSINESS_WEBSITE = 'ecommerce_business_website';
+
+    public const CLASSIFICATIONS = [
+        self::CLASSIFICATION_CUSTOM_ERP_CRM,
+        self::CLASSIFICATION_WEB_MOBILE_PLATFORM,
+        self::CLASSIFICATION_ECOMMERCE_BUSINESS_WEBSITE,
+    ];
+
+    public const CLASSIFICATION_OPTIONS = [
+        self::CLASSIFICATION_CUSTOM_ERP_CRM => 'Custom ERP & CRM Systems',
+        self::CLASSIFICATION_WEB_MOBILE_PLATFORM => 'Web Platforms & Mobile Applications',
+        self::CLASSIFICATION_ECOMMERCE_BUSINESS_WEBSITE => 'E-commerce & Business Websites',
+    ];
+
     protected $fillable = [
         'slug', 'title', 'summary', 'context', 'problem', 'constraints',
         'solution', 'architecture', 'outcomes', 'evidence', 'features',
         'client_name', 'project_url', 'video_url', 'cover_image', 'cover_image_alt', 'gallery',
-        'service_offering_id', 'system_id', 'is_featured', 'is_published',
+        'service_offering_id', 'system_id', 'project_classification', 'is_featured', 'is_published',
         'published_at', 'sort_order', 'legacy_project_id',
     ];
 

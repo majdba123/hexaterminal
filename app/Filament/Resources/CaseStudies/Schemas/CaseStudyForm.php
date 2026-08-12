@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\CaseStudies\Schemas;
 
-use App\Filament\Support\Slugs;
 use App\Filament\Support\PublishingSection;
+use App\Filament\Support\Slugs;
 use App\Filament\Support\Uploads;
+use App\Models\CaseStudy;
 use App\Models\Industry;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -57,6 +58,11 @@ class CaseStudyForm
                         TextInput::make('client_name'),
                         TextInput::make('project_url')->url(),
                         TextInput::make('video_url')->url(),
+                        Select::make('project_classification')
+                            ->label('Project classification')
+                            ->options(CaseStudy::CLASSIFICATION_OPTIONS)
+                            ->in(CaseStudy::CLASSIFICATIONS)
+                            ->nullable(),
                         Select::make('service_offering_id')
                             ->relationship('serviceOffering', 'slug')
                             ->searchable()

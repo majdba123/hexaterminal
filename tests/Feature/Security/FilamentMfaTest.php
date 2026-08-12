@@ -3,12 +3,12 @@
 namespace Tests\Feature\Security;
 
 use App\Models\User;
-use Database\Seeders\RolesSeeder;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use PragmaRX\Google2FAQRCode\Google2FA;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -27,7 +27,7 @@ class FilamentMfaTest extends TestCase
 
     private function makeAdmin(): User
     {
-        $this->seed(RolesSeeder::class);
+        Role::findOrCreate('admin', 'web');
         $user = User::create([
             'name' => 'Admin',
             'email' => 'mfa-admin@hexaterminal.test',
@@ -48,7 +48,7 @@ class FilamentMfaTest extends TestCase
 
     public function test_mfa_is_required_for_admins_but_not_other_roles(): void
     {
-        $this->seed(RolesSeeder::class);
+        Role::findOrCreate('editor', 'web');
         $panel = Filament::getPanel('cms');
 
         $admin = $this->makeAdmin();
