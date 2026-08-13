@@ -38,6 +38,13 @@ test.describe("Homepage", () => {
       "href",
       "/en/systems",
     );
+    await expect(
+      page.getByRole("heading", { level: 2, name: "From business problems to working software." }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "View Case Studies", exact: true })).toHaveAttribute(
+      "href",
+      "/en/case-studies",
+    );
     await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
 
     // Ignore benign resource-load noise (e.g. favicon/media); fail on real errors.
@@ -72,6 +79,13 @@ test.describe("Homepage", () => {
     await expect(page.getByRole("link", { name: "استكشف الأنظمة", exact: true })).toHaveAttribute(
       "href",
       "/ar/systems",
+    );
+    await expect(
+      page.getByRole("heading", { level: 2, name: "من تحديات العمل إلى أنظمة برمجية حقيقية." }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "استكشف دراسات الحالة", exact: true })).toHaveAttribute(
+      "href",
+      "/ar/case-studies",
     );
   });
 });

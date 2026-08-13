@@ -24,7 +24,7 @@ class HomeController extends Controller
             return [
                 'services' => Service::published()->coreServices()->get(),
                 'featured_systems' => System::published()->featured()->with('industries')->orderBy('sort_order')->limit(6)->get(),
-                'featured_case_studies' => CaseStudy::published()->featured()->with(['serviceOffering', 'system'])->orderBy('sort_order')->limit(6)->get(),
+                'featured_case_studies' => CaseStudy::published()->featured()->with(['serviceOffering', 'system', 'industries'])->orderBy('sort_order')->limit(6)->get(),
                 'testimonials' => Testimonial::approved()->featured()->orderByDesc('given_at')->limit(6)->get(),
                 'stats' => [
                     'services' => Service::published()->count(),

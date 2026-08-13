@@ -58,9 +58,15 @@
     "showreelBadge": "Company Showreel",
     "showreelTitle": "See how we work",
     "showreelSubtitle": "A short look inside Hexa Terminal.",
-    "caseStudiesBadge": "Proof",
-    "caseStudiesTitle": "Case studies",
-    "caseStudiesSubtitle": "Real problems, real constraints, real outcomes.",
+    "caseStudiesBadge": "Selected Work",
+    "caseStudiesTitle": "From business problems to working software.",
+    "caseStudiesSubtitle": "Explore how operational challenges can be translated into connected systems, platforms, and digital products.",
+    "caseStudiesCta": "View Case Studies",
+    "caseStudyClassification": {
+      "custom_erp_crm": "Custom ERP & CRM Systems",
+      "web_mobile_platform": "Web Platforms & Mobile Applications",
+      "ecommerce_business_website": "E-commerce & Business Websites"
+    },
     "industriesBadge": "Industries",
     "industriesTitle": "Industries we serve",
     "industriesSubtitle": "Domain-specific systems for the sectors we know best.",

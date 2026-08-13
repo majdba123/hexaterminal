@@ -58,9 +58,15 @@
     "showreelBadge": "الفيديو التعريفي",
     "showreelTitle": "شاهد كيف نعمل",
     "showreelSubtitle": "لمحة سريعة من داخل هيكسا تيرمنال.",
-    "caseStudiesBadge": "دليل عملي",
-    "caseStudiesTitle": "دراسات الحالة",
-    "caseStudiesSubtitle": "مشكلات حقيقية، قيود حقيقية، نتائج حقيقية.",
+    "caseStudiesBadge": "أعمال مختارة",
+    "caseStudiesTitle": "من تحديات العمل إلى أنظمة برمجية حقيقية.",
+    "caseStudiesSubtitle": "استكشف كيف تتحول التحديات التشغيلية إلى أنظمة ومنصات ومنتجات رقمية مترابطة.",
+    "caseStudiesCta": "استكشف دراسات الحالة",
+    "caseStudyClassification": {
+      "custom_erp_crm": "أنظمة ERP وCRM مخصصة",
+      "web_mobile_platform": "منصات ويب وتطبيقات جوال",
+      "ecommerce_business_website": "متاجر إلكترونية ومواقع أعمال"
+    },
     "industriesBadge": "القطاعات",
     "industriesTitle": "القطاعات التي نخدمها",
     "industriesSubtitle": "أنظمة مخصصة للقطاعات التي نفهمها جيداً.",

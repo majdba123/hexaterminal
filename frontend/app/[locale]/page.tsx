@@ -7,7 +7,7 @@ import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ServiceCard } from "@/components/site/service-card";
 import { HomeSystemsShowcase } from "@/components/site/home-systems-showcase";
-import { CaseStudyCard } from "@/components/site/case-study-card";
+import { HomeCaseStudiesShowcase } from "@/components/site/home-case-studies-showcase";
 import { ArticleCard } from "@/components/site/article-card";
 import { CTA } from "@/components/site/cta";
 import { Card, CardContent } from "@/components/ui/card";
@@ -96,14 +96,19 @@ export default async function HomePage({
         <Section>
           <Container>
             <SectionHeading
+              align="start"
               badge={t("caseStudiesBadge")}
               title={t("caseStudiesTitle")}
               subtitle={t("caseStudiesSubtitle")}
             />
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {home.featured_case_studies.map((caseStudy) => (
-                <CaseStudyCard key={caseStudy.slug} caseStudy={caseStudy} />
-              ))}
+            <HomeCaseStudiesShowcase caseStudies={home.featured_case_studies} />
+            <div className="mt-8">
+              <Button asChild variant="outline" size="lg">
+                <Link href="/case-studies">
+                  {t("caseStudiesCta")}
+                  <ArrowRight className="rtl:rotate-180" aria-hidden="true" />
+                </Link>
+              </Button>
             </div>
           </Container>
         </Section>
