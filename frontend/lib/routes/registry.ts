@@ -99,8 +99,8 @@ export interface RouteDefinition {
  *  - `id` and `path` are unique
  *  - every `navKey`/`breadcrumbKey` exists in both en.json and ar.json
  *  - every `footerGroup` matches a `messages.footer` group key
- *  - an entry with a `navKey` or `footerGroup` is `contentState: "current"`
- *    (never advertise an unbuilt/content-blocked page)
+ *  - an entry in primary navigation is `contentState: "current"`
+ *  - footer legal links may remain available while awaiting legal approval
  *  - a `content-blocked` route is never `indexable` and never `inSitemap`
  *  - every `inSitemap` route is also `indexable`
  */
@@ -157,7 +157,6 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "industries",
     path: "/industries",
-    navKey: "industries",
     footerGroup: "quickLinks",
     breadcrumbKey: "industries",
     pageType: "hub",
@@ -169,10 +168,8 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "pricing",
     path: "/pricing",
-    // Dropped from the primary nav to get the row down to seven items, but
-    // given a footer home at the same time -- it had no footerGroup, so
-    // removing the navKey alone would have orphaned it entirely (reachable
-    // only via the sitemap), which is the wrong outcome for a high-intent page.
+    // Intentionally outside the primary IA for now, but retained as a useful
+    // high-intent footer destination.
     footerGroup: "quickLinks",
     breadcrumbKey: "pricing",
     pageType: "hub",
@@ -206,10 +203,7 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "contact",
     path: "/contact",
-    // Deliberately absent from the primary nav: the header's "start a project"
-    // CTA is the stronger version of the same intent, and running both put two
-    // competing conversion paths in one row. Still reachable from the footer's
-    // company column and from every page's CTA block.
+    navKey: "contact",
     footerGroup: "company",
     breadcrumbKey: "contact",
     pageType: "conversion",
@@ -262,6 +256,7 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "privacy",
     path: "/privacy",
+    footerGroup: "legal",
     breadcrumbKey: "privacyTitle",
     pageType: "legal",
     indexable: false,
@@ -272,6 +267,7 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "terms",
     path: "/terms",
+    footerGroup: "legal",
     breadcrumbKey: "termsTitle",
     pageType: "legal",
     indexable: false,

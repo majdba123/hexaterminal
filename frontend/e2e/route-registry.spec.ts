@@ -58,29 +58,50 @@ test.describe("Route registry consistency", () => {
     }
   });
 
-  test("routes shown in nav/footer are content 'current'", () => {
+  test("routes shown in primary navigation are content 'current'", () => {
     for (const r of ROUTES) {
-      if (r.navKey || r.footerGroup) {
+      if (r.navKey) {
         expect(r.contentState, `${r.id} advertised but not current`).toBe("current");
       }
     }
   });
 
-  test("unfinished routes remain registered but hidden from navigation", () => {
-    const hiddenRouteIds = ["insights", "privacy", "terms"];
+  test("primary navigation matches the approved information architecture", () => {
+    expect(primaryNavRoutes().map((r) => r.id)).toEqual([
+      "home",
+      "services",
+      "systems",
+      "case-studies",
+      "about",
+      "contact",
+    ]);
+  });
+
+  test("secondary routes remain registered but outside primary navigation", () => {
+    const hiddenRouteIds = ["industries", "insights", "pricing", "privacy", "terms"];
     const primaryIds = new Set(primaryNavRoutes().map((r) => r.id));
-    const footerIds = new Set(
-      (["quickLinks", "company", "legal"] as const).flatMap((group) =>
-        footerRoutes(group).map((r) => r.id),
-      ),
-    );
 
     for (const id of hiddenRouteIds) {
       const route = ROUTES.find((r) => r.id === id);
       expect(route, `${id} route must remain registered`).toBeTruthy();
       expect(primaryIds, `${id} exposed in primary navigation`).not.toContain(id);
-      expect(footerIds, `${id} exposed in footer navigation`).not.toContain(id);
     }
+  });
+
+  test("footer retains secondary and legal destinations without exposing insights", () => {
+    expect(footerRoutes("quickLinks").map((r) => r.id)).toEqual([
+      "services",
+      "systems",
+      "case-studies",
+      "industries",
+      "pricing",
+    ]);
+    expect(footerRoutes("legal").map((r) => r.id)).toEqual(["privacy", "terms"]);
+    expect(
+      (["quickLinks", "company", "legal"] as const).flatMap((group) =>
+        footerRoutes(group).map((r) => r.id),
+      ),
+    ).not.toContain("insights");
   });
 
   test("unfinished routes are non-indexable and absent from the static sitemap", () => {
