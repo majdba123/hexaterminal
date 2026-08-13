@@ -1,7 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getHome, getArticles, getFaqs, getIndustries } from "@/lib/api/client";
+import { getHome, getArticles, getFaqs } from "@/lib/api/client";
 import { Hero } from "@/components/site/hero";
-import { Showreel } from "@/components/site/showreel";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -28,11 +27,10 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [home, articles, faqs, industries, t] = await Promise.all([
+  const [home, articles, faqs, t] = await Promise.all([
     getHome(locale),
     getArticles(locale, 1, 3),
     getFaqs(locale),
-    getIndustries(locale),
     getTranslations("home"),
   ]);
 
@@ -90,8 +88,6 @@ export default async function HomePage({
         </Section>
       ) : null}
 
-      <Showreel />
-
       {home.featured_case_studies.length > 0 ? (
         <Section>
           <Container>
@@ -109,39 +105,6 @@ export default async function HomePage({
                   <ArrowRight className="rtl:rotate-180" aria-hidden="true" />
                 </Link>
               </Button>
-            </div>
-          </Container>
-        </Section>
-      ) : null}
-
-      {industries.length > 0 ? (
-        <Section className="bg-surface">
-          <Container>
-            <SectionHeading
-              badge={t("industriesBadge")}
-              title={t("industriesTitle")}
-              subtitle={t("industriesSubtitle")}
-            />
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {industries.map((industry) => (
-                // focus-ring belongs on the Link, not the inner Card: the Link
-                // is what receives keyboard focus, so on the Card the
-                // :focus-visible rule never matched and these tiles had no
-                // visible focus indicator at all. Matches the industries
-                // listing page.
-                <Link
-                  key={industry.slug}
-                  href={`/industries/${industry.slug}`}
-                  className="focus-ring group block rounded-[var(--radius-lg)]"
-                >
-                  <Card className="h-full p-6 transition-colors group-hover:border-primary/40">
-                    <h3 className="text-base font-bold text-foreground">{industry.name}</h3>
-                    {industry.summary ? (
-                      <p className="mt-2 text-sm text-muted-foreground">{industry.summary}</p>
-                    ) : null}
-                  </Card>
-                </Link>
-              ))}
             </div>
           </Container>
         </Section>
@@ -247,9 +210,11 @@ export default async function HomePage({
       ) : null}
 
       <CTA
+        eyebrow={t("finalCtaBadge")}
         title={t("finalCtaTitle")}
         subtitle={t("finalCtaSubtitle")}
         buttonLabel={t("finalCtaButton")}
+        secondaryButtonLabel={t("finalCtaSecondaryButton")}
       />
     </>
   );

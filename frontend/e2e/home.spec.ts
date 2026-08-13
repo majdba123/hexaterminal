@@ -45,6 +45,17 @@ test.describe("Homepage", () => {
       "href",
       "/en/case-studies",
     );
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Let's build the system your business actually needs." }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Start a Project", exact: true }).last()).toHaveAttribute(
+      "href",
+      "/en/start-a-project",
+    );
+    await expect(page.getByRole("link", { name: "Contact Us", exact: true })).toHaveAttribute(
+      "href",
+      "/en/contact",
+    );
     await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
 
     // Ignore benign resource-load noise (e.g. favicon/media); fail on real errors.
@@ -86,6 +97,17 @@ test.describe("Homepage", () => {
     await expect(page.getByRole("link", { name: "استكشف دراسات الحالة", exact: true })).toHaveAttribute(
       "href",
       "/ar/case-studies",
+    );
+    await expect(
+      page.getByRole("heading", { level: 2, name: "خلّنا نبني النظام اللي يحتاجه عملك فعليًا." }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "ابدأ مشروعك", exact: true }).last()).toHaveAttribute(
+      "href",
+      "/ar/start-a-project",
+    );
+    await expect(page.getByRole("link", { name: "تواصل معنا", exact: true })).toHaveAttribute(
+      "href",
+      "/ar/contact",
     );
   });
 });
