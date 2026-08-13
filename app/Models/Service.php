@@ -7,6 +7,7 @@ use App\Models\Concerns\HasEditorialWorkflow;
 use App\Models\Concerns\Publishable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\Translatable\HasTranslations;
@@ -37,6 +38,34 @@ class Service extends Model
         'is_published' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    /**
+     * The approved business tracks shown in the homepage Core Services area.
+     * These are identifiers only; all display content remains CMS-managed.
+     */
+    public const CORE_SERVICE_SLUGS = [
+        'custom-erp-crm-systems',
+        'web-platforms-mobile-applications',
+        'ecommerce-business-websites',
+    ];
+
+    /**
+     * @param Builder<Service> $query
+     * @return Builder<Service>
+     */
+    public function scopeCoreServices(Builder $query): Builder
+    {
+        $slugs = self::CORE_SERVICE_SLUGS;
+        $order = implode(' ', array_map(
+            fn (string $slug, int $position) => "WHEN '{$slug}' THEN {$position}",
+            $slugs,
+            array_keys($slugs),
+        ));
+
+        return $query
+            ->whereIn('slug', $slugs)
+            ->orderByRaw("CASE slug {$order} ELSE ".count($slugs).' END');
+    }
 
     /**
      * @return HasMany<CaseStudy, $this>

@@ -56,7 +56,6 @@ export default async function HomePage({
             <SectionHeading
               badge={t("whatWeBuildBadge")}
               title={t("whatWeBuildTitle")}
-              subtitle={t("whatWeBuildSubtitle")}
             />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {home.services.slice(0, 6).map((service) => (

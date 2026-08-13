@@ -22,7 +22,7 @@ class HomeController extends Controller
     {
         $payload = $this->rememberList('home', 'all', function () {
             return [
-                'services' => Service::published()->orderBy('sort_order')->get(),
+                'services' => Service::published()->coreServices()->get(),
                 'featured_systems' => System::published()->featured()->with('industries')->orderBy('sort_order')->limit(6)->get(),
                 'featured_case_studies' => CaseStudy::published()->featured()->with(['serviceOffering', 'system'])->orderBy('sort_order')->limit(6)->get(),
                 'testimonials' => Testimonial::approved()->featured()->orderByDesc('given_at')->limit(6)->get(),
