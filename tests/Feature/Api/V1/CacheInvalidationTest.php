@@ -40,7 +40,11 @@ class CacheInvalidationTest extends TestCase
 
     public function test_editing_a_service_invalidates_the_home_aggregate_cache(): void
     {
-        $service = Service::create(['slug' => 'svc', 'name' => ['en' => 'Original'], 'is_published' => true]);
+        $service = Service::create([
+            'slug' => Service::CORE_SERVICE_SLUGS[0],
+            'name' => ['en' => 'Original'],
+            'is_published' => true,
+        ]);
 
         $first = $this->getJson('/api/v1/public/home')->assertOk();
         $names = collect($first->json('data.services'))->pluck('name')->all();
