@@ -40,10 +40,10 @@
   },
   "home": {
     "heroBadge": "Production systems engineering",
-    "heroTitle": "We build software systems that run real businesses.",
-    "heroSubtitle": "We build SaaS platforms, CRM and ERP systems, and AI-enabled workflows on backend infrastructure ready for real operations and scale.",
+    "heroTitle": "Custom software systems built around how your business actually works.",
+    "heroSubtitle": "HexaTerminal builds ERP & CRM systems, web platforms, mobile applications, and business software that replace fragmented tools with reliable, connected workflows.",
     "heroCtaPrimary": "Start a Project",
-    "heroCtaSecondary": "See Our Work",
+    "heroCtaSecondary": "Explore Our Work",
     "statsProjects": "Case Studies",
     "statsServices": "Services",
     "statsSystems": "Systems Built",

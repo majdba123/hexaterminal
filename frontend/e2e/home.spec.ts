@@ -14,8 +14,20 @@ test.describe("Homepage", () => {
 
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
-    // Hero heading is server-rendered.
-    await expect(page.locator("h1").first()).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Custom software systems built around how your business actually works.",
+      }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Start a Project", exact: true }).first()).toHaveAttribute(
+      "href",
+      "/en/start-a-project",
+    );
+    await expect(page.getByRole("link", { name: "Explore Our Work", exact: true })).toHaveAttribute(
+      "href",
+      "/en/case-studies",
+    );
     await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
 
     // Ignore benign resource-load noise (e.g. favicon/media); fail on real errors.
@@ -27,6 +39,19 @@ test.describe("Homepage", () => {
     await page.goto("/ar");
     await expect(page.locator("html")).toHaveAttribute("lang", "ar");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-    await expect(page.locator("h1").first()).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "أنظمة برمجية مخصصة تُبنى حول طريقة عمل شركتك فعليًا.",
+      }),
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "ابدأ مشروعك", exact: true }).first()).toHaveAttribute(
+      "href",
+      "/ar/start-a-project",
+    );
+    await expect(page.getByRole("link", { name: "استكشف أعمالنا", exact: true })).toHaveAttribute(
+      "href",
+      "/ar/case-studies",
+    );
   });
 });
