@@ -6,16 +6,18 @@ import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ServiceCard } from "@/components/site/service-card";
-import { SystemCard } from "@/components/site/system-card";
+import { HomeSystemsShowcase } from "@/components/site/home-systems-showcase";
 import { CaseStudyCard } from "@/components/site/case-study-card";
 import { ArticleCard } from "@/components/site/article-card";
 import { CTA } from "@/components/site/cta";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/site/json-ld";
 import { faqPageJsonLd } from "@/lib/seo/jsonld";
 import { Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default async function HomePage({
@@ -67,17 +69,22 @@ export default async function HomePage({
       ) : null}
 
       {home.featured_systems.length > 0 ? (
-        <Section>
+        <Section className="bg-surface">
           <Container>
             <SectionHeading
+              align="start"
               badge={t("featuredSystemsBadge")}
               title={t("featuredSystemsTitle")}
               subtitle={t("featuredSystemsSubtitle")}
             />
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {home.featured_systems.map((system) => (
-                <SystemCard key={system.slug} system={system} />
-              ))}
+            <HomeSystemsShowcase systems={home.featured_systems} />
+            <div className="mt-8">
+              <Button asChild variant="outline" size="lg">
+                <Link href="/systems">
+                  {t("featuredSystemsCta")}
+                  <ArrowRight className="rtl:rotate-180" aria-hidden="true" />
+                </Link>
+              </Button>
             </div>
           </Container>
         </Section>
