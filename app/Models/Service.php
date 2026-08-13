@@ -68,6 +68,28 @@ class Service extends Model
     }
 
     /**
+     * Keeps the approved business tracks first on public listings while still
+     * allowing future CMS offerings to follow their editorial sort order.
+     *
+     * @param Builder<Service> $query
+     * @return Builder<Service>
+     */
+    public function scopeOrderedForPublicListing(Builder $query): Builder
+    {
+        $when = implode(' ', array_fill(0, count(self::CORE_SERVICE_SLUGS), 'WHEN ? THEN ?'));
+        $bindings = [];
+
+        foreach (self::CORE_SERVICE_SLUGS as $position => $slug) {
+            $bindings[] = $slug;
+            $bindings[] = $position;
+        }
+
+        return $query
+            ->orderByRaw('CASE slug '.$when.' ELSE ? END', [...$bindings, count(self::CORE_SERVICE_SLUGS)])
+            ->orderBy('sort_order');
+    }
+
+    /**
      * @return HasMany<CaseStudy, $this>
      */
     public function caseStudies(): HasMany

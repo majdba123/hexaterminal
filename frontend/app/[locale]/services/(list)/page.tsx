@@ -6,9 +6,10 @@ import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { ServiceCard } from "@/components/site/service-card";
+import { ServicesListingCard } from "@/components/site/services-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
+import { CTA } from "@/components/site/cta";
 
 export async function generateMetadata({
   params,
@@ -43,31 +44,46 @@ export default async function ServicesPage({
   ]);
 
   return (
-    <Section as="div">
-      <Container>
-        <Breadcrumb items={[{ label: t("title") }]} />
-        <SectionHeading as="h1" align="start" title={t("title")} subtitle={t("subtitle")} />
-        {services.data.length > 0 ? (
-          <>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.data.map((service) => (
-                <ServiceCard key={service.slug} service={service} headingLevel="h2" />
-              ))}
-            </div>
-            <Pagination
-              currentPage={services.meta.current_page}
-              lastPage={services.meta.last_page}
-              basePath="/services"
-            />
-          </>
-        ) : (
-          <EmptyState
-            title={tc("noResults")}
-            description={tc("noResultsDesc")}
-            action={{ href: "/start-a-project", label: tc("emptyCta") }}
+    <>
+      <Section as="div" className="bg-surface">
+        <Container>
+          <Breadcrumb items={[{ label: t("title") }]} />
+          <SectionHeading
+            as="h1"
+            align="start"
+            badge={t("heroBadge")}
+            title={t("heroTitle")}
+            subtitle={t("heroSubtitle")}
           />
-        )}
-      </Container>
-    </Section>
+          {services.data.length > 0 ? (
+            <>
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {services.data.map((service) => (
+                  <ServicesListingCard key={service.slug} service={service} />
+                ))}
+              </div>
+              <Pagination
+                currentPage={services.meta.current_page}
+                lastPage={services.meta.last_page}
+                basePath="/services"
+              />
+            </>
+          ) : (
+            <EmptyState
+              title={tc("noResults")}
+              description={tc("noResultsDesc")}
+              action={{ href: "/start-a-project", label: tc("emptyCta") }}
+            />
+          )}
+        </Container>
+      </Section>
+      <CTA
+        eyebrow={t("finalCtaBadge")}
+        title={t("finalCtaTitle")}
+        subtitle={t("finalCtaSubtitle")}
+        buttonLabel={t("finalCtaButton")}
+        secondaryButtonLabel={t("finalCtaSecondaryButton")}
+      />
+    </>
   );
 }

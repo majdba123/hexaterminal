@@ -20,7 +20,7 @@ class ServiceController extends Controller
         $paginated = $this->rememberList('services', "page:{$page}:per_page:{$perPage}", function () use ($perPage, $page) {
             return Service::published()
                 ->with('seo')
-                ->orderBy('sort_order')
+                ->orderedForPublicListing()
                 ->paginate($perPage, ['*'], 'page', $page);
         });
 
