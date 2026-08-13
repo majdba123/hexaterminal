@@ -234,7 +234,16 @@ jobs:
             npm run build
 
             cd "$APP_DIR"
-            php artisan migrate --force
+            # Destructive preview reset: only enable GitHub environment/repository
+            # variable ALLOW_FRESH_SEED=true while preview data is explicitly
+            # wanted. This drops every table and all CMS/business data. Remove
+            # the variable before entering real data through Admin.
+            ALLOW_FRESH_SEED="${{ vars.ALLOW_FRESH_SEED }}"
+            if [ "$ALLOW_FRESH_SEED" = "true" ]; then
+              php artisan migrate:fresh --seed --force
+            else
+              php artisan migrate --force
+            fi
             php artisan optimize:clear
             php artisan optimize
             php artisan queue:restart
