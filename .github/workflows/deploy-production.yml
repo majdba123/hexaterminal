@@ -238,7 +238,7 @@ jobs:
             # variable ALLOW_FRESH_SEED=true while preview data is explicitly
             # wanted. This drops every table and all CMS/business data. Remove
             # the variable before entering real data through Admin.
-            ALLOW_FRESH_SEED="${{ vars.ALLOW_FRESH_SEED }}"
+            ALLOW_FRESH_SEED="${{ secrets.ALLOW_FRESH_SEED }}"
             if [ "$ALLOW_FRESH_SEED" = "true" ]; then
               php artisan migrate:fresh --seed --force
             else
