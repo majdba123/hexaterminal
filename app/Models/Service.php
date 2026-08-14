@@ -30,7 +30,7 @@ class Service extends Model
         'published_at', 'sort_order',
     ];
 
-    public array $translatable = ['name', 'tagline', 'summary', 'description', 'cover_image_alt'];
+    public array $translatable = ['name', 'tagline', 'summary', 'description', 'cover_image_alt', 'features'];
 
     protected $casts = [
         'features' => 'array',

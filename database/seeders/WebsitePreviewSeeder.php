@@ -19,7 +19,7 @@ class WebsitePreviewSeeder extends Seeder
     public function run(): void
     {
         $industries = $this->seedIndustries();
-        $services = $this->seedServices();
+        $services = $this->services();
         $systems = $this->seedSystems($industries);
         $this->seedCaseStudies($services, $systems, $industries);
     }
@@ -55,44 +55,27 @@ class WebsitePreviewSeeder extends Seeder
     }
 
     /** @return array<string, Service> */
-    private function seedServices(): array
+    private function services(): array
     {
-        $services = [
-            'custom-erp-crm-systems' => [
-                'name' => ['en' => 'Custom ERP & CRM Systems', 'ar' => 'أنظمة ERP وCRM مخصصة'],
-                'tagline' => ['en' => 'Connected operations, customer context, and decision-ready data.', 'ar' => 'عمليات مترابطة وسياق واضح للعملاء وبيانات جاهزة لاتخاذ القرار.'],
-                'summary' => ['en' => 'Custom ERP and CRM systems designed around the workflows that keep a business moving.', 'ar' => 'أنظمة ERP وCRM مخصصة تُصمم حول تدفقات العمل التي تحرك أعمالك.'],
-                'description' => ['en' => 'We design operational software that brings customer, delivery, finance, and internal teams into one dependable workflow. This preview record demonstrates the CMS structure for a future approved service offering.', 'ar' => 'نصمم برمجيات تشغيلية تجمع العملاء والتسليم والمالية والفرق الداخلية في سير عمل موثوق واحد. يوضح سجل المعاينة هذا بنية CMS لخدمة مستقبلية معتمدة.'],
-                'features' => ['Workflow mapping', 'Role-based workspaces', 'Operational reporting'],
-                'tech_stack' => ['Laravel', 'Next.js', 'PostgreSQL'],
-            ],
-            'web-platforms-mobile-applications' => [
-                'name' => ['en' => 'Web Platforms & Mobile Applications', 'ar' => 'منصات ويب وتطبيقات جوال'],
-                'tagline' => ['en' => 'Digital products that connect people, processes, and data.', 'ar' => 'منتجات رقمية تربط الأشخاص والعمليات والبيانات.'],
-                'summary' => ['en' => 'Web platforms and mobile applications built for real operational use.', 'ar' => 'منصات ويب وتطبيقات جوال مبنية للاستخدام التشغيلي الفعلي.'],
-                'description' => ['en' => 'We build secure, maintainable platforms for customers, partners, and teams in the field. This preview record demonstrates the CMS structure for a future approved service offering.', 'ar' => 'نبني منصات آمنة وقابلة للصيانة للعملاء والشركاء والفرق الميدانية. يوضح سجل المعاينة هذا بنية CMS لخدمة مستقبلية معتمدة.'],
-                'features' => ['Customer portals', 'Mobile workflow support', 'API integrations'],
-                'tech_stack' => ['TypeScript', 'React Native', 'REST APIs'],
-            ],
-            'ecommerce-business-websites' => [
-                'name' => ['en' => 'E-commerce & Business Websites', 'ar' => 'متاجر إلكترونية ومواقع أعمال'],
-                'tagline' => ['en' => 'Commerce experiences connected to the operations behind them.', 'ar' => 'تجارب تجارية متصلة بالعمليات التي تقف خلفها.'],
-                'summary' => ['en' => 'E-commerce and business websites that support discovery, orders, and ongoing operations.', 'ar' => 'متاجر إلكترونية ومواقع أعمال تدعم الاكتشاف والطلبات والعمليات المستمرة.'],
-                'description' => ['en' => 'We create commerce and business web experiences with clear content, dependable integrations, and maintainable operations. This preview record demonstrates the CMS structure for a future approved service offering.', 'ar' => 'ننشئ تجارب ويب تجارية وتجارب أعمال بمحتوى واضح وتكاملات موثوقة وعمليات قابلة للصيانة. يوضح سجل المعاينة هذا بنية CMS لخدمة مستقبلية معتمدة.'],
-                'features' => ['Catalog management', 'Order workflows', 'Business website foundations'],
-                'tech_stack' => ['Next.js', 'Laravel', 'Payment integrations'],
-            ],
-        ];
+        $services = Service::query()
+            ->whereIn('slug', Service::CORE_SERVICE_SLUGS)
+            ->get()
+            ->keyBy('slug');
 
-        return collect($services)->mapWithKeys(function (array $attributes, string $slug): array {
-            $service = Service::updateOrCreate(
-                ['slug' => $slug],
-                [...$attributes, 'is_published' => true, 'published_at' => now(), 'sort_order' => array_search($slug, Service::CORE_SERVICE_SLUGS, true)],
-            );
-            $this->upsertSeo($service, $attributes['name'], $attributes['summary']);
+        if ($services->count() !== count(Service::CORE_SERVICE_SLUGS)) {
+            $this->call(ServicesSeeder::class);
 
-            return [$slug => $service];
-        })->all();
+            $services = Service::query()
+                ->whereIn('slug', Service::CORE_SERVICE_SLUGS)
+                ->get()
+                ->keyBy('slug');
+        }
+
+        if ($services->count() !== count(Service::CORE_SERVICE_SLUGS)) {
+            throw new \RuntimeException('The approved core services are required before preview case studies can be seeded.');
+        }
+
+        return $services->all();
     }
 
     /**

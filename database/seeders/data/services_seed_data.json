@@ -1,0 +1,163 @@
+{
+  "version": "1.0",
+  "entity": "services",
+  "known_service_fields": [
+    "name",
+    "slug",
+    "tagline",
+    "summary",
+    "description",
+    "icon",
+    "cover_image",
+    "alt_text",
+    "features",
+    "tech_stack",
+    "status",
+    "published_at",
+    "sort_order"
+  ],
+  "forbidden_fields": ["details"],
+  "services": [
+    {
+      "slug": "custom-erp-crm-systems",
+      "sort_order": 1,
+      "status": "published",
+      "published_at": "NOW",
+      "icon": null,
+      "cover_image_source": "images/custom-erp-crm-systems.png",
+      "tech_stack": [],
+      "translations": {
+        "en": {
+          "name": "Custom ERP & CRM Systems",
+          "tagline": "Custom systems built around how your business actually operates.",
+          "summary": "We design and build custom ERP and CRM systems for businesses that need to bring their operations, teams, workflows, and data into one reliable system.",
+          "description": "When business operations grow, spreadsheets, messages, manual follow-ups, and disconnected tools can become difficult to manage. Information gets scattered, processes depend on individuals, and getting a clear view of what is happening across the business becomes harder.\n\nHexaTerminal builds custom ERP and CRM systems around the way your business actually works. We start by understanding your processes, users, responsibilities, data, and existing tools, then design a system that brings the required operations together in a structured and manageable way.\n\nDepending on the business, the system can cover customer management, sales, orders, employees, departments, branches, approvals, permissions, reporting, dashboards, workflows, automations, integrations, and other custom operational modules.\n\nThe goal is not to force your business into a generic ERP. The system is designed around the processes your team actually needs to manage.",
+          "alt_text": "Custom ERP and CRM system icon showing a business dashboard connected to CRM, workflows, operations, and integrations.",
+          "features": [
+            "Customer & Lead Management",
+            "Sales & Order Workflows",
+            "Roles & Permissions",
+            "Dashboards & Reporting",
+            "Workflow Automation",
+            "Departments & Branches",
+            "Notifications",
+            "Third-party Integrations",
+            "Custom Operational Modules"
+          ]
+        },
+        "ar": {
+          "name": "أنظمة ERP وCRM مخصصة",
+          "tagline": "أنظمة مخصصة تُبنى حول طريقة عمل شركتك الفعلية.",
+          "summary": "نصمم ونطوّر أنظمة ERP وCRM مخصصة للشركات التي تحتاج إلى جمع عملياتها وفرقها وسير العمل والبيانات ضمن نظام واحد موثوق.",
+          "description": "مع نمو عمليات الشركة، يصبح الاعتماد على جداول البيانات والرسائل والمتابعة اليدوية والأدوات المنفصلة أكثر صعوبة. تتوزع المعلومات بين أكثر من مكان، وتعتمد بعض العمليات على الأشخاص وتذكّرهم، ويصبح الحصول على رؤية واضحة لما يحدث داخل الشركة أصعب.\n\nفي HexaTerminal نبني أنظمة ERP وCRM مخصصة حول طريقة عمل الشركة الفعلية. نبدأ بفهم العمليات والمستخدمين والمسؤوليات والبيانات والأدوات الحالية، ثم نصمم نظاماً يجمع العمليات المطلوبة ضمن بيئة منظمة وسهلة الإدارة.\n\nبحسب طبيعة الشركة، يمكن أن يشمل النظام إدارة العملاء والمبيعات والطلبات والموظفين والأقسام والفروع والموافقات والصلاحيات والتقارير ولوحات المتابعة وسير العمل والأتمتة والتكاملات ووحدات تشغيلية مخصصة أخرى.\n\nالهدف ليس إجبار الشركة على استخدام ERP عام لا يناسبها، بل تصميم نظام حول العمليات التي يحتاج فريقها فعلياً إلى إدارتها.",
+          "alt_text": "أيقونة لنظام ERP وCRM مخصص تعرض لوحة أعمال مرتبطة بالعملاء وسير العمل والعمليات والتكاملات.",
+          "features": [
+            "إدارة العملاء والعملاء المحتملين",
+            "سير عمل المبيعات والطلبات",
+            "الأدوار والصلاحيات",
+            "لوحات المتابعة والتقارير",
+            "أتمتة سير العمل",
+            "إدارة الأقسام والفروع",
+            "الإشعارات",
+            "التكامل مع الأنظمة الخارجية",
+            "وحدات تشغيلية مخصصة"
+          ]
+        }
+      }
+    },
+    {
+      "slug": "web-platforms-mobile-applications",
+      "sort_order": 2,
+      "status": "published",
+      "published_at": "NOW",
+      "icon": null,
+      "cover_image_source": "images/web-platforms-mobile-applications.png",
+      "tech_stack": [],
+      "translations": {
+        "en": {
+          "name": "Web Platforms & Mobile Applications",
+          "tagline": "Software platforms and applications built around real business workflows.",
+          "summary": "We build web platforms and mobile applications for businesses that need more than a simple website — systems with real users, workflows, data, integrations, and business logic.",
+          "description": "Some digital products need much more than pages and forms. They need users, permissions, workflows, payments, notifications, integrations, dashboards, and reliable backend systems working together.\n\nHexaTerminal designs and builds web platforms and mobile applications around the actual requirements of the business. This can include customer portals, SaaS products, marketplaces, booking platforms, internal systems, operational applications, and other multi-user software products.\n\nWe focus on the complete system, not only the interface. That means thinking about how users interact with the product, how data moves through the system, how permissions are managed, how external services connect, and how the application can remain maintainable as it grows.\n\nThe final architecture and feature set depend on the product, its users, business rules, integrations, and expected scale.",
+          "alt_text": "Web platform and mobile application icon showing a browser, mobile app, API, database, code, and notifications.",
+          "features": [
+            "SaaS Platforms",
+            "Customer & Client Portals",
+            "Mobile Applications",
+            "Marketplaces",
+            "Booking Platforms",
+            "Authentication & Permissions",
+            "Payments & Notifications",
+            "API Integrations",
+            "Custom Business Workflows"
+          ]
+        },
+        "ar": {
+          "name": "منصات الويب وتطبيقات الجوال",
+          "tagline": "منصات وتطبيقات برمجية مبنية حول سير العمل الحقيقي داخل الأعمال.",
+          "summary": "نبني منصات ويب وتطبيقات جوال للشركات التي تحتاج إلى أكثر من موقع بسيط، من خلال أنظمة تحتوي مستخدمين فعليين وسير عمل وبيانات وتكاملات ومنطق أعمال حقيقي.",
+          "description": "بعض المنتجات الرقمية تحتاج إلى أكثر بكثير من صفحات ونماذج. تحتاج إلى مستخدمين وصلاحيات وسير عمل ومدفوعات وإشعارات وتكاملات ولوحات متابعة وأنظمة Backend موثوقة تعمل معاً.\n\nتصمم HexaTerminal وتطوّر منصات الويب وتطبيقات الجوال بناءً على المتطلبات الفعلية للعمل. ويمكن أن تشمل بوابات العملاء ومنتجات SaaS والأسواق الإلكترونية ومنصات الحجز والأنظمة الداخلية والتطبيقات التشغيلية وغيرها من المنتجات البرمجية متعددة المستخدمين.\n\nنركز على النظام كاملاً وليس على الواجهة فقط. وهذا يعني التفكير في طريقة تفاعل المستخدمين مع المنتج، وكيف تنتقل البيانات داخل النظام، وكيف تُدار الصلاحيات، وكيف تتصل الخدمات الخارجية، وكيف يبقى التطبيق قابلاً للصيانة والتطوير مع نموه.\n\nتتحدد البنية النهائية والخصائص بحسب طبيعة المنتج والمستخدمين وقواعد العمل والتكاملات والحجم المتوقع.",
+          "alt_text": "أيقونة لمنصات الويب وتطبيقات الجوال تعرض واجهة متصفح وتطبيق جوال وAPI وقاعدة بيانات وكود وإشعارات.",
+          "features": [
+            "منصات SaaS",
+            "بوابات العملاء",
+            "تطبيقات الجوال",
+            "الأسواق الإلكترونية",
+            "منصات الحجز",
+            "المصادقة والصلاحيات",
+            "المدفوعات والإشعارات",
+            "تكاملات API",
+            "سير عمل مخصص للأعمال"
+          ]
+        }
+      }
+    },
+    {
+      "slug": "ecommerce-business-websites",
+      "sort_order": 3,
+      "status": "published",
+      "published_at": "NOW",
+      "icon": null,
+      "cover_image_source": "images/ecommerce-business-websites.png",
+      "tech_stack": [],
+      "translations": {
+        "en": {
+          "name": "E-commerce & Business Websites",
+          "tagline": "Professional websites and e-commerce experiences built to support real business goals.",
+          "summary": "We build business websites and e-commerce solutions that communicate clearly, perform reliably, and give businesses a strong digital foundation for growth.",
+          "description": "A business website should do more than look good. It should clearly explain the business, guide visitors toward the right action, perform reliably across devices, and be easy to manage and improve over time.\n\nHexaTerminal builds business websites, corporate websites, service websites, and e-commerce solutions based on the actual goals of the business. Depending on the project, this can include custom content structures, product catalogs, checkout flows, payment integrations, customer accounts, forms, dashboards, third-party integrations, and custom functionality.\n\nFor e-commerce projects, we look beyond the storefront itself. We consider the complete customer journey, product and order management, payments, notifications, integrations, and the operational processes behind the store.\n\nThe result is a website or commerce platform designed around the business rather than a generic template filled with content.",
+          "alt_text": "E-commerce and business website icon showing a storefront, product card, cart, payment, and growth analytics.",
+          "features": [
+            "Business Websites",
+            "Corporate Websites",
+            "Custom Websites",
+            "E-commerce Stores",
+            "Product Catalogs",
+            "Checkout & Payments",
+            "Customer Accounts",
+            "Business Integrations",
+            "Custom Functionality"
+          ]
+        },
+        "ar": {
+          "name": "التجارة الإلكترونية ومواقع الأعمال",
+          "tagline": "مواقع وتجارب تجارة إلكترونية احترافية مبنية لخدمة أهداف العمل الفعلية.",
+          "summary": "نبني مواقع أعمال وحلول تجارة إلكترونية توصل رسالة الشركة بوضوح، وتعمل بموثوقية، وتمنح الأعمال أساساً رقمياً قوياً يمكن تطويره مع الوقت.",
+          "description": "موقع الشركة يجب أن يقدم أكثر من تصميم جيد. يجب أن يشرح العمل بوضوح، ويوجّه الزائر نحو الإجراء المناسب، ويعمل بموثوقية على مختلف الأجهزة، ويكون قابلاً للإدارة والتحسين مع الوقت.\n\nتبني HexaTerminal مواقع الأعمال والمواقع المؤسسية ومواقع الخدمات وحلول التجارة الإلكترونية بناءً على الأهداف الفعلية للشركة. وبحسب المشروع، يمكن أن يشمل ذلك بنية محتوى مخصصة وكتالوجات المنتجات ومسارات الدفع وتكامل بوابات الدفع وحسابات العملاء والنماذج ولوحات المتابعة والتكاملات الخارجية والوظائف المخصصة.\n\nفي مشاريع التجارة الإلكترونية، ننظر إلى ما هو أبعد من واجهة المتجر. نهتم برحلة العميل كاملة، وإدارة المنتجات والطلبات، والمدفوعات، والإشعارات، والتكاملات، والعمليات التشغيلية الموجودة خلف المتجر.\n\nالنتيجة هي موقع أو منصة تجارة إلكترونية مبنية حول احتياجات العمل، وليس قالباً عاماً تم ملؤه بالمحتوى.",
+          "alt_text": "أيقونة للتجارة الإلكترونية ومواقع الأعمال تعرض واجهة متجر وبطاقة منتج وسلة شراء ودفع وتحليلات نمو.",
+          "features": [
+            "مواقع الأعمال",
+            "المواقع المؤسسية",
+            "المواقع المخصصة",
+            "المتاجر الإلكترونية",
+            "كتالوجات المنتجات",
+            "الدفع وإتمام الطلب",
+            "حسابات العملاء",
+            "تكاملات الأعمال",
+            "وظائف مخصصة"
+          ]
+        }
+      }
+    }
+  ]
+}
