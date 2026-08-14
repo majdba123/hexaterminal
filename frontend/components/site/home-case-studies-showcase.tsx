@@ -29,7 +29,7 @@ export async function HomeCaseStudiesShowcase({ caseStudies }: { caseStudies: Ca
                 {caseStudy.cover_image ? (
                   <Image
                     src={caseStudy.cover_image}
-                    alt={caseStudy.cover_image_alt ?? ""}
+                    alt={caseStudy.cover_image_alt ?? caseStudy.title}
                     fill
                     className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
                     sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"

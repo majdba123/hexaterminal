@@ -76,7 +76,7 @@ export default async function ArticleDetailPage({
         <Breadcrumb items={[{ label: t("title"), href: "/insights" }, { label: article.title }]} />
         {article.cover_image ? (
           <div className="relative mb-8 aspect-16/9 w-full overflow-hidden rounded-[var(--radius-xl)] border border-border">
-            <Image src={article.cover_image} alt={article.cover_image_alt ?? ""} fill className="object-cover" sizes="800px" />
+            <Image src={article.cover_image} alt={article.cover_image_alt ?? article.title} fill className="object-cover" sizes="800px" />
           </div>
         ) : null}
         <h1 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">

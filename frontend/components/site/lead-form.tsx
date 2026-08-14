@@ -161,6 +161,7 @@ export function LeadForm({
       onFocusCapture={handleFocusOnce}
       className="flex flex-col gap-5"
       noValidate
+      aria-busy={status === "submitting"}
     >
       <input type="hidden" name="intent" value={intent} />
       <input type="hidden" name="locale" value={locale} />

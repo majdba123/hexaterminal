@@ -18,7 +18,7 @@ export async function SystemsListingCard({ system }: { system: System }) {
           {system.cover_image ? (
             <Image
               src={system.cover_image}
-              alt={system.cover_image_alt ?? ""}
+              alt={system.cover_image_alt ?? system.name}
               fill
               className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
               sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"

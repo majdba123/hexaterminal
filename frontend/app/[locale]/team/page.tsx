@@ -83,7 +83,7 @@ export default async function TeamPage({
                   {member.photo ? (
                     <Image
                       src={member.photo}
-                      alt={member.photo_alt ?? ""}
+                      alt={member.photo_alt ?? member.full_name}
                       fill
                       className="object-cover"
                       sizes="(min-width: 1024px) 25vw, 50vw"

@@ -12,6 +12,7 @@ import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
   params,
@@ -43,7 +44,7 @@ export default async function InsightsPage({
   const [t, tc, articles, categories] = await Promise.all([
     getTranslations("insights"),
     getTranslations("common"),
-    getArticles(locale, Number(page ?? 1), 12, { category }),
+    getArticles(locale, parsePageParam(page), 12, { category }),
     getArticleCategories(locale),
   ]);
 
@@ -92,6 +93,9 @@ export default async function InsightsPage({
               lastPage={articles.meta.last_page}
               basePath="/insights"
               extraParams={{ category }}
+              ariaLabel={tc("pagination")}
+              previousLabel={tc("previousPage")}
+              nextLabel={tc("nextPage")}
             />
           </>
         ) : (

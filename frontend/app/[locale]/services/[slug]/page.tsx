@@ -102,7 +102,7 @@ export default async function ServiceDetailPage({
               <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted">
                 <Image
                   src={service.cover_image}
-                  alt={service.cover_image_alt ?? ""}
+                  alt={service.cover_image_alt ?? service.name}
                   fill
                   className="object-cover"
                   sizes="(min-width: 1024px) 50vw, 100vw"

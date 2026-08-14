@@ -37,7 +37,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={t("toggleTheme")}
     >
-      {theme === "light" ? <Moon className="size-4.5" /> : <Sun className="size-4.5" />}
+      {theme === "light" ? <Moon className="size-4.5" aria-hidden="true" /> : <Sun className="size-4.5" aria-hidden="true" />}
     </Button>
   );
 }

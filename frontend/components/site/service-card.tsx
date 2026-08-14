@@ -24,7 +24,7 @@ export function ServiceCard({
           <div className="relative aspect-16/9 w-full overflow-hidden bg-muted">
             <Image
               src={service.cover_image}
-              alt={service.cover_image_alt ?? ""}
+              alt={service.cover_image_alt ?? service.name}
               fill
               className="object-cover transition-transform duration-200 ease-out group-hover:scale-105"
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -43,7 +43,7 @@ export function ServiceCard({
               land on. text-secondary, not text-primary -- see globals.css. */}
           <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary">
             {t("learnMore")}
-            <ArrowRight className="rtl:rotate-180 size-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+            <ArrowRight className="rtl:rotate-180 size-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" aria-hidden="true" />
           </span>
         </CardContent>
       </Card>

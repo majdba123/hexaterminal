@@ -67,6 +67,9 @@ export default async function ServicesPage({
                 currentPage={services.meta.current_page}
                 lastPage={services.meta.last_page}
                 basePath="/services"
+                ariaLabel={tc("pagination")}
+                previousLabel={tc("previousPage")}
+                nextLabel={tc("nextPage")}
               />
             </>
           ) : (

@@ -120,7 +120,7 @@ export default async function SystemDetailPage({
               <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted">
                 <Image
                   src={system.cover_image}
-                  alt={system.cover_image_alt ?? ""}
+                  alt={system.cover_image_alt ?? system.name}
                   fill
                   className="object-cover"
                   sizes="(min-width: 1024px) 50vw, 100vw"

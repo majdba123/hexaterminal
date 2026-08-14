@@ -67,6 +67,9 @@ export default async function SystemsPage({
                 currentPage={systems.meta.current_page}
                 lastPage={systems.meta.last_page}
                 basePath="/systems"
+                ariaLabel={tc("pagination")}
+                previousLabel={tc("previousPage")}
+                nextLabel={tc("nextPage")}
               />
             </>
           ) : (

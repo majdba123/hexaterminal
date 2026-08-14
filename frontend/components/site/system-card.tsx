@@ -24,13 +24,13 @@ export function SystemCard({
           {system.cover_image ? (
             <Image
               src={system.cover_image}
-              alt={system.cover_image_alt ?? ""}
+              alt={system.cover_image_alt ?? system.name}
               fill
               className="object-cover transition-transform duration-200 ease-out group-hover:scale-105"
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             />
           ) : (
-            <div className="flex size-full items-center justify-center bg-linear-to-br from-primary/15 to-accent/15 text-4xl font-black text-primary/30">
+            <div aria-hidden="true" className="flex size-full items-center justify-center bg-linear-to-br from-primary/15 to-accent/15 text-4xl font-black text-primary/30">
               {system.name.charAt(0)}
             </div>
           )}

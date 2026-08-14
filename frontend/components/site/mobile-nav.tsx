@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { primaryNavRoutes } from "@/lib/routes/registry";
@@ -17,7 +17,9 @@ const navItems = primaryNavRoutes().map(
 export function MobileNav() {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const isActive = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -33,15 +35,16 @@ export function MobileNav() {
         className={buttonVariants({ variant: "ghost", size: "icon", className: "xl:hidden" })}
         aria-label={tc("openMenu")}
       >
-        <Menu className="size-5" />
+        <Menu className="size-5" aria-hidden="true" />
       </DialogTrigger>
       <DialogContent closeLabel={tc("close")} className="top-24 max-w-sm translate-y-0">
         <DialogTitle className="sr-only">{tc("openMenu")}</DialogTitle>
-        <nav className="flex flex-col gap-1 p-4">
+        <nav aria-label={tc("openMenu")} className="flex flex-col gap-1 p-4">
           {navItems.map(([key, href]) => (
             <Link
               key={key}
               href={href}
+              aria-current={isActive(href) ? "page" : undefined}
               onClick={() => setOpen(false)}
               className="focus-ring rounded-[var(--radius-md)] px-3 py-3 text-base font-semibold text-foreground hover:bg-muted"
             >
@@ -53,6 +56,7 @@ export function MobileNav() {
               phone -- it must not be dropped from the drawer. */}
           <Link
             href="/search"
+            aria-current={isActive("/search") ? "page" : undefined}
             onClick={() => setOpen(false)}
             className="focus-ring rounded-[var(--radius-md)] px-3 py-3 text-base font-semibold text-foreground hover:bg-muted sm:hidden"
           >
@@ -60,6 +64,7 @@ export function MobileNav() {
           </Link>
           <Link
             href="/start-a-project"
+            aria-current={isActive("/start-a-project") ? "page" : undefined}
             onClick={() => setOpen(false)}
             className="focus-ring mt-2 rounded-[var(--radius-md)] bg-primary px-3 py-3 text-center text-base font-semibold text-primary-foreground"
           >

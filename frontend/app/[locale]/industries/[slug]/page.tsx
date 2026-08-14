@@ -71,7 +71,7 @@ export default async function IndustryDetailPage({
         <Breadcrumb items={[{ label: t("title"), href: "/industries" }, { label: industry.name }]} />
         {industry.cover_image ? (
           <div className="relative mb-8 aspect-16/9 w-full overflow-hidden rounded-[var(--radius-xl)] border border-border">
-            <Image src={industry.cover_image} alt={industry.cover_image_alt ?? ""} fill className="object-cover" sizes="800px" />
+            <Image src={industry.cover_image} alt={industry.cover_image_alt ?? industry.name} fill className="object-cover" sizes="800px" />
           </div>
         ) : null}
         <h1 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">

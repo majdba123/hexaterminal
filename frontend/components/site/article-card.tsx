@@ -24,13 +24,13 @@ export function ArticleCard({
           {article.cover_image ? (
             <Image
               src={article.cover_image}
-              alt={article.cover_image_alt ?? ""}
+              alt={article.cover_image_alt ?? article.title}
               fill
               className="object-cover transition-transform duration-200 ease-out group-hover:scale-105"
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             />
           ) : (
-            <div className="flex size-full items-center justify-center bg-muted text-4xl font-black text-muted-foreground/30">
+            <div aria-hidden="true" className="flex size-full items-center justify-center bg-muted text-4xl font-black text-muted-foreground/30">
               {article.title.charAt(0)}
             </div>
           )}

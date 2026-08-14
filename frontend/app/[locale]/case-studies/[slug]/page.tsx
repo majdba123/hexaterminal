@@ -106,7 +106,7 @@ export default async function CaseStudyDetailPage({
               <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted">
                 <Image
                   src={caseStudy.cover_image}
-                  alt={caseStudy.cover_image_alt ?? ""}
+                  alt={caseStudy.cover_image_alt ?? caseStudy.title}
                   fill
                   className="object-cover"
                   sizes="(min-width: 1024px) 50vw, 100vw"

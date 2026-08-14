@@ -69,6 +69,9 @@ export default async function CaseStudiesPage({
                 currentPage={caseStudies.meta.current_page}
                 lastPage={caseStudies.meta.last_page}
                 basePath="/case-studies"
+                ariaLabel={tc("pagination")}
+                previousLabel={tc("previousPage")}
+                nextLabel={tc("nextPage")}
               />
             </>
           ) : (
