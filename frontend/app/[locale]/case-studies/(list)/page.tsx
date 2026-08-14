@@ -7,9 +7,10 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { resolveRobots } from "@/lib/seo/indexing";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { CaseStudyCard } from "@/components/site/case-study-card";
+import { CaseStudiesListingCard } from "@/components/site/case-studies-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
+import { CTA } from "@/components/site/cta";
 
 export async function generateMetadata({
   params,
@@ -45,31 +46,46 @@ export default async function CaseStudiesPage({
   ]);
 
   return (
-    <Section as="div">
-      <Container>
-        <Breadcrumb items={[{ label: t("title") }]} />
-        <SectionHeading as="h1" align="start" title={t("title")} subtitle={t("subtitle")} />
-        {caseStudies.data.length > 0 ? (
-          <>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {caseStudies.data.map((caseStudy) => (
-                <CaseStudyCard key={caseStudy.slug} caseStudy={caseStudy} headingLevel="h2" />
-              ))}
-            </div>
-            <Pagination
-              currentPage={caseStudies.meta.current_page}
-              lastPage={caseStudies.meta.last_page}
-              basePath="/case-studies"
-            />
-          </>
-        ) : (
-          <EmptyState
-            title={tc("noResults")}
-            description={tc("noResultsDesc")}
-            action={{ href: "/start-a-project", label: tc("emptyCta") }}
+    <>
+      <Section as="div" className="bg-surface">
+        <Container>
+          <Breadcrumb items={[{ label: t("title") }]} />
+          <SectionHeading
+            as="h1"
+            align="start"
+            badge={t("heroBadge")}
+            title={t("heroTitle")}
+            subtitle={t("heroSubtitle")}
           />
-        )}
-      </Container>
-    </Section>
+          {caseStudies.data.length > 0 ? (
+            <>
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {caseStudies.data.map((caseStudy) => (
+                  <CaseStudiesListingCard key={caseStudy.slug} caseStudy={caseStudy} />
+                ))}
+              </div>
+              <Pagination
+                currentPage={caseStudies.meta.current_page}
+                lastPage={caseStudies.meta.last_page}
+                basePath="/case-studies"
+              />
+            </>
+          ) : (
+            <EmptyState
+              title={tc("noResults")}
+              description={tc("noResultsDesc")}
+              action={{ href: "/start-a-project", label: tc("emptyCta") }}
+            />
+          )}
+        </Container>
+      </Section>
+      <CTA
+        eyebrow={t("finalCtaBadge")}
+        title={t("finalCtaTitle")}
+        subtitle={t("finalCtaSubtitle")}
+        buttonLabel={t("finalCtaButton")}
+        secondaryButtonLabel={t("finalCtaSecondaryButton")}
+      />
+    </>
   );
 }

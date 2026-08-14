@@ -186,6 +186,20 @@
   "caseStudies": {
     "title": "Case Studies",
     "subtitle": "Context, constraints, and outcomes -- not just screenshots.",
+    "heroBadge": "Case Studies",
+    "heroTitle": "See how business challenges become working software.",
+    "heroSubtitle": "Explore system, platform, and digital-product scenarios that show how complex requirements can be translated into practical software solutions.",
+    "exploreCta": "Explore case study",
+    "classification": {
+      "custom_erp_crm": "Custom ERP & CRM Systems",
+      "web_mobile_platform": "Web Platforms & Mobile Applications",
+      "ecommerce_business_website": "E-commerce & Business Websites"
+    },
+    "finalCtaBadge": "Have a similar challenge?",
+    "finalCtaTitle": "Let's turn the requirement into a practical software solution.",
+    "finalCtaSubtitle": "Tell us what is slowing the business down, what needs to connect, or what you want to build, and we'll help define the right system or platform.",
+    "finalCtaButton": "Start a Project",
+    "finalCtaSecondaryButton": "Contact Us",
     "context": "Context",
     "problem": "Problem",
     "constraints": "Constraints",
