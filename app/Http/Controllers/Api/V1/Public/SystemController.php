@@ -48,7 +48,7 @@ class SystemController extends Controller
     public function show(string $slug)
     {
         $system = $this->rememberShow('systems', $slug, function () use ($slug) {
-            return System::published()->with(['seo', 'industries', 'caseStudies' => fn ($q) => $q->published()])
+            return System::published()->with(['seo', 'industries', 'caseStudies' => fn ($q) => $q->published()->orderBy('sort_order')])
                 ->where('slug', $slug)->first();
         });
 
