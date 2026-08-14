@@ -259,8 +259,41 @@
   "about": {
     "title": "About Hexa Terminal",
     "subtitle": "We build software systems that run real businesses.",
+    "heroBadge": "About HexaTerminal",
+    "heroTitle": "We build software around how businesses actually operate.",
+    "heroSubtitle": "HexaTerminal designs and develops ERP and CRM systems, web platforms, mobile applications, and business software with a focus on real workflows, reliable architecture, and long-term usability.",
+    "positioningBadge": "Our approach",
+    "positioningTitle": "Business needs first. Technology second.",
+    "positioningBody": "We start by understanding the workflow, users, data, and operational problem before deciding how the software should be built. The goal is not to add more tools, but to create a system that makes the business easier to operate.",
+    "trustBadge": "How we work",
+    "trustTitle": "Built for clear, practical delivery.",
+    "trustSubtitle": "The work stays grounded in the operational problem and the people who need to use the system.",
+    "trust": {
+      "businessFirst": {
+        "title": "Business-first analysis",
+        "body": "We begin with the workflow and the decisions it needs to support."
+      },
+      "clearScope": {
+        "title": "Clear scope and communication",
+        "body": "We make the work, priorities, and next steps understandable throughout delivery."
+      },
+      "reliableArchitecture": {
+        "title": "Reliable system architecture",
+        "body": "Systems are structured to support connected data, roles, and real operational use."
+      },
+      "practicalDelivery": {
+        "title": "Practical delivery and testing",
+        "body": "We validate the software against the workflow it is meant to improve."
+      }
+    },
+    "teamBadge": "The people behind the work",
     "teamTitle": "The team",
-    "teamSubtitle": "The people building your system."
+    "teamSubtitle": "Approved public profiles of the people contributing to HexaTerminal.",
+    "finalCtaBadge": "Have a software project in mind?",
+    "finalCtaTitle": "Let's understand the problem before we define the solution.",
+    "finalCtaSubtitle": "Tell us how the business works today, what is causing friction, and what you want to improve or build.",
+    "finalCtaButton": "Start a Project",
+    "finalCtaSecondaryButton": "Contact Us"
   },
   "team": {
     "title": "Team",

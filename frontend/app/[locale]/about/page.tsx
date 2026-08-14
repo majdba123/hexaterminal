@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { getTeam } from "@/lib/api/client";
@@ -8,7 +7,7 @@ import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { EmptyState } from "@/components/site/empty-state";
+import { CTA } from "@/components/site/cta";
 import { Card, CardContent } from "@/components/ui/card";
 
 export async function generateMetadata({
@@ -22,7 +21,7 @@ export async function generateMetadata({
     locale,
     path: "/about",
     title: t("title"),
-    description: t("subtitle"),
+    description: t("heroSubtitle"),
   });
 }
 
@@ -34,29 +33,91 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tc, team] = await Promise.all([
+  const [t, tHome, team] = await Promise.all([
     getTranslations("about"),
-    getTranslations("common"),
+    getTranslations("home"),
     getTeam(locale),
   ]);
+  const processSteps = [1, 2, 3, 4] as const;
+  const trustPrinciples = ["businessFirst", "clearScope", "reliableArchitecture", "practicalDelivery"] as const;
 
   return (
-    <Section as="div">
-      <Container>
-        <Breadcrumb items={[{ label: t("title") }]} />
-        <h1 className="max-w-2xl text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-          {t("subtitle")}
-        </p>
+    <>
+      <Section as="div" className="bg-surface">
+        <Container>
+          <Breadcrumb items={[{ label: t("title") }]} />
+          <div className="max-w-3xl">
+            <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">
+              {t("heroBadge")}
+            </span>
+            <h1 className="mt-5 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+              {t("heroTitle")}
+            </h1>
+            <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
+              {t("heroSubtitle")}
+            </p>
+          </div>
+        </Container>
+      </Section>
 
-        <div className="mt-16">
-          <SectionHeading align="start" title={t("teamTitle")} subtitle={t("teamSubtitle")} />
-          {team.length > 0 ? (
+      <Section>
+        <Container narrow>
+          <SectionHeading align="start" badge={t("positioningBadge")} title={t("positioningTitle")} />
+          <p className="prose-content text-pretty text-base leading-relaxed text-foreground">{t("positioningBody")}</p>
+        </Container>
+      </Section>
+
+      <Section className="border-y border-border bg-surface">
+        <Container>
+          <SectionHeading
+            align="start"
+            badge={tHome("howWeWorkBadge")}
+            title={tHome("howWeWorkTitle")}
+            subtitle={tHome("howWeWorkSubtitle")}
+          />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {processSteps.map((step) => (
+              <div key={step} className="flex flex-col gap-3">
+                <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-extrabold text-secondary tabular-nums">
+                  {step}
+                </span>
+                <h2 className="text-base font-bold text-foreground">
+                  {tHome(`howWeWorkStep${step}Title` as "howWeWorkStep1Title")}
+                </h2>
+                <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                  {tHome(`howWeWorkStep${step}Desc` as "howWeWorkStep1Desc")}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
+          <SectionHeading align="start" badge={t("trustBadge")} title={t("trustTitle")} subtitle={t("trustSubtitle")} />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {trustPrinciples.map((principle) => (
+              <Card key={principle} className="h-full border-border/80 bg-surface">
+                <CardContent className="flex h-full flex-col gap-3 p-6">
+                  <h2 className="text-base font-bold text-foreground">{t(`trust.${principle}.title`)}</h2>
+                  <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                    {t(`trust.${principle}.body`)}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {team.length > 0 ? (
+        <Section className="border-y border-border bg-surface">
+          <Container>
+            <SectionHeading align="start" badge={t("teamBadge")} title={t("teamTitle")} subtitle={t("teamSubtitle")} />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {team.map((member) => (
-                <Card key={member.slug} className="overflow-hidden">
+                <Card key={member.slug} className="h-full overflow-hidden border-border/80">
                   <div className="relative aspect-square w-full overflow-hidden bg-muted">
                     {member.photo ? (
                       <Image
@@ -67,60 +128,32 @@ export default async function AboutPage({
                         sizes="(min-width: 1024px) 25vw, 50vw"
                       />
                     ) : (
-                      <div className="flex size-full items-center justify-center bg-linear-to-br from-primary/15 to-accent/15 text-3xl font-black text-primary/30">
-                        {member.first_name.charAt(0)}
+                      <div className="flex size-full items-end p-5" aria-hidden="true">
+                        <span className="text-5xl font-extrabold leading-none text-foreground/15">{member.first_name.charAt(0)}</span>
                       </div>
                     )}
                   </div>
-                  <CardContent className="flex flex-col gap-1">
-                    <h3 className="text-sm font-bold text-foreground">{member.full_name}</h3>
-                    {member.position ? (
-                      <p className="text-xs text-muted-foreground">{member.position}</p>
-                    ) : null}
+                  <CardContent className="flex flex-col gap-2 p-6">
+                    <h2 className="text-base font-bold text-foreground">{member.full_name}</h2>
+                    {member.position ? <p className="text-sm text-muted-foreground">{member.position}</p> : null}
                     {member.bio ? (
-                      <p className="mt-2 line-clamp-3 text-pretty text-xs leading-relaxed text-muted-foreground">
-                        {member.bio}
-                      </p>
-                    ) : null}
-                    {member.github_url || member.linkedin_url ? (
-                      <div className="mt-3 flex gap-3">
-                        {member.github_url ? (
-                          <a
-                            href={member.github_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="focus-ring rounded text-muted-foreground hover:text-foreground"
-                            aria-label="GitHub"
-                          >
-                            <ExternalLink className="size-4" />
-                          </a>
-                        ) : null}
-                        {member.linkedin_url ? (
-                          <a
-                            href={member.linkedin_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="focus-ring rounded text-muted-foreground hover:text-foreground"
-                            aria-label="LinkedIn"
-                          >
-                            <ExternalLink className="size-4" />
-                          </a>
-                        ) : null}
-                      </div>
+                      <p className="mt-2 line-clamp-4 text-pretty text-sm leading-relaxed text-muted-foreground">{member.bio}</p>
                     ) : null}
                   </CardContent>
                 </Card>
               ))}
             </div>
-          ) : (
-            <EmptyState
-              title={tc("noResults")}
-              description={tc("noResultsDesc")}
-              action={{ href: "/start-a-project", label: tc("emptyCta") }}
-            />
-          )}
-        </div>
-      </Container>
-    </Section>
+          </Container>
+        </Section>
+      ) : null}
+
+      <CTA
+        eyebrow={t("finalCtaBadge")}
+        title={t("finalCtaTitle")}
+        subtitle={t("finalCtaSubtitle")}
+        buttonLabel={t("finalCtaButton")}
+        secondaryButtonLabel={t("finalCtaSecondaryButton")}
+      />
+    </>
   );
 }
