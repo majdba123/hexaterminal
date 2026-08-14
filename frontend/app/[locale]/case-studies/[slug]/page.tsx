@@ -5,9 +5,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getCaseStudy, getCaseStudies } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
+import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumb } from "@/components/site/breadcrumb";
+import { CTA } from "@/components/site/cta";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import type { CaseStudy } from "@/lib/api/types";
@@ -41,23 +42,18 @@ export async function generateMetadata({
     locale,
     path: `/case-studies/${slug}`,
     title: caseStudy.seo?.title ?? caseStudy.title,
-    description: caseStudy.seo?.description ?? caseStudy.summary ?? undefined,
+    description: caseStudy.seo?.description ?? caseStudy.summary ?? caseStudy.context ?? undefined,
     canonical: caseStudy.seo?.canonical_url,
     image: caseStudy.seo?.og_image ?? caseStudy.cover_image,
     robots: resolveRobots(true),
   });
 }
 
-function narrativeBlocks(caseStudy: CaseStudy, labels: Record<string, string>) {
+function contextLinks(caseStudy: CaseStudy, labels: Record<string, string>) {
   return [
-    { key: "context", label: labels.context, value: caseStudy.context },
-    { key: "problem", label: labels.problem, value: caseStudy.problem },
-    { key: "constraints", label: labels.constraints, value: caseStudy.constraints },
-    { key: "solution", label: labels.solution, value: caseStudy.solution },
-    { key: "architecture", label: labels.architecture, value: caseStudy.architecture },
-    { key: "outcomes", label: labels.outcomes, value: caseStudy.outcomes },
-    { key: "evidence", label: labels.evidence, value: caseStudy.evidence },
-  ].filter((block) => Boolean(block.value));
+    caseStudy.service ? { label: labels.service, name: caseStudy.service.name, href: `/services/${caseStudy.service.slug}` } : null,
+    caseStudy.system ? { label: labels.system, name: caseStudy.system.name, href: `/systems/${caseStudy.system.slug}` } : null,
+  ].filter((link): link is { label: string; name: string; href: string } => Boolean(link));
 }
 
 export default async function CaseStudyDetailPage({
@@ -68,26 +64,21 @@ export default async function CaseStudyDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const [caseStudy, t, tSystems] = await Promise.all([
-    getCaseStudy(locale, slug),
-    getTranslations("caseStudies"),
-    getTranslations("systems"),
-  ]);
+  const [caseStudy, t] = await Promise.all([getCaseStudy(locale, slug), getTranslations("caseStudies")]);
 
   if (!caseStudy) notFound();
 
-  const blocks = narrativeBlocks(caseStudy, {
-    context: t("context"),
-    problem: t("problem"),
-    constraints: t("constraints"),
-    solution: t("solution"),
-    architecture: t("architecture"),
-    outcomes: t("outcomes"),
-    evidence: t("evidence"),
+  const capabilities = caseStudy.features
+    ?.split(/\r?\n/)
+    .map((feature) => feature.trim())
+    .filter(Boolean) ?? [];
+  const links = contextLinks(caseStudy, {
+    service: t("relatedService"),
+    system: t("relatedSystem"),
   });
 
   return (
-    <Section as="div">
+    <>
       <ViewTracker event="case_study_view" slug={slug} />
       <JsonLd
         data={breadcrumbJsonLd(
@@ -98,82 +89,156 @@ export default async function CaseStudyDetailPage({
           locale,
         )}
       />
-      <Container narrow>
-        <Breadcrumb items={[{ label: t("title"), href: "/case-studies" }, { label: caseStudy.title }]} />
-        {caseStudy.cover_image ? (
-          <div className="relative mb-8 aspect-16/9 w-full overflow-hidden rounded-[var(--radius-xl)] border border-border">
-            <Image src={caseStudy.cover_image} alt={caseStudy.cover_image_alt ?? ""} fill className="object-cover" sizes="800px" />
-          </div>
-        ) : null}
-        {caseStudy.client_name ? (
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            {t("client")}: {caseStudy.client_name}
-          </span>
-        ) : null}
-        <h1 className="mt-3 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-          {caseStudy.title}
-        </h1>
-        {caseStudy.summary ? (
-          <p className="mt-3 text-lg text-muted-foreground">{caseStudy.summary}</p>
-        ) : null}
 
-        {caseStudy.industries.length > 0 ? (
-          <div className="mt-6 flex flex-wrap gap-2">
-            {caseStudy.industries.map((industry) => (
-              <Badge key={industry.slug} variant="outline">
-                {industry.name}
-              </Badge>
-            ))}
+      <Section as="div" className="bg-surface">
+        <Container>
+          <Breadcrumb items={[{ label: t("title"), href: "/case-studies" }, { label: caseStudy.title }]} />
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="max-w-2xl">
+              {caseStudy.project_classification ? (
+                <Badge>{t(`classification.${caseStudy.project_classification}`)}</Badge>
+              ) : null}
+              <h1 className="mt-4 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+                {caseStudy.title}
+              </h1>
+              {caseStudy.summary ? (
+                <p className="mt-5 text-pretty text-xl leading-relaxed text-muted-foreground">{caseStudy.summary}</p>
+              ) : null}
+              {caseStudy.industries.length > 0 ? (
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {caseStudy.industries.map((industry) => (
+                    <Badge key={industry.slug} variant="outline">
+                      {industry.name}
+                    </Badge>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+            {caseStudy.cover_image ? (
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted">
+                <Image
+                  src={caseStudy.cover_image}
+                  alt={caseStudy.cover_image_alt ?? ""}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  priority
+                />
+              </div>
+            ) : null}
           </div>
-        ) : null}
+        </Container>
+      </Section>
 
-        {blocks.map((block) => (
-          <div key={block.key} className="mt-8">
-            <h2 className="text-lg font-bold text-foreground">{block.label}</h2>
-            <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
-              {block.value}
-            </p>
-          </div>
-        ))}
+      {caseStudy.context ? (
+        <Section>
+          <Container narrow>
+            <SectionHeading align="start" badge={t("contextBadge")} title={t("contextTitle")} />
+            <div className="prose-content whitespace-pre-line text-base leading-relaxed text-foreground">
+              {caseStudy.context}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
-        {caseStudy.features ? (
-          <div className="mt-8">
-            <h2 className="text-lg font-bold text-foreground">{tSystems("features")}</h2>
-            <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
-              {caseStudy.features}
-            </p>
-          </div>
-        ) : null}
+      {caseStudy.problem || caseStudy.constraints ? (
+        <Section className="border-y border-border bg-surface">
+          <Container narrow>
+            <SectionHeading align="start" badge={t("challengeBadge")} title={t("challengeTitle")} />
+            {caseStudy.problem ? (
+              <p className="whitespace-pre-line text-pretty text-base leading-relaxed text-foreground">{caseStudy.problem}</p>
+            ) : null}
+            {caseStudy.constraints ? (
+              <div className="mt-6 border-s border-border ps-5">
+                <h3 className="text-sm font-semibold text-foreground">{t("constraints")}</h3>
+                <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
+                  {caseStudy.constraints}
+                </p>
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
 
-        <div className="mt-10 flex flex-wrap gap-4">
-          {caseStudy.system ? (
-            <Link
-              href={`/systems/${caseStudy.system.slug}`}
-              className="focus-ring rounded-[var(--radius-md)] border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground hover:border-primary/40"
-            >
-              {t("relatedSystem")}: {caseStudy.system.name}
-            </Link>
-          ) : null}
-          {caseStudy.service ? (
-            <Link
-              href={`/services/${caseStudy.service.slug}`}
-              className="focus-ring rounded-[var(--radius-md)] border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground hover:border-primary/40"
-            >
-              {t("relatedService")}: {caseStudy.service.name}
-            </Link>
-          ) : null}
-        </div>
+      {caseStudy.solution || caseStudy.architecture ? (
+        <Section>
+          <Container narrow>
+            <SectionHeading align="start" badge={t("solutionBadge")} title={t("solutionTitle")} />
+            {caseStudy.solution ? (
+              <p className="whitespace-pre-line text-pretty text-base leading-relaxed text-foreground">{caseStudy.solution}</p>
+            ) : null}
+            {caseStudy.architecture ? (
+              <div className="mt-6 border-s border-border ps-5">
+                <h3 className="text-sm font-semibold text-foreground">{t("architecture")}</h3>
+                <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
+                  {caseStudy.architecture}
+                </p>
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
 
-        {caseStudy.project_url ? (
-          <div className="mt-8">
-            <Button asChild variant="outline">
-              <a href={caseStudy.project_url} target="_blank" rel="noopener noreferrer">
-                {tSystems("viewLive")}
-              </a>
-            </Button>
-          </div>
-        ) : null}
-      </Container>
-    </Section>
+      {capabilities.length > 0 ? (
+        <Section className="border-y border-border bg-surface">
+          <Container>
+            <SectionHeading align="start" badge={t("capabilitiesBadge")} title={t("capabilitiesTitle")} />
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {capabilities.map((capability, index) => (
+                <li
+                  key={`${capability}-${index}`}
+                  className="flex min-h-28 items-center rounded-[var(--radius-md)] border border-border bg-background p-5 text-pretty text-base font-medium leading-relaxed text-foreground"
+                >
+                  {capability}
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
+
+      {caseStudy.outcomes ? (
+        <Section>
+          <Container narrow>
+            <SectionHeading align="start" badge={t("outcomeBadge")} title={t("outcomeTitle")} />
+            <p className="whitespace-pre-line text-pretty text-base leading-relaxed text-foreground">{caseStudy.outcomes}</p>
+          </Container>
+        </Section>
+      ) : null}
+
+      {links.length > 0 || caseStudy.industries.length > 0 ? (
+        <Section className="pt-0">
+          <Container narrow>
+            <div className="border-t border-border pt-8">
+              <h2 className="text-sm font-semibold text-muted-foreground">{t("relatedContext")}</h2>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {links.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="focus-ring rounded-[var(--radius-md)] border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground hover:border-primary/40"
+                  >
+                    {link.label}: {link.name}
+                  </Link>
+                ))}
+                {caseStudy.industries.map((industry) => (
+                  <Badge key={industry.slug} variant="outline">
+                    {industry.name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      <CTA
+        eyebrow={t("detailCtaBadge")}
+        title={t("detailCtaTitle")}
+        subtitle={t("detailCtaSubtitle")}
+        buttonLabel={t("detailCtaButton")}
+        secondaryButtonLabel={t("detailCtaSecondaryButton")}
+      />
+    </>
   );
 }
