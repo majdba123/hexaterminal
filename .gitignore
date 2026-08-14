@@ -49,6 +49,19 @@ auth.json
 
 # Logs
 *.log
+/frontend/task*-*.out
+
+# Archived task artifacts
+/code_k/
+/vendor.task02-backup/
+/vendor.task02-failed/
+
+# Accidental root-level task outputs
+/it
+/php
+/your
+/satisfiable
+/pie.phar
 
 # Temporary files
 *.tmp
