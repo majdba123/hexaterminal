@@ -63,7 +63,7 @@ test("client validation blocks an empty English summary and focuses it without s
 
   await page.goto("/en/start-a-project");
   await fillEnglishLead(page, "");
-  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await page.getByRole("button", { name: "Send Project Details", exact: true }).click();
 
   const summary = page.getByLabel("Tell us about the project");
   await expect(summary).toHaveAttribute("aria-invalid", "true");
@@ -80,7 +80,7 @@ test("client validation blocks a summary shorter than ten trimmed characters", a
 
   await page.goto("/en/start-a-project");
   await fillEnglishLead(page, "   short   ");
-  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await page.getByRole("button", { name: "Send Project Details", exact: true }).click();
 
   await expect(page.getByLabel("Tell us about the project")).toHaveAttribute("aria-invalid", "true");
   expect(requestCount).toBe(0);
@@ -115,12 +115,12 @@ test("HTTP 422 field errors map to the summary instead of the generic request er
 
   await page.goto("/en/start-a-project");
   await fillEnglishLead(page, "A valid project summary for the request.");
-  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await page.getByRole("button", { name: "Send Project Details", exact: true }).click();
 
   const summary = page.getByLabel("Tell us about the project");
   await expect(summary).toHaveAttribute("aria-invalid", "true");
   await expect(summary).toBeFocused();
-  await expect(page.getByText("Something went wrong. Please try again or email us directly.")).toHaveCount(0);
+  await expect(page.getByText("Something went wrong. Please try again.")).toHaveCount(0);
 });
 
 test("HTTP 500 remains a generic request failure and does not invent field errors", async ({ page }) => {
@@ -130,9 +130,9 @@ test("HTTP 500 remains a generic request failure and does not invent field error
 
   await page.goto("/en/start-a-project");
   await fillEnglishLead(page, "A valid project summary for the request.");
-  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await page.getByRole("button", { name: "Send Project Details", exact: true }).click();
 
-  await expect(page.getByText("Something went wrong. Please try again or email us directly.")).toBeVisible();
+  await expect(page.getByText("Something went wrong. Please try again.")).toBeVisible();
   await expect(page.getByLabel("Tell us about the project")).not.toHaveAttribute("aria-invalid", "true");
 });
 
@@ -143,9 +143,16 @@ test("valid project inquiry still submits and shows the success state", async ({
 
   await page.goto("/en/start-a-project");
   await fillEnglishLead(page, "Smoke-test lead submission.");
-  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await page.getByRole("button", { name: "Send Project Details", exact: true }).click();
 
-  await expect(page.getByText("we've received your request", { exact: false })).toBeVisible();
+  await expect(page.getByText("we received your project details", { exact: false })).toBeVisible();
+});
+
+test("contact uses the same lead form with general communication copy", async ({ page }) => {
+  await page.goto("/en/contact");
+
+  await expect(page.getByRole("heading", { name: "Let's talk about what you're trying to solve." })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Send Message", exact: true })).toBeVisible();
 });
 
 test.describe("native lead submission without JavaScript", () => {

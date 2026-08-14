@@ -23,10 +23,14 @@ export function LeadForm({
   locale,
   sourcePage,
   intent = "start_project",
+  submitLabel,
+  submittingLabel,
 }: {
   locale: string;
   sourcePage: string;
   intent?: LeadIntent;
+  submitLabel?: string;
+  submittingLabel?: string;
 }) {
   const t = useTranslations("startProject");
   const tc = useTranslations("common");
@@ -139,7 +143,11 @@ export function LeadForm({
 
   if (status === "success") {
     return (
-      <div className="rounded-[var(--radius-lg)] border border-success/30 bg-success/10 p-6 text-sm font-medium text-success">
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-[var(--radius-lg)] border border-success/30 bg-success/10 p-6 text-sm font-medium text-success"
+      >
         {t("formSuccess")}
       </div>
     );
@@ -260,14 +268,14 @@ export function LeadForm({
           the real instruction, this just explains why nothing was sent),
           `error` means the request itself failed. */}
       {status === "invalid" ? (
-        <p className="text-sm font-medium text-destructive">{t("formValidationError")}</p>
+        <p role="alert" className="text-sm font-medium text-destructive">{t("formValidationError")}</p>
       ) : null}
       {status === "error" ? (
-        <p className="text-sm font-medium text-destructive">{t("formError")}</p>
+        <p role="alert" className="text-sm font-medium text-destructive">{t("formError")}</p>
       ) : null}
 
       <Button type="submit" size="lg" disabled={status === "submitting"} className="self-start">
-        {status === "submitting" ? t("formSubmitting") : t("formSubmit")}
+        {status === "submitting" ? (submittingLabel ?? t("formSubmitting")) : (submitLabel ?? t("formSubmit"))}
       </Button>
     </form>
   );

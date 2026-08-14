@@ -21,11 +21,12 @@ class CaseStudyForm
     {
         return $schema
             ->components([
-                Section::make('Story')
-                    ->description('context -> problem -> constraints -> solution -> architecture -> outcomes -> evidence')
+                Section::make('Business story')
+                    ->description('Describe the business context, challenge, solution, delivered capabilities, and only outcomes that can be stated responsibly.')
                     ->columns(2)
                     ->components([
                         TextInput::make('title')
+                            ->label('Case study title')
                             ->required()
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (string $context, ?string $state, callable $set, $record) {
@@ -38,46 +39,84 @@ class CaseStudyForm
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->columnSpanFull(),
-                        Textarea::make('summary')->rows(2)->columnSpanFull(),
-                        Textarea::make('context')->rows(3),
-                        Textarea::make('problem')->rows(3),
-                        Textarea::make('constraints')->rows(3),
-                        Textarea::make('solution')->rows(3),
-                        Textarea::make('architecture')->rows(3),
-                        Textarea::make('outcomes')->rows(3),
+                        Textarea::make('summary')
+                            ->label('Short overview')
+                            ->helperText('A concise description of the business scenario or project.')
+                            ->rows(2)
+                            ->columnSpanFull(),
+                        Textarea::make('context')
+                            ->label('Business and process context')
+                            ->helperText('Describe the organization, workflow, users, or operational setting. Do not add unverified client claims.')
+                            ->rows(3),
+                        Textarea::make('problem')
+                            ->label('Business challenge')
+                            ->helperText('Explain the operational problem, gap, or friction that needed to be addressed.')
+                            ->rows(3),
+                        Textarea::make('constraints')
+                            ->label('Operational constraints')
+                            ->helperText('For example: roles, permissions, rollout needs, integrations, compliance, or field conditions.')
+                            ->rows(3),
+                        Textarea::make('solution')
+                            ->label('Solution approach')
+                            ->helperText('Explain the workflow, system, platform, or product approach in business terms.')
+                            ->rows(3),
+                        Textarea::make('architecture')
+                            ->label('System and workflow structure')
+                            ->helperText('Describe modules, roles, connected workflows, and integrations. Avoid a technology-stack dump.')
+                            ->rows(3),
+                        Textarea::make('features')
+                            ->label('Delivered capabilities, workflows, or modules')
+                            ->helperText('Enter one capability per line so the public page can present it clearly.')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                        Textarea::make('outcomes')
+                            ->label('Qualitative outcome')
+                            ->helperText('State only outcomes that are appropriate to publish. Never invent metrics, revenue, or performance results.')
+                            ->rows(3),
                         Textarea::make('evidence')
                             ->rows(3)
                             ->helperText('Concrete, verifiable proof only -- no fabricated metrics.'),
-                        Textarea::make('features')
-                            ->rows(3)
-                            ->columnSpanFull(),
                     ]),
-                Section::make('Details')
+                Section::make('Classification and context')
+                    ->description('Use existing relationships to place the case study in the right service, system, and industry context.')
                     ->columns(2)
                     ->components([
-                        TextInput::make('client_name'),
-                        TextInput::make('project_url')->url(),
-                        TextInput::make('video_url')->url(),
                         Select::make('project_classification')
                             ->label('Project classification')
+                            ->helperText('Choose the primary business track when it is known.')
                             ->options(CaseStudy::CLASSIFICATION_OPTIONS)
                             ->in(CaseStudy::CLASSIFICATIONS)
                             ->nullable(),
                         Select::make('service_offering_id')
+                            ->label('Related service offering')
+                            ->helperText('Select only the service offering this work genuinely represents.')
                             ->relationship('serviceOffering', 'slug')
                             ->searchable()
                             ->preload(),
                         Select::make('system_id')
+                            ->label('Related system (optional)')
+                            ->helperText('Use only when the case study is directly tied to a system record.')
                             ->relationship('system', 'slug')
                             ->searchable()
                             ->preload(),
                         Select::make('industries')
+                            ->label('Relevant industries')
+                            ->helperText('Select the industries that add real business context.')
                             ->relationship('industries', 'slug')
                             ->getOptionLabelFromRecordUsing(fn (Industry $record) => $record->name)
                             ->multiple()
                             ->preload()
                             ->searchable()
                             ->columnSpanFull(),
+                        TextInput::make('client_name')
+                            ->label('Client name (only with approval)')
+                            ->helperText('Leave blank for conceptual work or where public naming is not approved.'),
+                        TextInput::make('project_url')
+                            ->label('Public project URL (optional)')
+                            ->url(),
+                        TextInput::make('video_url')
+                            ->label('Public video URL (optional)')
+                            ->url(),
                     ]),
                 Section::make('Media')
                     ->columns(2)
