@@ -5,7 +5,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getService, getServices } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
+import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumb } from "@/components/site/breadcrumb";
+import { CTA } from "@/components/site/cta";
+import { CaseStudyCard } from "@/components/site/case-study-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -62,8 +65,10 @@ export default async function ServiceDetailPage({
 
   if (!service) notFound();
 
+  const relatedCaseStudies = service.related_case_studies ?? [];
+
   return (
-    <Section as="div">
+    <>
       <JsonLd
         data={[
           serviceJsonLd({
@@ -80,48 +85,113 @@ export default async function ServiceDetailPage({
           ),
         ]}
       />
-      <Container narrow>
-        <Breadcrumb items={[{ label: t("title"), href: "/services" }, { label: service.name }]} />
-        {service.cover_image ? (
-          <div className="relative mb-8 aspect-16/9 w-full overflow-hidden rounded-[var(--radius-xl)] border border-border">
-            <Image src={service.cover_image} alt={service.cover_image_alt ?? ""} fill className="object-cover" sizes="800px" />
+
+      <Section as="div" className="bg-surface">
+        <Container>
+          <Breadcrumb items={[{ label: t("title"), href: "/services" }, { label: service.name }]} />
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="max-w-2xl">
+              <h1 className="text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+                {service.name}
+              </h1>
+              {service.tagline ? (
+                <p className="mt-5 text-pretty text-xl leading-relaxed text-muted-foreground">
+                  {service.tagline}
+                </p>
+              ) : null}
+              {service.summary ? (
+                <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground">
+                  {service.summary}
+                </p>
+              ) : null}
+              <div className="mt-8">
+                <Button asChild size="lg">
+                  <Link href="/start-a-project">{t("heroCta")}</Link>
+                </Button>
+              </div>
+            </div>
+            {service.cover_image ? (
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted">
+                <Image
+                  src={service.cover_image}
+                  alt={service.cover_image_alt ?? ""}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  priority
+                />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-        <h1 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-          {service.name}
-        </h1>
-        {service.tagline ? (
-          <p className="mt-3 text-lg text-muted-foreground">{service.tagline}</p>
-        ) : null}
-        {service.description ? (
-          <div className="prose-content mt-8 whitespace-pre-line text-base leading-relaxed text-foreground">
-            {service.description}
-          </div>
-        ) : null}
-        {service.features.length > 0 ? (
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-            {service.features.map((feature, i) => (
-              <li key={i} className="rounded-[var(--radius-md)] border border-border bg-surface px-4 py-3 text-sm text-foreground">
-                {feature}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        {service.tech_stack.length > 0 ? (
-          <div className="mt-8 flex flex-wrap gap-2">
-            {service.tech_stack.map((tech) => (
-              <Badge key={tech} variant="outline">
-                {tech}
-              </Badge>
-            ))}
-          </div>
-        ) : null}
-        <div className="mt-10">
-          <Button asChild size="lg">
-            <Link href="/start-a-project">{t("detailCta")}</Link>
-          </Button>
-        </div>
-      </Container>
-    </Section>
+        </Container>
+      </Section>
+
+      {service.description ? (
+        <Section>
+          <Container narrow>
+            <SectionHeading align="start" badge={t("approachBadge")} title={t("approachTitle")} />
+            <div className="prose-content whitespace-pre-line text-base leading-relaxed text-foreground">
+              {service.description}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {service.features.length > 0 ? (
+        <Section className="border-y border-border bg-surface">
+          <Container>
+            <SectionHeading align="start" badge={t("capabilitiesBadge")} title={t("capabilitiesTitle")} />
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {service.features.map((feature, index) => (
+                <li
+                  key={`${feature}-${index}`}
+                  className="flex min-h-28 items-center rounded-[var(--radius-md)] border border-border bg-background p-5 text-pretty text-base font-medium leading-relaxed text-foreground"
+                >
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
+
+      {relatedCaseStudies.length > 0 ? (
+        <Section>
+          <Container>
+            <SectionHeading align="start" badge={t("relatedWorkBadge")} title={t("relatedWorkTitle")} />
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedCaseStudies.map((caseStudy) => (
+                <CaseStudyCard key={caseStudy.slug} caseStudy={caseStudy} headingLevel="h3" />
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {service.tech_stack.length > 0 ? (
+        <Section className="pt-0">
+          <Container narrow>
+            <div className="border-t border-border pt-8">
+              <h2 className="text-sm font-semibold text-muted-foreground">{t("technologyLabel")}</h2>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {service.tech_stack.map((technology) => (
+                  <Badge key={technology} variant="outline">
+                    {technology}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      <CTA
+        eyebrow={t("detailCtaBadge")}
+        title={t("detailCtaTitle")}
+        subtitle={t("detailCtaSubtitle")}
+        buttonLabel={t("detailCtaButton")}
+        secondaryButtonLabel={t("detailCtaSecondaryButton")}
+      />
+    </>
   );
 }

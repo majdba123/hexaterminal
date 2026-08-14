@@ -37,7 +37,13 @@ class ServiceController extends Controller
     public function show(string $slug)
     {
         $service = $this->rememberShow('services', $slug, function () use ($slug) {
-            return Service::published()->with('seo')->where('slug', $slug)->first();
+            return Service::published()
+                ->with([
+                    'seo',
+                    'caseStudies' => fn ($query) => $query->published()->orderBy('sort_order'),
+                ])
+                ->where('slug', $slug)
+                ->first();
         });
 
         abort_if(! $service, 404);

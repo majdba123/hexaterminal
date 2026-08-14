@@ -38,6 +38,8 @@ export interface Service {
   cover_image_alt: string | null;
   features: string[];
   tech_stack: string[];
+  /** Present on the service detail endpoint when related work is loaded. */
+  related_case_studies?: CaseStudySummary[];
   updated_at: string | null;
   seo: SeoMeta | null;
 }

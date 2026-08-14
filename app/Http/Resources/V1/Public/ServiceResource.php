@@ -27,6 +27,7 @@ class ServiceResource extends JsonResource
             'cover_image_alt' => $this->cover_image_alt,
             'features' => $this->features ?? [],
             'tech_stack' => $this->tech_stack ?? [],
+            'related_case_studies' => CaseStudySummaryResource::collection($this->whenLoaded('caseStudies')),
             'updated_at' => $this->updated_at?->toIso8601String(),
             'seo' => $this->seoMeta(),
         ];
