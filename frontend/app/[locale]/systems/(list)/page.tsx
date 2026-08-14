@@ -6,9 +6,10 @@ import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { SystemCard } from "@/components/site/system-card";
+import { SystemsListingCard } from "@/components/site/systems-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
+import { CTA } from "@/components/site/cta";
 
 export async function generateMetadata({
   params,
@@ -43,31 +44,46 @@ export default async function SystemsPage({
   ]);
 
   return (
-    <Section as="div">
-      <Container>
-        <Breadcrumb items={[{ label: t("title") }]} />
-        <SectionHeading as="h1" align="start" title={t("title")} subtitle={t("subtitle")} />
-        {systems.data.length > 0 ? (
-          <>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {systems.data.map((system) => (
-                <SystemCard key={system.slug} system={system} headingLevel="h2" />
-              ))}
-            </div>
-            <Pagination
-              currentPage={systems.meta.current_page}
-              lastPage={systems.meta.last_page}
-              basePath="/systems"
-            />
-          </>
-        ) : (
-          <EmptyState
-            title={tc("noResults")}
-            description={tc("noResultsDesc")}
-            action={{ href: "/start-a-project", label: tc("emptyCta") }}
+    <>
+      <Section as="div" className="bg-surface">
+        <Container>
+          <Breadcrumb items={[{ label: t("title") }]} />
+          <SectionHeading
+            as="h1"
+            align="start"
+            badge={t("heroBadge")}
+            title={t("heroTitle")}
+            subtitle={t("heroSubtitle")}
           />
-        )}
-      </Container>
-    </Section>
+          {systems.data.length > 0 ? (
+            <>
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {systems.data.map((system) => (
+                  <SystemsListingCard key={system.slug} system={system} />
+                ))}
+              </div>
+              <Pagination
+                currentPage={systems.meta.current_page}
+                lastPage={systems.meta.last_page}
+                basePath="/systems"
+              />
+            </>
+          ) : (
+            <EmptyState
+              title={tc("noResults")}
+              description={tc("noResultsDesc")}
+              action={{ href: "/start-a-project", label: tc("emptyCta") }}
+            />
+          )}
+        </Container>
+      </Section>
+      <CTA
+        eyebrow={t("finalCtaBadge")}
+        title={t("finalCtaTitle")}
+        subtitle={t("finalCtaSubtitle")}
+        buttonLabel={t("finalCtaButton")}
+        secondaryButtonLabel={t("finalCtaSecondaryButton")}
+      />
+    </>
   );
 }

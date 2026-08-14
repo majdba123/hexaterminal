@@ -140,6 +140,15 @@
   "systems": {
     "title": "Systems",
     "subtitle": "The unified catalog of platforms and business systems we've built.",
+    "heroBadge": "Systems & Platforms",
+    "heroTitle": "Software systems built for complex business operations.",
+    "heroSubtitle": "Explore the kinds of ERP, CRM, operational platforms, portals, and connected systems we design around real workflows, teams, and data.",
+    "exploreCta": "Explore system",
+    "finalCtaBadge": "Need a system built around your workflow?",
+    "finalCtaTitle": "Let's turn your operational requirements into working software.",
+    "finalCtaSubtitle": "Share how your business operates today and what needs to improve, and we'll help define the system that fits the process.",
+    "finalCtaButton": "Start a Project",
+    "finalCtaSecondaryButton": "Contact Us",
     "typeAll": "All types",
     "type": {
       "saas_product": "SaaS Product",
