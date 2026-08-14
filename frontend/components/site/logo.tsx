@@ -147,7 +147,7 @@ export function Logo({
           animationDelay: "1.05s",
           animationFillMode: "both",
         }}
-        fontFamily="var(--font-inter), ui-sans-serif, system-ui, sans-serif"
+        fontFamily="var(--font-sans)"
         fontSize="20"
         fontWeight="800"
       >

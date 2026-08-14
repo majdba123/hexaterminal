@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Cairo } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -16,18 +15,6 @@ import { THEME_INIT_SCRIPT } from "@/lib/theme-init-script";
 import "../globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  variable: "--font-cairo",
-  display: "swap",
-});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -96,7 +83,7 @@ export default async function LocaleLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body className={`${inter.variable} ${cairo.variable} antialiased`}>
+      <body className="antialiased">
         <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
         <AttributionCapture />
         <AnalyticsScript />

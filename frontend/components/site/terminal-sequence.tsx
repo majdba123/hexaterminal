@@ -1,4 +1,4 @@
-import { Boxes, CircleCheck, Network, ShieldCheck } from "lucide-react";
+import { Boxes, CircleCheck } from "lucide-react";
 import { statusDelayMs } from "@/lib/hexa-motion";
 
 /**
@@ -10,7 +10,7 @@ import { statusDelayMs } from "@/lib/hexa-motion";
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
 
 /**
- * The three capability rows: icon, label, value.
+ * The capability readout rows: icon, label, value.
  *
  * `Architecture` has no figure to report, so it resolves to a check mark rather
  * than inventing a metric -- the same reason the proof row outside the hex uses
@@ -18,8 +18,6 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", 
  */
 const ROWS = [
   { key: "architecture", Icon: Boxes, label: "Architecture", value: null },
-  { key: "api", Icon: Network, label: "API Layer", value: "150+ endpoints" },
-  { key: "security", Icon: ShieldCheck, label: "Security", value: "Zero incidents" },
 ] as const;
 
 /** Decorative middot between the domain names. */
@@ -45,7 +43,7 @@ function Sep() {
  * an Arabic page would otherwise have its rows and separators reordered.
  *
  * The separators and row icons are aria-hidden, so a screen reader gets
- * "Architecture ready", "API Layer 150+ endpoints", "Security Zero incidents".
+ * "Architecture ready".
  */
 export function TerminalSequence() {
   return (

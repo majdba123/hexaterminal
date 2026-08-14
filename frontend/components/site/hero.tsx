@@ -36,14 +36,14 @@ function rise(delayMs: number): React.CSSProperties {
 }
 
 /**
- * One production proof point.
+ * A generic paired display value.
  *
  * Deliberately not the old <Metric>: half of these are not numbers
  * ("SaaS · CRM · ERP"), and a component that hard-codes a "+" suffix and a
  * numeric type cannot express them. `tabular-nums` still applies so the
  * numeric ones align.
  */
-function ProofPoint({
+export function ProofPoint({
   value,
   label,
   variant = "number",
@@ -90,19 +90,12 @@ function ProofPoint({
  * opening on a black slab.
  *
  * The section claims the first viewport (`min-h` = viewport minus the 80px
- * header) and centres its WHOLE composition in it, proof points included, so
+ * header) and centres its whole composition in it, so
  * there is no dead band under the navbar and nothing important falls below the
  * fold.
  */
 export async function Hero() {
   const t = await getTranslations("home");
-
-  const proofPoints = [
-    { key: "systems", value: t("proofSystemsValue"), label: t("proofSystemsLabel"), variant: "number" as const },
-    { key: "apis", value: t("proofApisValue"), label: t("proofApisLabel"), variant: "number" as const },
-    { key: "domains", value: t("proofDomainsValue"), label: t("proofDomainsLabel"), variant: "text" as const },
-    { key: "security", value: t("proofSecurityValue"), label: t("proofSecurityLabel"), variant: "number" as const },
-  ];
 
   return (
     <section className="hero-cinematic relative flex min-h-[calc(100dvh-5rem)] items-center overflow-x-clip">
@@ -116,7 +109,7 @@ export async function Hero() {
             to sit between the navbar and the headline. */}
         {/*
           One column until lg, matching the tablet and mobile references: copy,
-          then CTAs, then the Hexa, then the proof metrics. From lg it becomes
+          then CTAs, then the Hexa. From lg it becomes
           the two-column hero, copy on the inline-start half.
         */}
         <div className="relative grid w-full grid-cols-1 items-center gap-10 py-12 xl:grid-cols-12 xl:items-stretch xl:gap-x-8 xl:gap-y-6">
@@ -185,14 +178,14 @@ export async function Hero() {
 
           {/*
             The visual. Order matters on small screens: the references put it
-            AFTER the CTAs and BEFORE the proof metrics, which is exactly the
+            AFTER the CTAs, which is exactly the
             DOM order here, so no order utilities are needed.
 
             Width: the brief's clamp on desktop, min(88vw,720px) on tablet
             portrait, min(340px, 100vw-32px) on mobile. `mx-auto` centres it
             below lg and `justify-self-end` seats it in its own column at lg.
           */}
-          <div className="w-full max-xl:mx-auto xl:col-span-6 xl:col-start-7 xl:row-span-2 xl:row-start-1 xl:self-center xl:justify-self-end">
+          <div className="w-full max-xl:mx-auto xl:col-span-6 xl:col-start-7 xl:row-start-1 xl:self-center xl:justify-self-end">
             {/*
               Width per the brief: clamp(520px, 46vw, 760px) on desktop,
               min(88vw,720px) on tablet portrait, min(340px, 100vw-2rem) on
@@ -209,17 +202,6 @@ export async function Hero() {
             <HexaTerminalVisual className="mx-auto w-[min(340px,calc(100vw-2rem))] sm:w-[min(88vw,720px)] xl:-me-[clamp(0px,7vw,140px)] xl:w-[clamp(520px,46vw,760px)]" />
           </div>
 
-          {/* Proof metrics: 2x2 below the Hexa on small screens, a 4-up row
-              under the copy at lg. `lg:row-start-2` puts them back beneath the
-              copy column rather than in a third row of their own. */}
-          <div
-            style={rise(360)}
-            className="grid w-full grid-cols-2 gap-x-8 gap-y-5 border-t border-border/50 pt-6 text-start max-xl:mx-auto max-xl:max-w-2xl xl:col-span-6 xl:col-start-1 xl:row-start-2 xl:grid-cols-4 xl:gap-x-6 xl:self-start"
-          >
-            {proofPoints.map((point) => (
-              <ProofPoint key={point.key} value={point.value} label={point.label} variant={point.variant} />
-            ))}
-          </div>
         </div>
       </Container>
     </section>

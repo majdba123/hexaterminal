@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import en from "../messages/en.json";
 import ar from "../messages/ar.json";
@@ -26,4 +28,19 @@ test("Arabic Case Study classifications use localized labels instead of enum val
     expect(label).not.toBe(classification);
     expect(label).not.toContain("_");
   }
+});
+
+test("Homepage translations contain no unsupported proof metric claims", () => {
+  for (const messages of [en.home, ar.home]) {
+    expect(messages).not.toHaveProperty("proofSystemsValue");
+    expect(messages).not.toHaveProperty("proofApisValue");
+    expect(messages).not.toHaveProperty("proofSecurityValue");
+  }
+
+  const terminalSequence = readFileSync(
+    join(process.cwd(), "components/site/terminal-sequence.tsx"),
+    "utf8",
+  );
+  expect(terminalSequence).not.toContain("150+ endpoints");
+  expect(terminalSequence).not.toContain("Zero incidents");
 });
