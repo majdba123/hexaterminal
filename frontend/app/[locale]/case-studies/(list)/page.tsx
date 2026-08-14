@@ -11,6 +11,7 @@ import { CaseStudiesListingCard } from "@/components/site/case-studies-listing-c
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
 import { CTA } from "@/components/site/cta";
+import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
   params,
@@ -42,7 +43,7 @@ export default async function CaseStudiesPage({
   const [t, tc, caseStudies] = await Promise.all([
     getTranslations("caseStudies"),
     getTranslations("common"),
-    getCaseStudies(locale, { page: Number(page ?? 1) }),
+    getCaseStudies(locale, { page: parsePageParam(page) }),
   ]);
 
   return (

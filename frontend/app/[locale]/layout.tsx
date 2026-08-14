@@ -11,10 +11,9 @@ import { AnalyticsScript } from "@/components/site/analytics-script";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { resolveRobots } from "@/lib/seo/indexing";
+import { SITE_URL } from "@/lib/seo/site";
 import { THEME_INIT_SCRIPT } from "@/lib/theme-init-script";
 import "../globals.css";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

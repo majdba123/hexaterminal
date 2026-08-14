@@ -10,6 +10,7 @@ import { ServicesListingCard } from "@/components/site/services-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
 import { CTA } from "@/components/site/cta";
+import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
   params,
@@ -40,7 +41,7 @@ export default async function ServicesPage({
   const [t, tc, services] = await Promise.all([
     getTranslations("services"),
     getTranslations("common"),
-    getServices(locale, Number(page ?? 1)),
+    getServices(locale, parsePageParam(page)),
   ]);
 
   return (

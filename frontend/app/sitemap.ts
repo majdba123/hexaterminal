@@ -1,15 +1,13 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
-import { routeByPath, sitemapStaticPaths } from "@/lib/routes/registry";
+import { sitemapStaticPaths } from "@/lib/routes/registry";
 import {
   getServices,
   getSystems,
-  getCaseStudies,
   getIndustries,
-  getArticles,
 } from "@/lib/api/client";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { INDEXING_ENABLED } from "@/lib/seo/indexing";
+import { SITE_URL } from "@/lib/seo/site";
 
 type Entry = { path: string; lastModified?: string | null };
 
@@ -91,18 +89,18 @@ function localizedEntry(path: string, lastModified?: string | null): MetadataRou
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (!INDEXING_ENABLED) return [];
+
   const locale = routing.defaultLocale;
 
   // NOTE: individual /estimate/{uuid} result pages are per-user and noindex --
   // they are deliberately never added to the sitemap (registry: no `estimate`
   // detail route exists, and content-blocked/utility routes set inSitemap:false).
 
-  const [services, systems, caseStudies, industries, articles] = await Promise.all([
+  const [services, systems, industries] = await Promise.all([
     collectAllPages((page) => getServices(locale, page, 50)),
     collectAllPages((page) => getSystems(locale, { page, perPage: 50 })),
-    collectAllPages((page) => getCaseStudies(locale, { page, perPage: 50 })),
     getIndustries(locale),
-    collectAllPages((page) => getArticles(locale, page, 50)),
   ]);
 
   // A record's own `seo.noindex` override must exclude it from the sitemap
@@ -123,9 +121,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const listLastModified: Record<string, string | undefined> = {
     "/services": mostRecent(services.map((s) => s.updated_at)),
     "/systems": mostRecent(systems.map((s) => s.updated_at)),
-    "/case-studies": mostRecent(caseStudies.map((c) => c.updated_at)),
     "/industries": mostRecent(industries.map((i) => i.updated_at)),
-    "/insights": mostRecent(articles.map((a) => a.updated_content_at ?? a.published_at)),
   };
 
   // The home page surfaces every content type, so it is as fresh as the
@@ -144,19 +140,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dynamicEntries: Entry[] = [
     ...notNoindexed(services).map((s) => ({ path: `/services/${slugSegment(s.slug)}`, lastModified: s.updated_at })),
     ...notNoindexed(systems).map((s) => ({ path: `/systems/${slugSegment(s.slug)}`, lastModified: s.updated_at })),
-    ...(routeByPath("/case-studies")?.indexable
-      ? notNoindexed(caseStudies).map((c) => ({
-          path: `/case-studies/${slugSegment(c.slug)}`,
-          lastModified: c.updated_at,
-        }))
-      : []),
     ...notNoindexed(industries).map((i) => ({ path: `/industries/${slugSegment(i.slug)}`, lastModified: i.updated_at })),
-    ...(routeByPath("/insights")?.indexable
-      ? notNoindexed(articles).map((a) => ({
-          path: `/insights/${slugSegment(a.slug)}`,
-          lastModified: a.updated_content_at ?? a.published_at,
-        }))
-      : []),
   ];
 
   return [...staticEntries, ...dynamicEntries].map((entry) =>

@@ -10,6 +10,7 @@ import { SystemsListingCard } from "@/components/site/systems-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
 import { CTA } from "@/components/site/cta";
+import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
   params,
@@ -40,7 +41,7 @@ export default async function SystemsPage({
   const [t, tc, systems] = await Promise.all([
     getTranslations("systems"),
     getTranslations("common"),
-    getSystems(locale, { page: Number(page ?? 1) }),
+    getSystems(locale, { page: parsePageParam(page) }),
   ]);
 
   return (

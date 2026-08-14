@@ -7,7 +7,7 @@ import { Breadcrumb } from "@/components/site/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { CostEstimator } from "@/components/site/cost-estimator";
-import { localeAlternates } from "@/lib/seo/alternates";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 
 export async function generateMetadata({
   params,
@@ -16,11 +16,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "estimator" });
-  return {
+  return pageMetadata({
+    locale,
+    path: "/estimate",
     title: t("title"),
     description: t("subtitle"),
-    alternates: { canonical: `/${locale}/estimate`, ...localeAlternates("/estimate") },
-  };
+  });
 }
 
 export default async function EstimatePage({

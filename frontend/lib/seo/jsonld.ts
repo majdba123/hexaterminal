@@ -5,7 +5,7 @@
  * pricing, awards) are simply omitted rather than invented.
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { SITE_URL } from "./site";
 const ORG_NAME = "Hexa Terminal";
 const ORG_LOGO_URL = `${SITE_URL}/logo.svg`;
 

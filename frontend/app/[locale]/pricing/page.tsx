@@ -10,7 +10,8 @@ import { Link } from "@/i18n/navigation";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { JsonLd } from "@/components/site/json-ld";
 import { faqPageJsonLd } from "@/lib/seo/jsonld";
-import { localeAlternates } from "@/lib/seo/alternates";
+import { pageMetadata } from "@/lib/seo/page-metadata";
+import { resolveRobots } from "@/lib/seo/indexing";
 
 export async function generateMetadata({
   params,
@@ -21,13 +22,14 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "pricing" });
   const { engagement_models } = await getPricing(locale);
 
-  return {
+  return pageMetadata({
+    locale,
+    path: "/pricing",
     title: t("title"),
     description: t("subtitle"),
     // Indexable only when there is meaningful published content.
-    robots: engagement_models.length > 0 ? undefined : { index: false, follow: false },
-    alternates: { canonical: `/${locale}/pricing`, ...localeAlternates("/pricing") },
-  };
+    robots: resolveRobots(engagement_models.length === 0),
+  });
 }
 
 function fmt(n: number): string {

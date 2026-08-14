@@ -1,5 +1,6 @@
 import { getArticles } from "@/lib/api/client";
 import { routing } from "@/i18n/routing";
+import { SITE_URL } from "@/lib/seo/site";
 
 /**
  * Locale-agnostic file path (rss.xml sits outside [locale], like
@@ -8,8 +9,6 @@ import { routing } from "@/i18n/routing";
  * Not indexable itself -- it's a feed, not a page -- but harmless either way
  * since it carries no HTML/robots meta.
  */
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
 function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
