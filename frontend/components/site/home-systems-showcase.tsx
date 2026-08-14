@@ -1,16 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import type { System } from "@/lib/api/types";
 
 /** Homepage-only presentation for featured CMS systems. */
-export function HomeSystemsShowcase({ systems }: { systems: System[] }) {
-  const t = useTranslations("systems");
+export async function HomeSystemsShowcase({ systems }: { systems: System[] }) {
+  const t = await getTranslations("systems");
 
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">

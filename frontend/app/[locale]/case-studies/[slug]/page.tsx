@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getCaseStudy, getCaseStudies } from "@/lib/api/client";
+import { getCaseStudy } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -10,24 +10,12 @@ import { Breadcrumb } from "@/components/site/breadcrumb";
 import { CTA } from "@/components/site/cta";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 import type { CaseStudy } from "@/lib/api/types";
 import { JsonLd } from "@/components/site/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { resolveRobots } from "@/lib/seo/indexing";
 import { ViewTracker } from "@/components/site/view-tracker";
-
-export async function generateStaticParams() {
-  const params: { locale: string; slug: string }[] = [];
-  for (const locale of routing.locales) {
-    const { data } = await getCaseStudies(locale, { perPage: 50 });
-    for (const caseStudy of data) {
-      params.push({ locale, slug: caseStudy.slug });
-    }
-  }
-  return params;
-}
 
 export async function generateMetadata({
   params,

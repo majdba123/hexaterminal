@@ -2,28 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getIndustry, getIndustries, getSystems, getCaseStudies } from "@/lib/api/client";
+import { getIndustry, getSystems, getCaseStudies } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 import { SystemCard } from "@/components/site/system-card";
 import { CaseStudyCard } from "@/components/site/case-study-card";
-import { routing } from "@/i18n/routing";
 import { JsonLd } from "@/components/site/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { resolveRobots } from "@/lib/seo/indexing";
-
-export async function generateStaticParams() {
-  const params: { locale: string; slug: string }[] = [];
-  for (const locale of routing.locales) {
-    const industries = await getIndustries(locale);
-    for (const industry of industries) {
-      params.push({ locale, slug: industry.slug });
-    }
-  }
-  return params;
-}
 
 export async function generateMetadata({
   params,

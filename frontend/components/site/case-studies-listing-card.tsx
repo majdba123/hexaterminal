@@ -1,16 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import type { CaseStudy } from "@/lib/api/types";
 
 /** Full Case Study treatment used by the public listing only. */
-export function CaseStudiesListingCard({ caseStudy }: { caseStudy: CaseStudy }) {
-  const t = useTranslations("caseStudies");
+export async function CaseStudiesListingCard({ caseStudy }: { caseStudy: CaseStudy }) {
+  const t = await getTranslations("caseStudies");
   const context = caseStudy.service?.name ?? caseStudy.industries[0]?.name ?? caseStudy.system?.name;
 
   return (

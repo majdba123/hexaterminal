@@ -1,4 +1,5 @@
 import "server-only";
+import { connection } from "next/server";
 import type {
   ApiEnvelope,
   ApiPaginatedEnvelope,
@@ -29,6 +30,11 @@ async function apiFetch<T>(
   locale: string,
   init?: { revalidate?: number; searchParams?: Record<string, string> },
 ): Promise<T | null> {
+  // CMS content belongs to the runtime request. This keeps a production build
+  // independent of API availability while preserving the explicit ISR policy
+  // on the fetch below once a visitor requests the page.
+  await connection();
+
   const url = new URL(`${API_URL}${path}`);
   url.searchParams.set("locale", locale);
   for (const [key, value] of Object.entries(init?.searchParams ?? {})) {

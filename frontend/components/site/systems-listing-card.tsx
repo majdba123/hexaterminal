@@ -1,16 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import type { System } from "@/lib/api/types";
 
 /** Full system treatment used by the public Systems listing only. */
-export function SystemsListingCard({ system }: { system: System }) {
-  const t = useTranslations("systems");
+export async function SystemsListingCard({ system }: { system: System }) {
+  const t = await getTranslations("systems");
   const description = system.short_description ?? system.tagline;
 
   return (

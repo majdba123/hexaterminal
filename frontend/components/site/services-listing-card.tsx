@@ -1,15 +1,13 @@
-"use client";
-
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import type { Service } from "@/lib/api/types";
 
 /** Full service-offering treatment used by the public Services listing only. */
-export function ServicesListingCard({ service }: { service: Service }) {
-  const t = useTranslations("services");
+export async function ServicesListingCard({ service }: { service: Service }) {
+  const t = await getTranslations("services");
   const description = service.tagline ?? service.summary ?? service.description;
 
   return (
