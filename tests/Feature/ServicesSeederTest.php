@@ -36,21 +36,24 @@ class ServicesSeederTest extends TestCase
 
         foreach (Service::query()->get() as $service) {
             Storage::disk('public')->assertExists($service->cover_image);
+            $this->get('/api/storage/'.$service->cover_image)
+                ->assertOk()
+                ->assertHeader('content-type', 'image/png');
+            $this->getJson('/api/v1/public/services/'.$service->slug)
+                ->assertOk()
+                ->assertJsonPath('data.cover_image', url('/api/storage/'.$service->cover_image));
         }
-
-        $this->get('/api/storage/'.$erp->cover_image)
-            ->assertOk()
-            ->assertHeader('content-type', 'image/png');
 
         $this->getJson('/api/v1/public/services/custom-erp-crm-systems?locale=ar')
             ->assertOk()
             ->assertJsonPath('data.name', 'أنظمة ERP وCRM مخصصة')
             ->assertJsonPath('data.features.0', 'إدارة العملاء والعملاء المحتملين')
-            ->assertJsonPath('data.cover_image', 'service-offerings/custom-erp-crm-systems.png');
+            ->assertJsonPath('data.cover_image', url('/api/storage/service-offerings/custom-erp-crm-systems.png'));
 
         $this->seed(ServicesSeeder::class);
 
         $this->assertDatabaseCount('service_offerings', 3);
+        $this->assertCount(3, Storage::disk('public')->allFiles('service-offerings'));
         Storage::disk('public')->assertExists('service-offerings/custom-erp-crm-systems.png');
         Storage::disk('public')->assertExists('service-offerings/web-platforms-mobile-applications.png');
         Storage::disk('public')->assertExists('service-offerings/ecommerce-business-websites.png');

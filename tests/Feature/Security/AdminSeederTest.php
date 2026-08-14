@@ -49,7 +49,7 @@ class AdminSeederTest extends TestCase
         $this->assertNull($caseStudy->project_url);
     }
 
-    public function test_database_seeder_bootstraps_admin_and_preview_content_for_public_api_validation(): void
+    public function test_database_seeder_bootstraps_only_admin_and_approved_services(): void
     {
         config([
             'app.admin_email' => 'bootstrap-admin@hexaterminal.test',
@@ -61,28 +61,27 @@ class AdminSeederTest extends TestCase
         $admin = User::where('email', 'bootstrap-admin@hexaterminal.test')->firstOrFail();
         $this->assertTrue($admin->hasRole('admin'));
         $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('service_offerings', 3);
+        $this->assertDatabaseCount('systems', 0);
+        $this->assertDatabaseCount('case_studies', 0);
+        $this->assertDatabaseCount('industries', 0);
+        $this->assertDatabaseCount('testimonials', 0);
+        $this->assertDatabaseCount('team_members', 0);
+        $this->assertDatabaseCount('articles', 0);
+        $this->assertDatabaseCount('faqs', 0);
+        $this->assertDatabaseCount('engagement_models', 0);
 
         $this->getJson('/api/v1/public/home')
             ->assertOk()
             ->assertJsonPath('data.services.0.slug', Service::CORE_SERVICE_SLUGS[0])
             ->assertJsonCount(3, 'data.services')
-            ->assertJsonCount(3, 'data.featured_systems')
-            ->assertJsonCount(3, 'data.featured_case_studies');
+            ->assertJsonCount(0, 'data.featured_systems')
+            ->assertJsonCount(0, 'data.featured_case_studies');
 
         $this->getJson('/api/v1/public/services/custom-erp-crm-systems?locale=ar')
             ->assertOk()
-            ->assertJsonPath('data.name', 'أنظمة ERP وCRM مخصصة');
-
-        $this->getJson('/api/v1/public/systems/preview-field-service-platform')
-            ->assertOk()
-            ->assertJsonFragment(['slug' => 'professional-services'])
-            ->assertJsonFragment(['slug' => 'field-operations']);
-
-        $this->getJson('/api/v1/public/case-studies/preview-commerce-workspace')
-            ->assertOk()
-            ->assertJsonPath('data.project_classification', CaseStudy::CLASSIFICATION_ECOMMERCE_BUSINESS_WEBSITE)
-            ->assertJsonPath('data.service.slug', 'ecommerce-business-websites')
-            ->assertJsonPath('data.system.slug', 'preview-commerce-operations-hub');
+            ->assertJsonPath('data.name', 'أنظمة ERP وCRM مخصصة')
+            ->assertJsonPath('data.cover_image', url('/api/storage/service-offerings/custom-erp-crm-systems.png'));
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void
