@@ -1,0 +1,136 @@
+{
+  "package_version": "V1",
+  "entity": "faqs",
+  "faqs": [
+    {
+      "key": "custom-software-cost",
+      "sort_order": 1,
+      "category": null,
+      "question": {
+        "en": "How much does a custom software project cost?",
+        "ar": "كم تكلفة تطوير مشروع برمجي مخصص؟"
+      },
+      "answer": {
+        "en": "The cost depends on the actual scope of the project, including workflows, users, integrations, data, technical complexity, delivery requirements, and post-launch needs. We first understand the project and define the scope before providing a commercial proposal.",
+        "ar": "تعتمد التكلفة على النطاق الفعلي للمشروع، بما يشمل العمليات، والمستخدمين، والتكاملات، والبيانات، والتعقيد التقني، ومتطلبات التنفيذ، واحتياجات ما بعد الإطلاق. نبدأ أولاً بفهم المشروع وتحديد نطاقه قبل تقديم العرض التجاري."
+      }
+    },
+    {
+      "key": "project-timeline",
+      "sort_order": 2,
+      "category": null,
+      "question": {
+        "en": "How long does a project take?",
+        "ar": "كم يستغرق تنفيذ المشروع؟"
+      },
+      "answer": {
+        "en": "The timeline depends on the size and clarity of the scope, the number of workflows and integrations, and whether the project is delivered as one defined scope or through milestones. After the requirements are understood, we define a realistic delivery plan instead of giving a generic timeline.",
+        "ar": "تعتمد مدة التنفيذ على حجم ووضوح النطاق، وعدد العمليات والتكاملات، وما إذا كان المشروع سينفذ كنطاق محدد أو على مراحل. بعد فهم المتطلبات نحدد خطة تنفيذ واقعية بدلاً من إعطاء مدة عامة لا تعكس حجم العمل الحقيقي."
+      }
+    },
+    {
+      "key": "unclear-requirements",
+      "sort_order": 3,
+      "category": null,
+      "question": {
+        "en": "What if our requirements are not fully defined yet?",
+        "ar": "ماذا لو كانت متطلبات المشروع غير واضحة بالكامل؟"
+      },
+      "answer": {
+        "en": "That is normal for many custom software projects. We can begin with a discovery and scoping stage to understand the current process, users, priorities, data, integrations, risks, and expected outcomes before defining the implementation scope.",
+        "ar": "هذا طبيعي في كثير من مشاريع البرمجيات المخصصة. يمكن أن نبدأ بمرحلة اكتشاف وتحديد نطاق لفهم العمليات الحالية، والمستخدمين، والأولويات، والبيانات، والتكاملات، والمخاطر، والنتائج المطلوبة قبل تحديد نطاق التنفيذ."
+      }
+    },
+    {
+      "key": "existing-system",
+      "sort_order": 4,
+      "category": null,
+      "question": {
+        "en": "Can you work with an existing system instead of building from scratch?",
+        "ar": "هل يمكنكم العمل على نظام موجود بدلاً من بناء نظام جديد بالكامل؟"
+      },
+      "answer": {
+        "en": "Yes. The first step is to review the existing system, its architecture, data, dependencies, current limitations, and business goals. Depending on what we find, the right approach may be improvement, integration, phased modernization, or a replacement of specific parts rather than a full rebuild.",
+        "ar": "نعم. الخطوة الأولى هي مراجعة النظام الحالي وبنيته وبياناته واعتمادياته والمشكلات الموجودة وأهداف العمل. وبناءً على النتائج قد يكون الحل المناسب تطوير النظام، أو ربطه بأنظمة أخرى، أو تحديثه تدريجياً، أو استبدال أجزاء محددة منه بدلاً من إعادة بنائه بالكامل."
+      }
+    },
+    {
+      "key": "phased-delivery",
+      "sort_order": 5,
+      "category": null,
+      "question": {
+        "en": "Can a project be delivered in phases?",
+        "ar": "هل يمكن تنفيذ المشروع على مراحل؟"
+      },
+      "answer": {
+        "en": "Yes. Larger systems are often better delivered through clear milestones. Each milestone can have a defined scope and outcome, which helps control complexity, validate priorities, and make progress easier to review before moving to the next stage.",
+        "ar": "نعم. غالباً يكون تنفيذ الأنظمة الأكبر على مراحل واضحة أكثر فعالية. يمكن أن يكون لكل مرحلة نطاق ومخرجات محددة، مما يساعد على التحكم بالتعقيد، والتحقق من الأولويات، ومراجعة التقدم قبل الانتقال إلى المرحلة التالية."
+      }
+    },
+    {
+      "key": "post-launch-support",
+      "sort_order": 6,
+      "category": null,
+      "question": {
+        "en": "Do you provide support after launch?",
+        "ar": "هل توفرون دعماً بعد إطلاق المشروع؟"
+      },
+      "answer": {
+        "en": "Post-launch support can be included based on the needs of the system. This may cover technical support, maintenance, monitoring, fixes, improvements, or continued feature development. The support scope is defined clearly according to the project and required level of involvement.",
+        "ar": "يمكن توفير دعم بعد الإطلاق بحسب احتياجات النظام. وقد يشمل ذلك الدعم التقني، والصيانة، والمتابعة، وإصلاح المشكلات، والتحسينات، أو تطوير خصائص إضافية. يتم تحديد نطاق الدعم بشكل واضح وفق طبيعة المشروع ومستوى المتابعة المطلوبة."
+      }
+    },
+    {
+      "key": "integrations",
+      "sort_order": 7,
+      "category": null,
+      "question": {
+        "en": "Can you integrate the new system with our existing tools?",
+        "ar": "هل يمكن ربط النظام الجديد بالأدوات والأنظمة الموجودة لدينا؟"
+      },
+      "answer": {
+        "en": "Yes, when the required systems provide a suitable integration method such as an API, webhook, database interface, or another supported connection. We review the external system, its documentation, access requirements, limitations, and data flow before confirming the integration scope.",
+        "ar": "نعم، عندما توفر الأنظمة المطلوبة وسيلة مناسبة للتكامل مثل API أو Webhook أو واجهة قاعدة بيانات أو طريقة ربط مدعومة أخرى. نراجع النظام الخارجي وتوثيقه ومتطلبات الوصول والقيود وتدفق البيانات قبل تأكيد نطاق التكامل."
+      }
+    },
+    {
+      "key": "web-mobile",
+      "sort_order": 8,
+      "category": null,
+      "question": {
+        "en": "Can you build both web platforms and mobile applications?",
+        "ar": "هل يمكنكم تطوير منصة ويب وتطبيق جوال ضمن نفس المشروع؟"
+      },
+      "answer": {
+        "en": "Yes. A project can include a web platform, mobile application, backend services, APIs, authentication, permissions, notifications, payments, and integrations when those components are part of the required solution. The architecture is defined around the actual workflows and users rather than forcing every project into the same structure.",
+        "ar": "نعم. يمكن أن يتضمن المشروع منصة ويب، وتطبيق جوال، وخدمات Backend، وواجهات API، وتسجيل دخول وصلاحيات، وإشعارات، ومدفوعات، وتكاملات عندما تكون هذه المكونات جزءاً من الحل المطلوب. يتم تصميم البنية حول العمليات والمستخدمين الفعليين بدلاً من فرض نفس الهيكل على كل مشروع."
+      }
+    },
+    {
+      "key": "remote-collaboration",
+      "sort_order": 9,
+      "category": null,
+      "question": {
+        "en": "Can HexaTerminal work with remote clients and teams?",
+        "ar": "هل يمكن لـHexaTerminal العمل مع عملاء وفرق عن بُعد؟"
+      },
+      "answer": {
+        "en": "Yes. Projects can be managed remotely through structured communication, documented requirements, agreed milestones, regular progress reviews, and clear decision points throughout the project.",
+        "ar": "نعم. يمكن إدارة المشاريع عن بُعد من خلال تواصل منظم، ومتطلبات موثقة، ومراحل متفق عليها، ومراجعات دورية للتقدم، ونقاط قرار واضحة خلال تنفيذ المشروع."
+      }
+    },
+    {
+      "key": "source-code-handover",
+      "sort_order": 10,
+      "category": null,
+      "question": {
+        "en": "How are source code, access, and project handover handled?",
+        "ar": "كيف يتم التعامل مع الكود المصدري والصلاحيات وتسليم المشروع؟"
+      },
+      "answer": {
+        "en": "Ownership, repository access, credentials, deployment responsibilities, documentation, handover, and any third-party licensing terms should be defined clearly in the project proposal or agreement before implementation begins. The exact arrangement depends on the project and agreed commercial terms.",
+        "ar": "يتم تحديد ملكية الكود، والوصول إلى المستودعات، وبيانات الدخول، ومسؤوليات النشر، والتوثيق، وآلية التسليم، وأي شروط تخص تراخيص الأطراف الخارجية بشكل واضح في عرض المشروع أو الاتفاق قبل بدء التنفيذ. وتختلف التفاصيل بحسب طبيعة المشروع والشروط التجارية المتفق عليها."
+      }
+    }
+  ]
+}

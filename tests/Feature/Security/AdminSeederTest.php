@@ -52,7 +52,7 @@ class AdminSeederTest extends TestCase
         $this->assertNull($caseStudy->project_url);
     }
 
-    public function test_database_seeder_bootstraps_only_admin_approved_services_company_settings_team_and_engagement_models(): void
+    public function test_database_seeder_bootstraps_only_admin_approved_services_company_settings_team_engagement_models_and_faqs(): void
     {
         config([
             'app.admin_email' => 'bootstrap-admin@hexaterminal.test',
@@ -72,7 +72,7 @@ class AdminSeederTest extends TestCase
         $this->assertDatabaseCount('industries', 0);
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertDatabaseCount('articles', 0);
-        $this->assertDatabaseCount('faqs', 0);
+        $this->assertDatabaseCount('faqs', 10);
         $this->assertDatabaseCount('engagement_models', 4);
         $this->assertDatabaseCount('pricing_profiles', 0);
 
@@ -139,7 +139,14 @@ class AdminSeederTest extends TestCase
             ->assertJsonPath('data.engagement_models.0.slug', 'discovery-sprint')
             ->assertJsonPath('data.engagement_models.0.pricing_display_mode', 'request_quote')
             ->assertJsonPath('data.engagement_models.0.pricing', null)
-            ->assertJsonPath('data.estimator_available', false);
+            ->assertJsonPath('data.estimator_available', false)
+            ->assertJsonCount(0, 'data.faqs');
+
+        $this->getJson('/api/v1/public/faqs?locale=en')
+            ->assertOk()
+            ->assertJsonCount(10, 'data')
+            ->assertJsonPath('data.0.question', 'How much does a custom software project cost?')
+            ->assertJsonPath('data.0.category', null);
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void
