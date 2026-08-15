@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Service;
+use App\Services\ServiceSeedImageSynchronizer;
 use Database\Seeders\ServicesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
@@ -57,5 +58,24 @@ class ServicesSeederTest extends TestCase
         Storage::disk('public')->assertExists('service-offerings/custom-erp-crm-systems.png');
         Storage::disk('public')->assertExists('service-offerings/web-platforms-mobile-applications.png');
         Storage::disk('public')->assertExists('service-offerings/ecommerce-business-websites.png');
+    }
+
+    public function test_the_deployment_image_sync_does_not_change_services_or_duplicate_files(): void
+    {
+        Storage::fake('public');
+
+        $this->artisan('hexa:sync-service-images')->assertSuccessful();
+
+        $this->assertDatabaseCount('service_offerings', 0);
+        $this->assertSame([
+            'service-offerings/custom-erp-crm-systems.png',
+            'service-offerings/ecommerce-business-websites.png',
+            'service-offerings/web-platforms-mobile-applications.png',
+        ], Storage::disk('public')->allFiles(ServiceSeedImageSynchronizer::DIRECTORY));
+
+        $this->artisan('hexa:sync-service-images')->assertSuccessful();
+
+        $this->assertDatabaseCount('service_offerings', 0);
+        $this->assertCount(3, Storage::disk('public')->allFiles(ServiceSeedImageSynchronizer::DIRECTORY));
     }
 }

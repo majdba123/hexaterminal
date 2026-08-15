@@ -3,19 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\Service;
+use App\Services\ServiceSeedImageSynchronizer;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use JsonException;
 
 class ServicesSeeder extends Seeder
 {
     private const DATA_FILE = 'database/seeders/data/services_seed_data.json';
 
-    private const IMAGE_DIRECTORY = 'service-offerings';
-
     public function run(): void
     {
+        $images = app(ServiceSeedImageSynchronizer::class);
+
         foreach ($this->serviceDefinitions() as $definition) {
             $translations = $definition['translations'];
             $slug = $definition['slug'];
@@ -27,7 +27,7 @@ class ServicesSeeder extends Seeder
                 'summary' => $this->translations($translations, 'summary'),
                 'description' => $this->translations($translations, 'description'),
                 'icon' => $definition['icon'],
-                'cover_image' => $this->seedCoverImage($definition['cover_image_source']),
+                'cover_image' => $images->sync($definition['cover_image_source']),
                 'cover_image_alt' => $this->translations($translations, 'alt_text'),
                 'features' => $this->translations($translations, 'features'),
                 'tech_stack' => $definition['tech_stack'],
@@ -71,21 +71,4 @@ class ServicesSeeder extends Seeder
             ->all();
     }
 
-    private function seedCoverImage(string $source): string
-    {
-        $sourcePath = base_path('database/seeders/assets/services/'.basename($source));
-        $storagePath = self::IMAGE_DIRECTORY.'/'.basename($source);
-
-        if (! File::exists($sourcePath)) {
-            throw new \RuntimeException("The approved service image [{$source}] is missing.");
-        }
-
-        $disk = Storage::disk('public');
-
-        if (! $disk->exists($storagePath) || $disk->get($storagePath) !== File::get($sourcePath)) {
-            $disk->put($storagePath, File::get($sourcePath));
-        }
-
-        return $storagePath;
-    }
 }

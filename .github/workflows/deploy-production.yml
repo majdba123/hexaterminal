@@ -244,6 +244,7 @@ jobs:
             else
               php artisan migrate --force
             fi
+            php artisan hexa:sync-service-images
             php artisan optimize:clear
             php artisan optimize
             php artisan queue:restart
