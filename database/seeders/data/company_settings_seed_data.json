@@ -1,0 +1,52 @@
+{
+  "package_version": "V1",
+  "entity": "company_settings",
+  "source_of_truth": "HEXATERMINAL_CMS_DATA_ARCHITECTURE.md",
+  "confirmed_public_data": {
+    "company_name": {
+      "en": "HexaTerminal",
+      "ar": "HexaTerminal"
+    },
+    "tagline": {
+      "en": "Software systems built around real business needs.",
+      "ar": "أنظمة برمجية مبنية حول احتياجات الأعمال الحقيقية."
+    },
+    "description": {
+      "en": "HexaTerminal is a software development company that builds custom ERP and CRM systems, web platforms, mobile applications, e-commerce solutions, and business websites.",
+      "ar": "HexaTerminal شركة برمجيات تبني أنظمة ERP وCRM مخصصة، ومنصات ويب، وتطبيقات جوال، وحلول تجارة إلكترونية، ومواقع أعمال."
+    },
+    "footer_note": {
+      "en": "Custom software, platforms, and digital systems for growing businesses.",
+      "ar": "برمجيات مخصصة ومنصات وأنظمة رقمية للأعمال النامية."
+    },
+    "email": "majdbayer77@gmail.com",
+    "phone": "+963935027218"
+  },
+  "assumptions": {
+    "lead_recipients": [
+      "majdbayer77@gmail.com"
+    ],
+    "note": "Use the official email as the initial lead recipient unless the existing project already has a deliberate production-safe configuration that differs."
+  },
+  "leave_empty_until_confirmed": {
+    "address": {
+      "en": null,
+      "ar": null
+    },
+    "whatsapp": null,
+    "booking_url": null,
+    "default_og_image": null,
+    "social_links": {},
+    "analytics_provider": null,
+    "analytics_site_id": null
+  },
+  "rules": [
+    "Do not invent missing company facts.",
+    "Do not add fake address, social profiles, booking links, analytics identifiers, or marketing claims.",
+    "Use the existing Spatie translatable structure for translated fields.",
+    "Use the existing single-row CompanySetting architecture.",
+    "Do not redesign the CMS or add fields in this task.",
+    "Do not seed preview/demo entities.",
+    "Keep the fresh seed reproducible from the repository."
+  ]
+}

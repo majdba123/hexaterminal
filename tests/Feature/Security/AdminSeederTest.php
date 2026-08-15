@@ -3,6 +3,7 @@
 namespace Tests\Feature\Security;
 
 use App\Models\CaseStudy;
+use App\Models\CompanySetting;
 use App\Models\Industry;
 use App\Models\Service;
 use App\Models\System;
@@ -49,7 +50,7 @@ class AdminSeederTest extends TestCase
         $this->assertNull($caseStudy->project_url);
     }
 
-    public function test_database_seeder_bootstraps_only_admin_and_approved_services(): void
+    public function test_database_seeder_bootstraps_only_admin_approved_services_and_company_settings(): void
     {
         config([
             'app.admin_email' => 'bootstrap-admin@hexaterminal.test',
@@ -62,6 +63,7 @@ class AdminSeederTest extends TestCase
         $this->assertTrue($admin->hasRole('admin'));
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('service_offerings', 3);
+        $this->assertDatabaseCount('company_settings', 1);
         $this->assertDatabaseCount('systems', 0);
         $this->assertDatabaseCount('case_studies', 0);
         $this->assertDatabaseCount('industries', 0);
@@ -82,6 +84,22 @@ class AdminSeederTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.name', 'أنظمة ERP وCRM مخصصة')
             ->assertJsonPath('data.cover_image', url('/storage/service-offerings/custom-erp-crm-systems.png'));
+
+        $settings = CompanySetting::current();
+        $this->assertSame('HexaTerminal', $settings->getTranslation('company_name', 'en'));
+        $this->assertSame('HexaTerminal', $settings->getTranslation('company_name', 'ar'));
+        $this->assertSame('Software systems built around real business needs.', $settings->getTranslation('tagline', 'en'));
+        $this->assertSame('أنظمة برمجية مبنية حول احتياجات الأعمال الحقيقية.', $settings->getTranslation('tagline', 'ar'));
+        $this->assertSame('majdbayer77@gmail.com', $settings->email);
+        $this->assertSame('+963935027218', $settings->phone);
+        $this->assertSame('majdbayer77@gmail.com', $settings->lead_recipients);
+        $this->assertNull($settings->whatsapp);
+        $this->assertNull($settings->booking_url);
+        $this->assertNull($settings->default_og_image);
+        $this->assertNull($settings->analytics_provider);
+        $this->assertNull($settings->analytics_site_id);
+        $this->assertSame([], $settings->social_links);
+        $this->assertSame([], $settings->getTranslations('address'));
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void
