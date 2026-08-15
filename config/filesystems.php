@@ -39,7 +39,11 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            // Public CMS/media origin. Defaults to APP_URL when the runtime
+            // application URL is already the public API origin; otherwise ops
+            // can set PUBLIC_MEDIA_URL explicitly without changing internal
+            // container/service networking assumptions.
+            'url' => rtrim((string) env('PUBLIC_MEDIA_URL', env('APP_URL')), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],

@@ -16,6 +16,14 @@ trait ResolvesPublicMediaUrls
             return $path;
         }
 
-        return url(Storage::disk('public')->url(ltrim($path, '/')));
+        $url = Storage::disk('public')->url(ltrim($path, '/'));
+
+        if (filter_var($url, FILTER_VALIDATE_URL)) {
+            return $url;
+        }
+
+        $base = rtrim((string) config('app.public_media_url', config('app.url')), '/');
+
+        return $base.'/'.ltrim($url, '/');
     }
 }

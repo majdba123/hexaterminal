@@ -103,6 +103,19 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    |----------------------------------------------------------------------
+    | Public Media URL
+    |----------------------------------------------------------------------
+    |
+    | Absolute public origin for CMS-served files. Defaults to APP_URL when
+    | that already matches the public API host; otherwise set
+    | PUBLIC_MEDIA_URL explicitly so API resources never leak internal
+    | container/service URLs such as localhost.
+    |
+    */
+    'public_media_url' => env('PUBLIC_MEDIA_URL', env('APP_URL', 'http://localhost')),
+
     'asset_url' => env('ASSET_URL'),
 
     /*

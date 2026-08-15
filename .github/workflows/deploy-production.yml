@@ -56,6 +56,7 @@ jobs:
           APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
           APP_DEBUG=false
           APP_URL=http://127.0.0.1:8000
+          PUBLIC_MEDIA_URL=http://127.0.0.1:8000
           LOG_CHANNEL=stack
           LOG_DEPRECATIONS_CHANNEL=null
           LOG_LEVEL=warning
@@ -247,6 +248,7 @@ jobs:
             php artisan hexa:sync-service-images
             php artisan optimize:clear
             php artisan optimize
+            php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); $expected = "https://api.hexaterminal.com/storage"; $actual = config("filesystems.disks.public.url"); if ($actual !== $expected) { fwrite(STDERR, "Invalid public media URL: {$actual}\n"); exit(1); }'
             php artisan queue:restart
 
             systemctl restart hexa-frontend

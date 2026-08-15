@@ -7,7 +7,6 @@ use App\Services\ServiceSeedImageSynchronizer;
 use Database\Seeders\ServicesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class ServicesSeederTest extends TestCase
@@ -83,7 +82,10 @@ class ServicesSeederTest extends TestCase
     public function test_service_resource_uses_the_active_public_storage_url_contract(): void
     {
         Storage::fake('public');
-        URL::forceRootUrl('https://api.hexaterminal.test');
+        config([
+            'app.public_media_url' => 'https://api.hexaterminal.test',
+            'filesystems.disks.public.url' => '/storage',
+        ]);
 
         $this->seed(ServicesSeeder::class);
 
@@ -91,6 +93,6 @@ class ServicesSeederTest extends TestCase
 
         $this->getJson('/api/v1/public/services/'.$service->slug)
             ->assertOk()
-            ->assertJsonPath('data.cover_image', 'http://api.hexaterminal.test/storage/service-offerings/custom-erp-crm-systems.png');
+            ->assertJsonPath('data.cover_image', 'https://api.hexaterminal.test/storage/service-offerings/custom-erp-crm-systems.png');
     }
 }
