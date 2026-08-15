@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\FaqItem;
 use App\Models\Service;
 use App\Services\RevalidationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -84,6 +85,25 @@ class RevalidationTest extends TestCase
         Service::create(['slug' => 'crm', 'name' => ['en' => 'CRM'], 'is_published' => true]);
 
         Http::assertSent(fn ($request) => $request['resource'] === 'services' && $request['slug'] === 'crm');
+    }
+
+    public function test_saving_a_faq_item_triggers_home_revalidation_when_enabled(): void
+    {
+        Http::fake(['*' => Http::response(['revalidated' => true], 200)]);
+        config([
+            'revalidation.enabled' => true,
+            'revalidation.url' => 'https://staging.example.test/api/revalidate',
+            'revalidation.secret' => 's',
+        ]);
+
+        FaqItem::create([
+            'question' => ['en' => 'Q', 'ar' => 'س'],
+            'answer' => ['en' => 'A', 'ar' => 'ج'],
+            'is_published' => true,
+            'sort_order' => 1,
+        ]);
+
+        Http::assertSent(fn ($request) => $request['resource'] === 'home' && ! isset($request['slug']));
     }
 
     public function test_a_failing_frontend_never_breaks_the_save(): void
