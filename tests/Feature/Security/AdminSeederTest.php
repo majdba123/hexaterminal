@@ -7,6 +7,7 @@ use App\Models\CompanySetting;
 use App\Models\Industry;
 use App\Models\Service;
 use App\Models\System;
+use App\Models\TeamMember;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\UsersTableSeeder;
@@ -64,11 +65,11 @@ class AdminSeederTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('service_offerings', 3);
         $this->assertDatabaseCount('company_settings', 1);
+        $this->assertDatabaseCount('team_members', 1);
         $this->assertDatabaseCount('systems', 0);
         $this->assertDatabaseCount('case_studies', 0);
         $this->assertDatabaseCount('industries', 0);
         $this->assertDatabaseCount('testimonials', 0);
-        $this->assertDatabaseCount('team_members', 0);
         $this->assertDatabaseCount('articles', 0);
         $this->assertDatabaseCount('faqs', 0);
         $this->assertDatabaseCount('engagement_models', 0);
@@ -100,6 +101,20 @@ class AdminSeederTest extends TestCase
         $this->assertNull($settings->analytics_site_id);
         $this->assertSame([], $settings->social_links);
         $this->assertSame([], $settings->getTranslations('address'));
+
+        $member = TeamMember::where('slug', 'majd-bayer')->firstOrFail();
+        $this->assertSame('Majd', $member->first_name);
+        $this->assertSame('Bayer', $member->last_name);
+        $this->assertSame('Founder & Software Engineer', $member->getTranslation('position', 'en'));
+        $this->assertSame('المؤسس ومهندس برمجيات', $member->getTranslation('position', 'ar'));
+        $this->assertSame('team/majd-bayer.jpg', $member->photo);
+        $this->assertTrue($member->is_published);
+        $this->assertTrue($member->publication_consent);
+        $this->assertTrue($member->is_founder);
+        $this->assertTrue($member->seo_eligible);
+        $this->assertTrue($member->person_jsonld_eligible);
+        $this->assertSame('https://github.com/majdba123', $member->github_url);
+        $this->assertNull($member->linkedin_url);
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Public;
 
 use App\Http\Resources\V1\Public\Concerns\EmbedsPublicClaims;
+use App\Http\Resources\V1\Public\Concerns\ResolvesPublicMediaUrls;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,6 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TeamMemberResource extends JsonResource
 {
     use EmbedsPublicClaims;
+    use ResolvesPublicMediaUrls;
 
     public function toArray(Request $request): array
     {
@@ -27,7 +29,7 @@ class TeamMemberResource extends JsonResource
             'expertise' => $this->expertise,
             'languages' => $this->languages,
             'location' => $this->location,
-            'photo' => $this->photo,
+            'photo' => $this->publicMediaUrl($this->photo),
             'photo_alt' => $this->photo_alt,
             'github_url' => $this->github_url,
             'linkedin_url' => $this->linkedin_url,

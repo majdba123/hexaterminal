@@ -1,0 +1,74 @@
+{
+  "package_version": "V1",
+  "entity": "team_members",
+  "profile_type": "founder",
+  "verified_source_notes": [
+    "Name, location, role, experience and technical background are based on the user's supplied CV.",
+    "Email and phone were explicitly confirmed by the user in the current website data workflow.",
+    "The user explicitly supplied this portrait and requested that it be used for the HexaTerminal About/Team profile."
+  ],
+  "member": {
+    "slug": "majd-bayer",
+    "first_name": "Majd",
+    "last_name": "Bayer",
+    "position": {
+      "en": "Founder & Software Engineer",
+      "ar": "المؤسس ومهندس برمجيات"
+    },
+    "bio": {
+      "en": "Majd Bayer is the founder and software engineer behind HexaTerminal, with a backend-focused full-stack engineering background and more than three years of company and freelance software delivery experience. He works across the full software development lifecycle, from requirements analysis and system architecture to implementation, testing, deployment, and production support, with a focus on custom ERP and CRM systems, web platforms, APIs, databases, integrations, and business applications.",
+      "ar": "مجد باير هو مؤسس HexaTerminal ومهندس برمجيات بخبرة Full-Stack مع تركيز أساسي على هندسة الـBackend، ويمتلك أكثر من ثلاث سنوات من الخبرة في تنفيذ المشاريع البرمجية ضمن الشركات والعمل الحر. يعمل على دورة تطوير البرمجيات كاملة، من تحليل المتطلبات وتصميم بنية النظام إلى التنفيذ والاختبار والنشر والدعم في بيئات الإنتاج، مع تركيز على أنظمة ERP وCRM المخصصة، ومنصات الويب، وواجهات API، وقواعد البيانات، والتكاملات، وتطبيقات الأعمال."
+    },
+    "photo_alt": {
+      "en": "Portrait of Majd Bayer, Founder and Software Engineer at HexaTerminal.",
+      "ar": "صورة مجد باير، مؤسس HexaTerminal ومهندس برمجيات."
+    },
+    "specialization": "Backend-Focused Full Stack Software Engineering",
+    "email": "majdbayer77@gmail.com",
+    "phone": "+963935027218",
+    "location": "Damascus, Syria",
+    "expertise": [
+      "Backend Engineering",
+      "Custom ERP & CRM Systems",
+      "Laravel / PHP",
+      "Python / FastAPI",
+      "REST API Design & Integrations",
+      "Database Design & Data Modeling",
+      "System Architecture",
+      "Next.js / TypeScript",
+      "Roles & Permissions",
+      "Workflow Automation",
+      "Production Deployment & Troubleshooting"
+    ],
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "links": {
+      "github": "https://github.com/majdba123"
+    },
+    "image_source_filename": "images/majd-bayer.jpg",
+    "target_public_disk_path": "team/majd-bayer.jpg",
+    "cv": null,
+    "sort_order": 1,
+    "publication_intent": {
+      "is_published": true,
+      "publication_consent": true,
+      "is_founder": true,
+      "note": "The user explicitly requested publication of this profile and supplied the portrait for this purpose."
+    },
+    "optional_governance_flags": {
+      "instruction": "Inspect the exact current flag names and semantics. Enable SEO/Person JSON-LD eligibility only if the existing implementation requirements are satisfied by this profile; do not guess field names."
+    }
+  },
+  "do_not_invent": [
+    "LinkedIn URL",
+    "CV file path",
+    "certifications",
+    "awards",
+    "client counts",
+    "project counts",
+    "revenue",
+    "unverified achievements"
+  ]
+}

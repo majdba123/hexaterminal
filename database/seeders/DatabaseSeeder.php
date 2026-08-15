@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             ServicesSeeder::class,
             CompanySettingsSeeder::class,
+            TeamMembersSeeder::class,
         ]);
     }
 }
