@@ -5,6 +5,7 @@ namespace Tests\Feature\Security;
 use App\Models\CaseStudy;
 use App\Models\CompanySetting;
 use App\Models\Industry;
+use App\Models\PricingProfile;
 use App\Models\Service;
 use App\Models\System;
 use App\Models\TeamMember;
@@ -51,7 +52,7 @@ class AdminSeederTest extends TestCase
         $this->assertNull($caseStudy->project_url);
     }
 
-    public function test_database_seeder_bootstraps_only_admin_approved_services_and_company_settings(): void
+    public function test_database_seeder_bootstraps_only_admin_approved_services_company_settings_team_and_engagement_models(): void
     {
         config([
             'app.admin_email' => 'bootstrap-admin@hexaterminal.test',
@@ -72,7 +73,8 @@ class AdminSeederTest extends TestCase
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertDatabaseCount('articles', 0);
         $this->assertDatabaseCount('faqs', 0);
-        $this->assertDatabaseCount('engagement_models', 0);
+        $this->assertDatabaseCount('engagement_models', 4);
+        $this->assertDatabaseCount('pricing_profiles', 0);
 
         $this->getJson('/api/v1/public/home')
             ->assertOk()
@@ -115,6 +117,29 @@ class AdminSeederTest extends TestCase
         $this->assertTrue($member->person_jsonld_eligible);
         $this->assertSame('https://github.com/majdba123', $member->github_url);
         $this->assertNull($member->linkedin_url);
+
+        $this->assertSame(
+            ['discovery-sprint', 'fixed-scope-project', 'milestone-based-delivery', 'ongoing-support'],
+            \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('slug')->all()
+        );
+        $this->assertSame(
+            ['discovery_sprint', 'fixed_project', 'milestone_based', 'support_plan'],
+            \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('billing_model')->all()
+        );
+        $this->assertSame(
+            array_fill(0, 4, 'request_quote'),
+            \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('pricing_display_mode')->all()
+        );
+        $this->assertSame([1, 2, 3, 4], \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('sort_order')->all());
+        $this->assertSame(0, PricingProfile::count());
+
+        $this->getJson('/api/v1/public/pricing?locale=en')
+            ->assertOk()
+            ->assertJsonCount(4, 'data.engagement_models')
+            ->assertJsonPath('data.engagement_models.0.slug', 'discovery-sprint')
+            ->assertJsonPath('data.engagement_models.0.pricing_display_mode', 'request_quote')
+            ->assertJsonPath('data.engagement_models.0.pricing', null)
+            ->assertJsonPath('data.estimator_available', false);
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void

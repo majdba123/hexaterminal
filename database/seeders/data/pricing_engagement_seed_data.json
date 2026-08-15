@@ -1,0 +1,86 @@
+{
+  "package_version": "V1",
+  "entity": "engagement_models",
+  "engagement_models": [
+    {
+      "slug": "discovery-sprint",
+      "billing_model": "discovery_sprint",
+      "display_mode": "request_quote",
+      "sort_order": 1,
+      "localized": {
+        "en": {
+          "title": "Discovery Sprint",
+          "summary": "Define the right system before committing to a full build.",
+          "description": "Best for projects where the business problem is clear, but the workflows, requirements, integrations, or technical scope still need to be defined. During discovery, we review the current process, users, data, dependencies, risks, and required integrations. The goal is to turn an unclear request into a structured implementation scope.",
+          "best_for": "Custom ERP & CRM projects\nComplex platforms\nExisting systems that need major changes\nProjects with unclear or evolving requirements"
+        },
+        "ar": {
+          "title": "مرحلة الاكتشاف وتحديد النطاق",
+          "summary": "نحدد النظام الصحيح قبل الالتزام بالتنفيذ الكامل.",
+          "description": "مناسب للمشاريع التي تكون فيها المشكلة واضحة، لكن تفاصيل العمليات أو المتطلبات أو التكاملات أو النطاق التقني ما زالت بحاجة إلى تحديد. خلال مرحلة Discovery نفهم طريقة العمل الحالية، والمستخدمين، والبيانات، والاعتماديات، والمخاطر، والتكاملات المطلوبة، ثم نحول الفكرة إلى نطاق تنفيذ واضح ومنظم.",
+          "best_for": "أنظمة ERP وCRM المخصصة\nالمنصات المعقدة\nالأنظمة الحالية التي تحتاج تغييرات كبيرة\nالمشاريع ذات المتطلبات غير المكتملة أو المتغيرة"
+        }
+      }
+    },
+    {
+      "slug": "fixed-scope-project",
+      "billing_model": "fixed_project",
+      "display_mode": "request_quote",
+      "sort_order": 2,
+      "localized": {
+        "en": {
+          "title": "Fixed-Scope Project",
+          "summary": "A defined scope, clear deliverables, and an agreed project price.",
+          "description": "Best when the requirements and boundaries of the project can be defined before development begins. We agree on the scope, deliverables, responsibilities, assumptions, and delivery plan before the build starts.",
+          "best_for": "Business websites\nDefined e-commerce projects\nSmaller platforms\nClearly scoped system modules\nProjects with stable requirements"
+        },
+        "ar": {
+          "title": "مشروع بنطاق محدد",
+          "summary": "نطاق واضح، ومخرجات محددة، وسعر متفق عليه للمشروع.",
+          "description": "مناسب عندما تكون متطلبات المشروع وحدوده واضحة ويمكن تحديدها قبل بدء التطوير. يتم الاتفاق مسبقاً على نطاق العمل، والمخرجات، والمسؤوليات، والافتراضات، وخطة التنفيذ.",
+          "best_for": "مواقع الأعمال\nمشاريع التجارة الإلكترونية محددة النطاق\nالمنصات الأصغر\nوحدات الأنظمة ذات النطاق الواضح\nالمشاريع ذات المتطلبات المستقرة"
+        }
+      }
+    },
+    {
+      "slug": "milestone-based-delivery",
+      "billing_model": "milestone_based",
+      "display_mode": "request_quote",
+      "sort_order": 3,
+      "localized": {
+        "en": {
+          "title": "Milestone-Based Delivery",
+          "summary": "Build larger software in controlled, measurable stages.",
+          "description": "For projects that are better delivered through clearly defined phases instead of one large delivery. Each milestone has a defined scope and outcome, allowing the project to progress in manageable stages while keeping priorities and delivery visible.",
+          "best_for": "ERP & CRM systems\nSaaS products\nLarge web platforms\nMobile applications\nMulti-module business systems"
+        },
+        "ar": {
+          "title": "تنفيذ على مراحل",
+          "summary": "تنفيذ المشاريع الأكبر على مراحل واضحة وقابلة للقياس.",
+          "description": "مناسب للمشاريع التي يكون تنفيذها على مراحل محددة أفضل من محاولة بناء كل شيء دفعة واحدة. لكل مرحلة نطاق ومخرجات واضحة، وهذا يساعد على إدارة الأولويات وتقليل المخاطر ومتابعة تقدم المشروع بشكل أفضل.",
+          "best_for": "أنظمة ERP وCRM\nمنتجات SaaS\nمنصات الويب الكبيرة\nتطبيقات الجوال\nأنظمة الأعمال متعددة الوحدات"
+        }
+      }
+    },
+    {
+      "slug": "ongoing-support",
+      "billing_model": "support_plan",
+      "display_mode": "request_quote",
+      "sort_order": 4,
+      "localized": {
+        "en": {
+          "title": "Ongoing Support & Iteration",
+          "summary": "Support, improvements, and continued development after launch.",
+          "description": "Software often continues to evolve after release. This model is for businesses that need ongoing technical support, improvements, maintenance, monitoring, or additional development after launch. The scope of support depends on the system and the level of involvement required.",
+          "best_for": "Post-launch support\nMaintenance and monitoring\nContinuous improvements\nAdditional feature development"
+        },
+        "ar": {
+          "title": "الدعم والتطوير المستمر",
+          "summary": "دعم وتحسين وتطوير مستمر بعد الإطلاق.",
+          "description": "الأنظمة البرمجية غالباً تستمر بالتطور بعد الإطلاق. هذا النموذج مناسب للشركات التي تحتاج إلى دعم تقني، أو صيانة، أو تحسينات، أو متابعة، أو تطوير إضافي بعد تشغيل النظام. نطاق الدعم يتم تحديده بحسب طبيعة النظام ومستوى المتابعة المطلوبة.",
+          "best_for": "الدعم بعد الإطلاق\nالصيانة والمتابعة\nالتحسين المستمر\nتطوير خصائص إضافية"
+        }
+      }
+    }
+  ]
+}
