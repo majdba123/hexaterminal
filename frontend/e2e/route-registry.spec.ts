@@ -71,6 +71,7 @@ test.describe("Route registry consistency", () => {
       "home",
       "services",
       "systems",
+      "industries",
       "case-studies",
       "about",
       "contact",
@@ -78,7 +79,7 @@ test.describe("Route registry consistency", () => {
   });
 
   test("secondary routes remain registered but outside primary navigation", () => {
-    const hiddenRouteIds = ["industries", "insights", "pricing", "privacy", "terms"];
+    const hiddenRouteIds = ["insights", "pricing", "privacy", "terms"];
     const primaryIds = new Set(primaryNavRoutes().map((r) => r.id));
 
     for (const id of hiddenRouteIds) {

@@ -157,6 +157,7 @@ export const ROUTES: readonly RouteDefinition[] = [
   {
     id: "industries",
     path: "/industries",
+    navKey: "industries",
     footerGroup: "quickLinks",
     breadcrumbKey: "industries",
     pageType: "hub",
