@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Security;
 
-use App\Models\User;
-use Database\Seeders\UsersTableSeeder;
-use Database\Seeders\WebsitePreviewSeeder;
 use App\Models\CaseStudy;
 use App\Models\Industry;
 use App\Models\Service;
 use App\Models\System;
+use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\WebsitePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -81,7 +81,7 @@ class AdminSeederTest extends TestCase
         $this->getJson('/api/v1/public/services/custom-erp-crm-systems?locale=ar')
             ->assertOk()
             ->assertJsonPath('data.name', 'أنظمة ERP وCRM مخصصة')
-            ->assertJsonPath('data.cover_image', url('/api/storage/service-offerings/custom-erp-crm-systems.png'));
+            ->assertJsonPath('data.cover_image', url('/storage/service-offerings/custom-erp-crm-systems.png'));
     }
 
     public function test_seeder_creates_no_user_when_credentials_missing(): void

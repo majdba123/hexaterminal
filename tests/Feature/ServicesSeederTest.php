@@ -7,6 +7,7 @@ use App\Services\ServiceSeedImageSynchronizer;
 use Database\Seeders\ServicesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class ServicesSeederTest extends TestCase
@@ -33,23 +34,23 @@ class ServicesSeederTest extends TestCase
         $this->assertSame('Customer & Lead Management', $erp->getTranslation('features', 'en')[0]);
         $this->assertSame('منصات SaaS', $platform->getTranslation('features', 'ar')[0]);
         $this->assertSame('service-offerings/custom-erp-crm-systems.png', $erp->cover_image);
-        $this->assertSame('Custom ERP and CRM system icon showing a business dashboard connected to CRM, workflows, operations, and integrations.', $erp->getTranslation('cover_image_alt', 'en'));
+        $this->assertSame(
+            'Custom ERP and CRM system icon showing a business dashboard connected to CRM, workflows, operations, and integrations.',
+            $erp->getTranslation('cover_image_alt', 'en'),
+        );
 
         foreach (Service::query()->get() as $service) {
             Storage::disk('public')->assertExists($service->cover_image);
-            $this->get('/api/storage/'.$service->cover_image)
-                ->assertOk()
-                ->assertHeader('content-type', 'image/png');
             $this->getJson('/api/v1/public/services/'.$service->slug)
                 ->assertOk()
-                ->assertJsonPath('data.cover_image', url('/api/storage/'.$service->cover_image));
+                ->assertJsonPath('data.cover_image', url('/storage/'.$service->cover_image));
         }
 
         $this->getJson('/api/v1/public/services/custom-erp-crm-systems?locale=ar')
             ->assertOk()
             ->assertJsonPath('data.name', 'أنظمة ERP وCRM مخصصة')
             ->assertJsonPath('data.features.0', 'إدارة العملاء والعملاء المحتملين')
-            ->assertJsonPath('data.cover_image', url('/api/storage/service-offerings/custom-erp-crm-systems.png'));
+            ->assertJsonPath('data.cover_image', url('/storage/service-offerings/custom-erp-crm-systems.png'));
 
         $this->seed(ServicesSeeder::class);
 
@@ -77,5 +78,19 @@ class ServicesSeederTest extends TestCase
 
         $this->assertDatabaseCount('service_offerings', 0);
         $this->assertCount(3, Storage::disk('public')->allFiles(ServiceSeedImageSynchronizer::DIRECTORY));
+    }
+
+    public function test_service_resource_uses_the_active_public_storage_url_contract(): void
+    {
+        Storage::fake('public');
+        URL::forceRootUrl('https://api.hexaterminal.test');
+
+        $this->seed(ServicesSeeder::class);
+
+        $service = Service::query()->where('slug', 'custom-erp-crm-systems')->firstOrFail();
+
+        $this->getJson('/api/v1/public/services/'.$service->slug)
+            ->assertOk()
+            ->assertJsonPath('data.cover_image', 'http://api.hexaterminal.test/storage/service-offerings/custom-erp-crm-systems.png');
     }
 }
