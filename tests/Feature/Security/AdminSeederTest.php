@@ -52,7 +52,7 @@ class AdminSeederTest extends TestCase
         $this->assertNull($caseStudy->project_url);
     }
 
-    public function test_database_seeder_bootstraps_only_admin_approved_services_company_settings_team_engagement_models_and_faqs(): void
+    public function test_database_seeder_bootstraps_the_admin_approved_foundation_plus_the_published_malik_system(): void
     {
         config([
             'app.admin_email' => 'bootstrap-admin@hexaterminal.test',
@@ -67,7 +67,7 @@ class AdminSeederTest extends TestCase
         $this->assertDatabaseCount('service_offerings', 3);
         $this->assertDatabaseCount('company_settings', 1);
         $this->assertDatabaseCount('team_members', 1);
-        $this->assertDatabaseCount('systems', 0);
+        $this->assertDatabaseCount('systems', 1);
         $this->assertDatabaseCount('case_studies', 0);
         $this->assertDatabaseCount('industries', 0);
         $this->assertDatabaseCount('testimonials', 0);
@@ -80,7 +80,8 @@ class AdminSeederTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.services.0.slug', Service::CORE_SERVICE_SLUGS[0])
             ->assertJsonCount(3, 'data.services')
-            ->assertJsonCount(0, 'data.featured_systems')
+            ->assertJsonCount(1, 'data.featured_systems')
+            ->assertJsonPath('data.featured_systems.0.slug', 'malik-group')
             ->assertJsonCount(0, 'data.featured_case_studies');
 
         $this->getJson('/api/v1/public/services/custom-erp-crm-systems?locale=ar')

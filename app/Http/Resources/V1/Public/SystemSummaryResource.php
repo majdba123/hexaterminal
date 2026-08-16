@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Public;
 
+use App\Http\Resources\V1\Public\Concerns\ResolvesPublicMediaUrls;
 use App\Models\System;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,6 +16,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class SystemSummaryResource extends JsonResource
 {
+    use ResolvesPublicMediaUrls;
+
     public function toArray(Request $request): array
     {
         return [
@@ -22,7 +25,7 @@ class SystemSummaryResource extends JsonResource
             'type' => $this->type,
             'name' => $this->name,
             'tagline' => $this->tagline,
-            'cover_image' => $this->cover_image,
+            'cover_image' => $this->publicMediaUrl($this->cover_image),
             'cover_image_alt' => $this->cover_image_alt,
         ];
     }

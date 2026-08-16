@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             TeamMembersSeeder::class,
             EngagementModelsSeeder::class,
             FaqItemsSeeder::class,
+            SystemsSeeder::class,
         ]);
     }
 }

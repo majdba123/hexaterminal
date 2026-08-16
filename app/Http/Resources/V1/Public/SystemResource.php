@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Public;
 
 use App\Http\Resources\V1\Public\Concerns\EmbedsSeoMeta;
+use App\Http\Resources\V1\Public\Concerns\ResolvesPublicMediaUrls;
 use App\Models\System;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,6 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SystemResource extends JsonResource
 {
     use EmbedsSeoMeta;
+    use ResolvesPublicMediaUrls;
 
     public function toArray(Request $request): array
     {
@@ -30,9 +32,12 @@ class SystemResource extends JsonResource
             'business_outcomes' => $this->business_outcomes,
             'target_audience' => $this->target_audience,
             'tech_stack' => $this->tech_stack ?? [],
-            'cover_image' => $this->cover_image,
+            'cover_image' => $this->publicMediaUrl($this->cover_image),
             'cover_image_alt' => $this->cover_image_alt,
-            'gallery' => $this->gallery ?? [],
+            'gallery' => array_values(array_filter(array_map(
+                fn (?string $path): ?string => $this->publicMediaUrl($path),
+                $this->gallery ?? [],
+            ))),
             'demo_url' => $this->demo_url,
             'live_url' => $this->live_url,
             'is_featured' => $this->is_featured,

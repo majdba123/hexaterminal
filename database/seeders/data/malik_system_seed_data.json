@@ -1,0 +1,85 @@
+{
+  "package_version": "V1",
+  "entity": "systems",
+  "record_count": 1,
+  "source": {
+    "capture_url": "https://malik.hexaterminal.com/",
+    "capture_type": "representative sample",
+    "captured_pages": 7,
+    "notes": [
+      "The capture intentionally sampled representative pages/items rather than exporting the whole catalog.",
+      "Public content confirms a furniture and interiors storefront/catalog with categories, new arrivals, catalog filtering, product detail galleries, pricing display, and WhatsApp enquiry actions.",
+      "No client metrics, revenue, conversion lift, or quantified business outcomes were present in the capture.",
+      "Technology stack was not proven by the public capture and must remain empty unless independently verified."
+    ]
+  },
+  "system": {
+    "slug": "malik-group",
+    "type": "client_system",
+    "category": "Furniture E-commerce & Product Catalog",
+    "name": {
+      "en": "Malik Group Furniture Catalog",
+      "ar": "كتالوج أثاث Malik Group"
+    },
+    "tagline": {
+      "en": "A furniture catalog website built for clear product discovery, detailed browsing, and direct customer enquiries.",
+      "ar": "موقع كتالوج أثاث صُمم لتسهيل اكتشاف المنتجات واستعراض تفاصيلها والتواصل المباشر مع العملاء."
+    },
+    "short_description": {
+      "en": "A digital furniture storefront for Malik Group that organizes products by room and category, highlights new arrivals, supports catalog search and price filtering, presents multi-image product details, and connects customers directly through WhatsApp.",
+      "ar": "واجهة رقمية لمنتجات Malik Group تنظّم الأثاث حسب الغرف والتصنيفات، وتعرض أحدث المنتجات، وتدعم البحث والتصفية حسب السعر، وتوفر صفحات تفصيلية بصور متعددة مع تواصل مباشر عبر WhatsApp."
+    },
+    "full_description": {
+      "en": "Malik Group Furniture Catalog is a customer-facing furniture and interiors website designed around product discovery. Visitors can browse collections by room, review new arrivals, explore the full catalog, filter products by category, name, and price, and open dedicated product pages with image galleries, pricing, category context, and direct WhatsApp enquiry actions. The result is a structured public catalog that gives the business one clear digital destination for presenting a changing furniture inventory and gives customers a simple path from discovery to enquiry.",
+      "ar": "كتالوج أثاث Malik Group هو موقع موجه للعملاء لعرض الأثاث والديكور بطريقة مبنية حول سهولة اكتشاف المنتجات. يستطيع الزائر تصفح المجموعات حسب الغرفة، ومراجعة أحدث الإضافات، واستعراض الكتالوج الكامل، وتصفية المنتجات حسب التصنيف والاسم والسعر، ثم فتح صفحة مستقلة لكل منتج تحتوي على معرض صور وسعر وسياق التصنيف وخيار تواصل مباشر عبر WhatsApp. النتيجة هي كتالوج رقمي منظم يمنح النشاط التجاري وجهة واضحة لعرض منتجاته المتغيرة، ويمنح العميل مساراً بسيطاً من الاستكشاف إلى الاستفسار."
+    },
+    "problem": {
+      "en": "A furniture business with products spread across multiple room categories needs a structured way to present a changing catalog without making customers search through disconnected product posts or ask for basic product information one item at a time. Customers need to understand what is available, browse relevant categories, compare visible prices, inspect product photos, and reach the business when a product interests them.",
+      "ar": "نشاط تجاري يبيع أثاثاً موزعاً على عدة غرف وتصنيفات يحتاج إلى طريقة منظمة لعرض كتالوج متغير، بدلاً من جعل العميل يبحث بين عروض متفرقة أو يطلب المعلومات الأساسية عن كل منتج بشكل منفصل. العميل يحتاج أن يعرف ما هو متوفر، ويتصفح التصنيفات المناسبة، ويرى الأسعار الظاهرة، ويستعرض صور المنتج، ثم يتواصل مع النشاط عندما يجد ما يناسبه."
+    },
+    "solution": {
+      "en": "The website turns the furniture inventory into a structured storefront: room-based collections, new-arrival discovery, a searchable and price-filterable full catalog, product cards with key information, dedicated product detail pages with multi-image galleries, category navigation, and direct WhatsApp enquiry actions.",
+      "ar": "يحوّل الموقع مخزون الأثاث إلى واجهة عرض منظمة من خلال مجموعات حسب الغرف، وقسم لأحدث المنتجات، وكتالوج كامل قابل للبحث والتصفية حسب السعر، وبطاقات تعرض المعلومات الأساسية، وصفحات تفصيلية لكل منتج مع معرض صور متعدد، وتنقل حسب التصنيف، وخيار استفسار مباشر عبر WhatsApp."
+    },
+    "features": {
+      "en": "Room and category-based product browsing\nNew arrivals showcase\nFull furniture catalog\nCategory, product-name, minimum-price, and maximum-price filtering\nProduct cards with category, price, photo count, and detail links\nDedicated product detail pages\nMulti-image product galleries\nBreadcrumb and related-category navigation\nDirect WhatsApp product enquiries\nSocial and contact access from the storefront",
+      "ar": "تصفح المنتجات حسب الغرفة والتصنيف\nعرض أحدث المنتجات\nكتالوج كامل للأثاث\nتصفية حسب التصنيف واسم المنتج والحد الأدنى والأعلى للسعر\nبطاقات منتجات تعرض التصنيف والسعر وعدد الصور ورابط التفاصيل\nصفحات مستقلة لتفاصيل المنتجات\nمعارض صور متعددة لكل منتج\nتنقل هرمي وروابط للعودة إلى التصنيف المرتبط\nاستفسار مباشر عن المنتج عبر WhatsApp\nروابط التواصل والحسابات الاجتماعية من واجهة المتجر"
+    },
+    "business_outcomes": {
+      "en": "Centralizes the public product catalog in one branded digital destination\nMakes a multi-category furniture catalog easier to browse and filter\nGives customers more product context before contacting the business\nCreates a direct path from product discovery to WhatsApp enquiry\nSupports presentation of both new arrivals and the broader catalog",
+      "ar": "تجميع كتالوج المنتجات العام ضمن وجهة رقمية واحدة تحمل هوية العلامة\nتسهيل تصفح وتصفية كتالوج أثاث متعدد التصنيفات\nإعطاء العميل معلومات وصوراً أوضح قبل التواصل مع النشاط\nإنشاء مسار مباشر من اكتشاف المنتج إلى الاستفسار عبر WhatsApp\nدعم عرض أحدث المنتجات إلى جانب الكتالوج الكامل"
+    },
+    "target_audience": {
+      "en": "Customers browsing furniture and interiors for living rooms, bedrooms, dining spaces, home offices, storage, and related home furnishing needs.",
+      "ar": "العملاء الباحثون عن الأثاث والديكور لغرف المعيشة وغرف النوم وغرف الطعام والمكاتب المنزلية والتخزين واحتياجات تأثيث المنزل."
+    },
+    "tech_stack": [],
+    "cover_image": "systems/malik-group-cover.png",
+    "cover_image_alt": {
+      "en": "Malik Group furniture catalog homepage showing the showroom hero and product discovery interface.",
+      "ar": "الصفحة الرئيسية لكتالوج أثاث Malik Group وتظهر واجهة المعرض وتجربة اكتشاف المنتجات."
+    },
+    "gallery": [
+      "systems/gallery/malik-group-01-shop-by-room.png",
+      "systems/gallery/malik-group-02-full-catalog.png",
+      "systems/gallery/malik-group-03-category-page.png",
+      "systems/gallery/malik-group-04-product-detail.png"
+    ],
+    "demo_url": null,
+    "live_url": "https://malik.hexaterminal.com/",
+    "is_featured": true,
+    "sort_order": 1,
+    "publication_intent": "published"
+  },
+  "future_case_study_context": {
+    "recommended_service_slug": "ecommerce-business-websites",
+    "do_not_create_case_study_in_this_task": true,
+    "industry_candidate_only_not_to_seed": "Furniture & Interiors / Retail",
+    "note": "System has no direct service_offering_id in the documented CMS. Service linkage belongs on a future CaseStudy."
+  },
+  "known_capture_quality_notes": [
+    "The public capture contains a placeholder-looking email address ending in .example; do not copy client contact data into HexaTerminal portfolio content.",
+    "The capture contains inconsistent WhatsApp/contact link values across sections; do not reproduce those values in the System record.",
+    "Some catalog items display 0.00 USD and at least one category shows 0 products; these are client-site data-quality observations, not HexaTerminal portfolio claims."
+  ]
+}

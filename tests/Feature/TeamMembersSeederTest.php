@@ -92,7 +92,7 @@ class TeamMembersSeederTest extends TestCase
         $this->assertDatabaseCount('service_offerings', 3);
         $this->assertDatabaseCount('company_settings', 1);
         $this->assertDatabaseCount('team_members', 1);
-        $this->assertDatabaseCount('systems', 0);
+        $this->assertDatabaseCount('systems', 1);
         $this->assertDatabaseCount('industries', 0);
         $this->assertDatabaseCount('case_studies', 0);
         $this->assertDatabaseCount('testimonials', 0);
