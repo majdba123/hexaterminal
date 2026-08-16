@@ -50,10 +50,17 @@ class SystemsSeederTest extends TestCase
             ->assertJsonPath('data.slug', 'malik-group')
             ->assertJsonPath('data.type', System::TYPE_CLIENT_SYSTEM)
             ->assertJsonPath('data.name', 'Malik Group Furniture Catalog')
+            ->assertJsonPath('data.full_description', 'Malik Group Furniture Catalog is a customer-facing furniture and interiors website designed around product discovery. Visitors can browse collections by room, review new arrivals, explore the full catalog, filter products by category, name, and price, and open dedicated product pages with image galleries, pricing, category context, and direct WhatsApp enquiry actions. The result is a structured public catalog that gives the business one clear digital destination for presenting a changing furniture inventory and gives customers a simple path from discovery to enquiry.')
+            ->assertJsonPath('data.problem', 'A furniture business with products spread across multiple room categories needs a structured way to present a changing catalog without making customers search through disconnected product posts or ask for basic product information one item at a time. Customers need to understand what is available, browse relevant categories, compare visible prices, inspect product photos, and reach the business when a product interests them.')
+            ->assertJsonPath('data.solution', 'The website turns the furniture inventory into a structured storefront: room-based collections, new-arrival discovery, a searchable and price-filterable full catalog, product cards with key information, dedicated product detail pages with multi-image galleries, category navigation, and direct WhatsApp enquiry actions.')
+            ->assertJsonPath('data.business_outcomes', 'Centralizes the public product catalog in one branded digital destination' . "\n" . 'Makes a multi-category furniture catalog easier to browse and filter' . "\n" . 'Gives customers more product context before contacting the business' . "\n" . 'Creates a direct path from product discovery to WhatsApp enquiry' . "\n" . 'Supports presentation of both new arrivals and the broader catalog')
+            ->assertJsonPath('data.target_audience', 'Customers browsing furniture and interiors for living rooms, bedrooms, dining spaces, home offices, storage, and related home furnishing needs.')
             ->assertJsonPath('data.live_url', 'https://malik.hexaterminal.com/')
             ->assertJsonPath('data.tech_stack', [])
             ->assertJsonPath('data.cover_image', url('/storage/systems/malik-group-cover.png'))
-            ->assertJsonPath('data.gallery.0', url('/storage/systems/gallery/malik-group-01-shop-by-room.png'));
+            ->assertJsonCount(4, 'data.gallery')
+            ->assertJsonPath('data.gallery.0', url('/storage/systems/gallery/malik-group-01-shop-by-room.png'))
+            ->assertJsonPath('data.gallery.3', url('/storage/systems/gallery/malik-group-04-product-detail.png'));
 
         $this->getJson('/api/v1/public/systems/malik-group?locale=ar')
             ->assertOk()

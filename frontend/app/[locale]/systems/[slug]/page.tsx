@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getSystem } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
@@ -12,13 +13,19 @@ import { CaseStudyCard } from "@/components/site/case-study-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import type { System } from "@/lib/api/types";
 import { JsonLd } from "@/components/site/json-ld";
 import { breadcrumbJsonLd, softwareApplicationJsonLd } from "@/lib/seo/jsonld";
 import { absoluteUrl } from "@/lib/seo/alternates";
 import { pageMetadata } from "@/lib/seo/page-metadata";
 import { resolveRobots } from "@/lib/seo/indexing";
 import { ViewTracker } from "@/components/site/view-tracker";
+
+function splitLines(value: string | null) {
+  return value
+    ?.split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean) ?? [];
+}
 
 export async function generateMetadata({
   params,
@@ -40,14 +47,6 @@ export async function generateMetadata({
   });
 }
 
-function operationalBlocks(system: System, labels: Record<string, string>) {
-  return [
-    { key: "problem", label: labels.problem, value: system.problem },
-    { key: "solution", label: labels.solution, value: system.solution },
-    { key: "audience", label: labels.audience, value: system.target_audience },
-  ].filter((block) => Boolean(block.value));
-}
-
 export default async function SystemDetailPage({
   params,
 }: {
@@ -60,15 +59,10 @@ export default async function SystemDetailPage({
 
   if (!system) notFound();
 
-  const capabilities = system.features
-    ?.split(/\r?\n/)
-    .map((feature) => feature.trim())
-    .filter(Boolean) ?? [];
-  const operationalContext = operationalBlocks(system, {
-    problem: t("problem"),
-    solution: t("solution"),
-    audience: t("targetAudience"),
-  });
+  const capabilities = splitLines(system.features);
+  const businessValue = splitLines(system.business_outcomes);
+  const galleryImages = system.gallery.filter(Boolean);
+  const hasLiveUrl = Boolean(system.live_url);
 
   return (
     <>
@@ -110,8 +104,16 @@ export default async function SystemDetailPage({
                   {system.short_description}
                 </p>
               ) : null}
-              <div className="mt-8">
-                <Button asChild size="lg">
+              <div className="mt-8 flex flex-wrap gap-3">
+                {hasLiveUrl ? (
+                  <Button asChild size="lg">
+                    <a href={system.live_url ?? "#"} target="_blank" rel="noreferrer">
+                      {t("viewLive")}
+                      <ArrowUpRight className="size-4" />
+                    </a>
+                  </Button>
+                ) : null}
+                <Button asChild size="lg" variant={hasLiveUrl ? "outline" : "primary"}>
                   <Link href="/start-a-project">{t("heroCta")}</Link>
                 </Button>
               </div>
@@ -135,9 +137,31 @@ export default async function SystemDetailPage({
       {system.full_description ? (
         <Section>
           <Container narrow>
-            <SectionHeading align="start" badge={t("descriptionBadge")} title={t("descriptionTitle")} />
+            <SectionHeading align="start" badge={t("overviewBadge")} title={t("overviewTitle")} />
             <div className="prose-content whitespace-pre-line text-base leading-relaxed text-foreground">
               {system.full_description}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {system.problem ? (
+        <Section className="border-y border-border bg-surface">
+          <Container narrow>
+            <SectionHeading align="start" badge={t("challengeBadge")} title={t("challengeTitle")} />
+            <div className="rounded-[var(--radius-lg)] border border-border bg-background p-6 text-pretty text-base leading-relaxed text-foreground">
+              {system.problem}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {system.solution ? (
+        <Section>
+          <Container narrow>
+            <SectionHeading align="start" badge={t("solutionBadge")} title={t("solutionTitle")} />
+            <div className="rounded-[var(--radius-lg)] border border-border bg-surface p-6 text-pretty text-base leading-relaxed text-foreground">
+              {system.solution}
             </div>
           </Container>
         </Section>
@@ -161,18 +185,53 @@ export default async function SystemDetailPage({
         </Section>
       ) : null}
 
-      {operationalContext.length > 0 ? (
+      {businessValue.length > 0 ? (
         <Section>
           <Container>
-            <SectionHeading align="start" badge={t("operationBadge")} title={t("operationTitle")} />
-            <div className="grid gap-5 lg:grid-cols-3">
-              {operationalContext.map((block) => (
-                <section key={block.key} className="rounded-[var(--radius-md)] border border-border bg-surface p-6">
-                  <h2 className="text-lg font-bold text-foreground">{block.label}</h2>
-                  <p className="mt-3 whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
-                    {block.value}
-                  </p>
-                </section>
+            <SectionHeading align="start" badge={t("businessValueBadge")} title={t("businessValueTitle")} />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {businessValue.map((item, index) => (
+                <div
+                  key={`${item}-${index}`}
+                  className="rounded-[var(--radius-md)] border border-border bg-surface p-6 text-pretty text-base leading-relaxed text-foreground"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {system.target_audience ? (
+        <Section className="border-y border-border bg-surface">
+          <Container narrow>
+            <SectionHeading align="start" badge={t("audienceBadge")} title={t("audienceTitle")} />
+            <div className="rounded-[var(--radius-lg)] border border-border bg-background p-6 text-pretty text-base leading-relaxed text-foreground">
+              {system.target_audience}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {galleryImages.length > 0 ? (
+        <Section>
+          <Container>
+            <SectionHeading align="start" badge={t("galleryBadge")} title={t("galleryTitle")} />
+            <div className="grid gap-5 md:grid-cols-2">
+              {galleryImages.map((image, index) => (
+                <div
+                  key={`${image}-${index}`}
+                  className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-muted"
+                >
+                  <Image
+                    src={image}
+                    alt={system.cover_image_alt ?? system.name}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                </div>
               ))}
             </div>
           </Container>
