@@ -23,37 +23,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install PHP 8.3 and Composer
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-
-          for attempt in 1 2 3; do
-            if sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-              php8.3-cli \
-              php8.3-common \
-              php8.3-curl \
-              php8.3-intl \
-              php8.3-mbstring \
-              php8.3-sqlite3 \
-              php8.3-xml \
-              php8.3-zip \
-              composer \
-              unzip; then
-              break
-            fi
-
-            if [ "$attempt" -eq 3 ]; then
-              exit 1
-            fi
-
-            echo "PHP runtime installation failed on attempt $attempt, retrying after backoff..." >&2
-            sleep $((attempt * 15))
-          done
-
-          sudo update-alternatives --set php /usr/bin/php8.3
-          php -v
-          composer --version
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -67,23 +42,7 @@ jobs:
       - name: Install backend dependencies
         env:
           COMPOSER_ALLOW_SUPERUSER: 1
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          composer config --global source-fallback true
-
-          for attempt in 1 2 3; do
-            if composer install --prefer-install=source --no-interaction --no-progress; then
-              exit 0
-            fi
-
-            if [ "$attempt" -eq 3 ]; then
-              exit 1
-            fi
-
-            echo "composer install failed on attempt $attempt, retrying after backoff..." >&2
-            sleep $((attempt * 15))
-          done
+        run: composer install --prefer-dist --no-interaction
 
       - name: Prepare validation environment
         shell: bash
@@ -252,24 +211,11 @@ jobs:
             git rev-parse HEAD
 
             export COMPOSER_ALLOW_SUPERUSER=1
-            composer config --global source-fallback true
-            for attempt in 1 2 3; do
-              if composer install \
-                --no-dev \
-                --prefer-install=source \
-                --optimize-autoloader \
-                --no-interaction \
-                --no-progress; then
-                break
-              fi
-
-              if [ "$attempt" -eq 3 ]; then
-                exit 1
-              fi
-
-              echo "composer install failed on attempt $attempt, retrying after backoff..." >&2
-              sleep $((attempt * 15))
-            done
+            composer install \
+              --no-dev \
+              --prefer-dist \
+              --optimize-autoloader \
+              --no-interaction
 
             cd "$FRONTEND_DIR"
             test -f package.json
