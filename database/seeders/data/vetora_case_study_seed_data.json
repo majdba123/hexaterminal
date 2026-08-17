@@ -1,0 +1,72 @@
+{
+  "package_version": "V1",
+  "entity": "case_studies",
+  "record_count": 1,
+  "source_of_truth_notes": [
+    "Use the existing CaseStudy CMS/domain rather than the SystemUseCase domain.",
+    "The Vetora client identity remains private; do not publish a client name or project URL here.",
+    "The public marketplace screenshot is approved for public output.",
+    "System-level Vetora use cases must not remain publicly seeded after this transition."
+  ],
+  "case_study": {
+    "slug": "vetora-specialized-marketplace-operations",
+    "title": {
+      "en": "Connecting Professional Buyers, Suppliers, Syndicates, and Platform Operations in One Specialized Marketplace",
+      "ar": "ربط المشترين المهنيين والموردين والنقابات وعمليات المنصة ضمن سوق متخصص واحد"
+    },
+    "summary": {
+      "en": "Vetora is a specialized marketplace platform that helps veterinary doctors and agricultural engineers discover relevant supplies while giving vendors, employees, syndicates, and administrators dedicated operational workspaces inside the same product.",
+      "ar": "فيتورا هي منصة سوق متخصصة تساعد الأطباء البيطريين والمهندسين الزراعيين على الوصول إلى المستلزمات المناسبة، مع توفير مساحات تشغيل مخصصة للبائعين والموظفين والنقابات والإدارة داخل المنتج نفسه."
+    },
+    "context": {
+      "en": "Vetora was designed around the different participants involved in veterinary and agricultural supply workflows in Syria. The public marketplace experience is only one part of the product. Behind it, the platform also needs dedicated spaces for suppliers managing catalogs and orders, employees reviewing submitted products, sector organizations monitoring their own domain, and administrators coordinating the wider marketplace operation.",
+      "ar": "تم تصميم فيتورا حول الأطراف المختلفة المشاركة في سير شراء وبيع المستلزمات البيطرية والزراعية في سوريا. التجربة العامة للسوق هي جزء واحد فقط من المنتج، بينما يحتاج النظام أيضاً إلى مساحات مخصصة للموردين لإدارة الكتالوجات والطلبات، ولموظفين يراجعون المنتجات المضافة، ولنقابات تتابع قطاعها، ولإدارة تنسق عمل السوق بالكامل."
+    },
+    "problem": {
+      "en": "A single generic storefront was not enough for this operational model. The platform needed to help professional buyers reach the right product domain quickly, while also supporting supplier operations, structured product entry, moderation, sector-specific oversight, and central platform administration without splitting those responsibilities across disconnected tools.",
+      "ar": "لم تكن واجهة متجر عامة واحدة كافية لهذا النموذج التشغيلي. كان على المنصة أن تساعد المشترين المهنيين على الوصول بسرعة إلى المجال المنتج المناسب، وفي الوقت نفسه تدعم عمليات الموردين، والإدخال المنظم للمنتجات، والمراجعة، والمتابعة الخاصة بكل قطاع، والإدارة المركزية للمنصة دون توزيع هذه المسؤوليات على أدوات منفصلة."
+    },
+    "constraints": {
+      "en": "Separate agriculture and veterinary product domains.\nSupport supplier workspaces beyond the public catalog.\nAllow structured product submission before publication.\nProvide moderation and approval visibility for internal staff.\nGive each sector organization its own operational oversight.\nMaintain central administrative control across the marketplace.",
+      "ar": "فصل المجال الزراعي عن المجال البيطري في تصفح المنتجات.\nدعم مساحات تشغيل للموردين تتجاوز الكتالوج العام.\nإتاحة إدخال منظم للمنتجات قبل نشرها.\nتوفير متابعة واضحة للمراجعة والاعتماد للموظفين الداخليين.\nمنح كل جهة قطاعية رؤية تشغيلية خاصة بها.\nالحفاظ على إدارة مركزية عبر المنصة كاملة."
+    },
+    "solution": {
+      "en": "Vetora separates the experience by participant while keeping the workflows connected through one platform. Professionals choose the agriculture or veterinary market and continue into relevant product discovery. Suppliers manage products, discounts, orders, commissions, and store data from dedicated dashboards. Employees work through product moderation states. Syndicates follow the vendors, products, orders, sales, and reports relevant to their sector. Administrators manage the complete marketplace from one central workspace.",
+      "ar": "تفصل فيتورا التجربة حسب نوع المشارك مع إبقاء سير العمل مترابطاً داخل منصة واحدة. يختار المختص السوق الزراعي أو البيطري ثم ينتقل إلى اكتشاف المنتجات المناسبة. يدير الموردون المنتجات والخصومات والطلبات والعمولات وبيانات المتجر من لوحات مخصصة. ويعمل الموظفون من خلال حالات مراجعة المنتجات، بينما تتابع النقابات البائعين والمنتجات والطلبات والمبيعات والتقارير المرتبطة بقطاعها، وتدير الإدارة السوق بالكامل من مساحة مركزية واحدة."
+    },
+    "architecture": {
+      "en": "The delivered structure combines a public marketplace entry point with separate operational workspaces for vendors, employees, sector organizations, and administrators. The approved public record confirms domain-specific browsing, supplier dashboards, structured product submission, moderation states, sector monitoring, and central administration as connected parts of one marketplace product.",
+      "ar": "يجمع الهيكل المنفذ بين واجهة سوق عامة ومساحات تشغيل منفصلة للموردين والموظفين والجهات القطاعية والإدارة. ويؤكد السجل العام المعتمد وجود تصفح متخصص حسب المجال، ولوحات للموردين، وإدخال منظم للمنتجات، وحالات مراجعة، ومتابعة قطاعية، وإدارة مركزية كأجزاء مترابطة داخل منتج سوق واحد."
+    },
+    "outcomes": {
+      "en": "Creates one specialized digital destination for veterinary and agricultural supply discovery.\nHelps professionals reach the relevant product domain more directly.\nGives suppliers self-service workspaces for managing operational catalog activity.\nIntroduces a structured moderation layer before products move into approved public visibility.\nProvides sector-specific oversight without separating the platform into disconnected systems.\nKeeps marketplace administration centralized across the wider operation.",
+      "ar": "يوفر وجهة رقمية متخصصة واحدة لاكتشاف المستلزمات البيطرية والزراعية.\nيساعد المختصين على الوصول بشكل مباشر أكثر إلى المجال المنتج المناسب.\nيمنح الموردين مساحات ذاتية لإدارة النشاط التشغيلي للكتالوج.\nيضيف طبقة مراجعة منظمة قبل انتقال المنتجات إلى الظهور العام المعتمد.\nيوفر متابعة خاصة بكل قطاع دون فصل المنصة إلى أنظمة منفصلة.\nيبقي إدارة السوق مركزية على مستوى التشغيل الكامل."
+    },
+    "evidence": {
+      "en": "Approved public Vetora marketplace screenshot showing agriculture and veterinary market entry.\nApproved system record describing separate workspaces for suppliers, employees, syndicates, and administrators.\nApproved packaged use-case copy confirming product discovery, supplier operations, moderation, sector monitoring, and central administration as real platform flows.",
+      "ar": "لقطة عامة معتمدة من سوق فيتورا تُظهر مدخل السوقين الزراعي والبيطري.\nسجل نظام معتمد يصف مساحات منفصلة للموردين والموظفين والنقابات والإدارة.\nنسخة استخدام معتمدة من الحزمة تؤكد أن اكتشاف المنتجات وعمليات الموردين والمراجعة والمتابعة القطاعية والإدارة المركزية تمثل تدفقات فعلية داخل المنصة."
+    },
+    "features": {
+      "en": "Agriculture and veterinary market selection\nCustomer-facing specialized product discovery\nDedicated supplier workspaces\nStructured product submission\nInternal product moderation states\nSector-specific monitoring dashboards\nCentral marketplace administration",
+      "ar": "اختيار السوق الزراعي أو البيطري\nاكتشاف متخصص للمنتجات من جهة العميل\nمساحات مخصصة للموردين\nإدخال منظم للمنتجات\nحالات مراجعة داخلية للمنتجات\nلوحات متابعة خاصة بكل قطاع\nإدارة مركزية للسوق"
+    },
+    "client_name": null,
+    "project_url": null,
+    "video_url": null,
+    "cover_image": "systems/vetora-cover-public.png",
+    "cover_image_alt": {
+      "en": "Vetora public marketplace homepage presenting agriculture and veterinary product markets.",
+      "ar": "الواجهة العامة لمنصة فيتورا وتعرض السوقين الزراعي والبيطري."
+    },
+    "gallery": [],
+    "relations": {
+      "service_slug": "web-platforms-mobile-applications",
+      "system_slug": "vetora",
+      "industry_slugs": []
+    },
+    "project_classification": "web_mobile_platform",
+    "featured": false,
+    "sort_order": 2,
+    "publication_intent": "published"
+  }
+}
