@@ -47,6 +47,7 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
+          composer config --global source-fallback true
 
           for attempt in 1 2 3; do
             if composer install --prefer-dist --no-interaction --no-progress; then
@@ -229,6 +230,7 @@ jobs:
 
             export COMPOSER_ALLOW_SUPERUSER=1
             export COMPOSER_AUTH='{"github-oauth":{"github.com":"${{ github.token }}"}}'
+            composer config --global source-fallback true
             for attempt in 1 2 3; do
               if composer install \
                 --no-dev \
