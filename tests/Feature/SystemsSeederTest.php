@@ -18,14 +18,14 @@ class SystemsSeederTest extends TestCase
 
         $this->seed(SystemsSeeder::class);
 
-        $this->assertDatabaseCount('systems', 1);
+        $this->assertDatabaseCount('systems', 2);
 
         $system = System::query()->where('slug', 'malik-group')->firstOrFail();
 
         $this->assertSame(System::TYPE_CLIENT_SYSTEM, $system->type);
         $this->assertSame('Furniture E-commerce & Product Catalog', $system->category);
         $this->assertSame('Malik Group Furniture Catalog', $system->getTranslation('name', 'en'));
-        $this->assertSame('كتالوج أثاث Malik Group', $system->getTranslation('name', 'ar'));
+        $this->assertSame("\u{0643}\u{062A}\u{0627}\u{0644}\u{0648}\u{062C} \u{0623}\u{062B}\u{0627}\u{062B} Malik Group", $system->getTranslation('name', 'ar'));
         $this->assertSame(['Laravel', 'Blade'], $system->tech_stack);
         $this->assertTrue($system->is_featured);
         $this->assertTrue($system->is_published);
@@ -64,14 +64,14 @@ class SystemsSeederTest extends TestCase
 
         $this->getJson('/api/v1/public/systems/malik-group?locale=ar')
             ->assertOk()
-            ->assertJsonPath('data.name', 'كتالوج أثاث Malik Group')
-            ->assertJsonPath('data.tagline', 'موقع كتالوج أثاث صُمم لتسهيل اكتشاف المنتجات واستعراض تفاصيلها والتواصل المباشر مع العملاء.');
+            ->assertJsonPath('data.name', "\u{0643}\u{062A}\u{0627}\u{0644}\u{0648}\u{062C} \u{0623}\u{062B}\u{0627}\u{062B} Malik Group")
+            ->assertJsonPath('data.tagline', "\u{0645}\u{0648}\u{0642}\u{0639} \u{0643}\u{062A}\u{0627}\u{0644}\u{0648}\u{062C} \u{0623}\u{062B}\u{0627}\u{062B} \u{0635}\u{064F}\u{0645}\u{0645} \u{0644}\u{062A}\u{0633}\u{0647}\u{064A}\u{0644} \u{0627}\u{0643}\u{062A}\u{0634}\u{0627}\u{0641} \u{0627}\u{0644}\u{0645}\u{0646}\u{062A}\u{062C}\u{0627}\u{062A} \u{0648}\u{0627}\u{0633}\u{062A}\u{0639}\u{0631}\u{0627}\u{0636} \u{062A}\u{0641}\u{0627}\u{0635}\u{064A}\u{0644}\u{0647}\u{0627} \u{0648}\u{0627}\u{0644}\u{062A}\u{0648}\u{0627}\u{0635}\u{0644} \u{0627}\u{0644}\u{0645}\u{0628}\u{0627}\u{0634}\u{0631} \u{0645}\u{0639} \u{0627}\u{0644}\u{0639}\u{0645}\u{0644}\u{0627}\u{0621}.");
 
         $this->seed(SystemsSeeder::class);
 
-        $this->assertDatabaseCount('systems', 1);
-        $this->assertSame(['malik-group'], System::query()->pluck('slug')->all());
-        $this->assertCount(5, Storage::disk('public')->allFiles('systems'));
+        $this->assertDatabaseCount('systems', 2);
+        $this->assertSame(['malik-group', 'vetora'], System::query()->orderBy('sort_order')->pluck('slug')->all());
+        $this->assertCount(11, Storage::disk('public')->allFiles('systems'));
     }
 
     public function test_system_resource_uses_the_active_public_storage_url_contract(): void
@@ -88,5 +88,58 @@ class SystemsSeederTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.cover_image', 'https://api.hexaterminal.test/storage/systems/malik-group-cover.png')
             ->assertJsonPath('data.gallery.3', 'https://api.hexaterminal.test/storage/systems/gallery/malik-group-04-product-detail.png');
+    }
+
+    public function test_it_seeds_the_packaged_vetora_system_with_public_media_and_empty_tech_stack_idempotently(): void
+    {
+        Storage::fake('public');
+
+        $this->seed(SystemsSeeder::class);
+
+        $system = System::query()->where('slug', 'vetora')->firstOrFail();
+
+        $this->assertSame(System::TYPE_CLIENT_SYSTEM, $system->type);
+        $this->assertSame('Agriculture & Veterinary Marketplace Platform', $system->category);
+        $this->assertSame('Vetora', $system->getTranslation('name', 'en'));
+        $this->assertSame("\u{0641}\u{064A}\u{062A}\u{0648}\u{0631}\u{0627}", $system->getTranslation('name', 'ar'));
+        $this->assertSame([], $system->tech_stack);
+        $this->assertTrue($system->is_featured);
+        $this->assertTrue($system->is_published);
+        $this->assertSame('published', $system->status);
+        $this->assertNull($system->demo_url);
+        $this->assertSame('https://msz.hexaterminal.com/', $system->live_url);
+        $this->assertSame('systems/vetora-cover.png', $system->cover_image);
+        $this->assertSame([
+            'systems/gallery/vetora-01-agriculture-vendor-dashboard.png',
+            'systems/gallery/vetora-02-product-moderation.png',
+            'systems/gallery/vetora-03-agriculture-syndicate-dashboard.png',
+            'systems/gallery/vetora-04-veterinary-syndicate-dashboard.png',
+            'systems/gallery/vetora-05-structured-product-entry.png',
+        ], $system->gallery);
+
+        Storage::disk('public')->assertExists($system->cover_image);
+        foreach ($system->gallery as $image) {
+            Storage::disk('public')->assertExists($image);
+        }
+
+        $this->getJson('/api/v1/public/systems/vetora?locale=en')
+            ->assertOk()
+            ->assertJsonPath('data.slug', 'vetora')
+            ->assertJsonPath('data.name', 'Vetora')
+            ->assertJsonPath('data.tech_stack', [])
+            ->assertJsonPath('data.live_url', 'https://msz.hexaterminal.com/')
+            ->assertJsonPath('data.cover_image', url('/storage/systems/vetora-cover.png'))
+            ->assertJsonCount(5, 'data.gallery')
+            ->assertJsonPath('data.gallery.0', url('/storage/systems/gallery/vetora-01-agriculture-vendor-dashboard.png'))
+            ->assertJsonPath('data.gallery.4', url('/storage/systems/gallery/vetora-05-structured-product-entry.png'));
+
+        $this->getJson('/api/v1/public/systems/vetora?locale=ar')
+            ->assertOk()
+            ->assertJsonPath('data.name', "\u{0641}\u{064A}\u{062A}\u{0648}\u{0631}\u{0627}");
+
+        $this->seed(SystemsSeeder::class);
+
+        $this->assertDatabaseCount('systems', 2);
+        $this->assertSame(1, System::query()->where('slug', 'vetora')->count());
     }
 }

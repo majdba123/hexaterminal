@@ -68,9 +68,9 @@ class AdminSeederTest extends TestCase
         $this->assertDatabaseCount('service_offerings', 3);
         $this->assertDatabaseCount('company_settings', 1);
         $this->assertDatabaseCount('team_members', 1);
-        $this->assertDatabaseCount('systems', 1);
+        $this->assertDatabaseCount('systems', 2);
         $this->assertDatabaseCount('case_studies', 1);
-        $this->assertDatabaseCount('industries', 0);
+        $this->assertDatabaseCount('industries', 3);
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertDatabaseCount('articles', 0);
         $this->assertDatabaseCount('faqs', 10);
@@ -81,8 +81,9 @@ class AdminSeederTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.services.0.slug', Service::CORE_SERVICE_SLUGS[0])
             ->assertJsonCount(3, 'data.services')
-            ->assertJsonCount(1, 'data.featured_systems')
+            ->assertJsonCount(2, 'data.featured_systems')
             ->assertJsonPath('data.featured_systems.0.slug', 'malik-group')
+            ->assertJsonPath('data.featured_systems.1.slug', 'vetora')
             ->assertJsonCount(1, 'data.featured_case_studies')
             ->assertJsonPath('data.featured_case_studies.0.slug', 'malik-group-furniture-catalog');
 

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             FaqItemsSeeder::class,
             SystemsSeeder::class,
             MalikCaseStudySeeder::class,
+            IndustriesSeeder::class,
         ]);
     }
 }

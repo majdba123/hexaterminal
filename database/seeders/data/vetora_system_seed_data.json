@@ -1,0 +1,74 @@
+{
+  "package_version": "V1",
+  "entity": "systems",
+  "system": {
+    "slug": "vetora",
+    "type": "client_system",
+    "category": "Agriculture & Veterinary Marketplace Platform",
+    "name": {
+      "en": "Vetora",
+      "ar": "فيتورا"
+    },
+    "tagline": {
+      "en": "A multi-workspace marketplace connecting doctors and agricultural engineers with veterinary and agricultural suppliers in Syria.",
+      "ar": "منصة متعددة الواجهات تربط الأطباء والمهندسين الزراعيين بالمستودعات البيطرية والزراعية في سوريا."
+    },
+    "short_description": {
+      "en": "Vetora helps doctors and agricultural engineers discover and purchase veterinary and agricultural supplies from relevant warehouses and suppliers, while giving vendors, syndicates, employees, and administrators dedicated operational workspaces.",
+      "ar": "تساعد فيتورا الأطباء والمهندسين الزراعيين على اكتشاف وشراء المستلزمات البيطرية والزراعية من المستودعات والموردين المختصين، مع توفير مساحات تشغيل مخصصة للبائعين والنقابات والموظفين والإدارة."
+    },
+    "full_description": {
+      "en": "Vetora is a specialized marketplace platform built around the different participants involved in veterinary and agricultural supply workflows in Syria. Doctors and agricultural engineers can choose the relevant product domain and browse specialized products. Agriculture and veterinary vendors have dedicated dashboards to manage products, discounts, orders, commissions, notifications, and store information. Employees work through a product moderation workspace with approved, pending, and rejected states. Agriculture and veterinary syndicates have separate dashboards for vendors, products, categories, orders, sales, reports, content, and notifications. A central administration workspace manages the wider platform, including vendors, syndicates, products, employees, users, orders, catalog structure, coupons, content, and platform activity.",
+      "ar": "فيتورا منصة سوق متخصصة صُممت حول الأطراف المختلفة المشاركة في شراء وبيع المستلزمات البيطرية والزراعية في سوريا. يستطيع الأطباء والمهندسون الزراعيون اختيار نوع المنتجات المناسب وتصفح المنتجات المتخصصة. يمتلك البائعون الزراعيون والبيطريون لوحات مخصصة لإدارة المنتجات والخصومات والطلبات والعمولات والإشعارات وبيانات المتجر. يعمل الموظفون ضمن مساحة لمراجعة المنتجات بحالات معتمد وقيد المراجعة ومرفوض. كما تمتلك النقابات الزراعية والبيطرية لوحات منفصلة لمتابعة البائعين والمنتجات والتصنيفات والطلبات والمبيعات والتقارير والمحتوى والإشعارات. وتدير لوحة الإدارة المركزية المنصة ككل، بما يشمل البائعين والنقابات والمنتجات والموظفين والمستخدمين والطلبات وبنية الكتالوج والكوبونات والمحتوى ونشاط المنصة."
+    },
+    "problem": {
+      "en": "Doctors and agricultural engineers need a more direct way to reach relevant veterinary and agricultural supplies from specialized warehouses, while the surrounding ecosystem includes suppliers, syndicates, employees, and platform administrators with very different operational needs. A single generic storefront is not enough when product catalogs, vendor operations, moderation, sector visibility, orders, reporting, and administration all need to work together.",
+      "ar": "يحتاج الأطباء والمهندسون الزراعيون إلى طريقة أكثر مباشرة للوصول إلى المستلزمات البيطرية والزراعية من المستودعات المختصة، بينما تضم المنظومة المحيطة بهم موردين ونقابات وموظفين وإدارة منصة، ولكل طرف احتياجات تشغيلية مختلفة. لذلك لا تكفي واجهة متجر عامة عندما يجب أن تعمل إدارة المنتجات وعمليات البائعين والمراجعة ومتابعة القطاع والطلبات والتقارير والإدارة ضمن منظومة واحدة."
+    },
+    "solution": {
+      "en": "Vetora separates the experience by user type while keeping the workflows connected through one platform. Customers choose between agriculture and veterinary product domains; vendors manage structured catalogs, discounts, orders, and commissions; employees moderate product submissions; syndicates monitor the vendors, products, orders, sales, and reports relevant to their sector; and administrators manage the complete platform from a central dashboard.",
+      "ar": "تفصل فيتورا تجربة الاستخدام حسب نوع المستخدم مع إبقاء العمليات مترابطة ضمن منصة واحدة. يختار العملاء بين المنتجات الزراعية والبيطرية، ويدير البائعون الكتالوجات المنظمة والخصومات والطلبات والعمولات، ويراجع الموظفون المنتجات المضافة، وتتابع كل نقابة البائعين والمنتجات والطلبات والمبيعات والتقارير المرتبطة بقطاعها، بينما تدير الإدارة المنصة كاملة من لوحة مركزية."
+    },
+    "features": {
+      "en": "Separate agriculture and veterinary product browsing\nDedicated dashboards for agriculture and veterinary vendors\nVendor product, discount, order, commission, notification, and profile management\nStructured bilingual product entry with pricing, quantity, manufacturer, brand, origin, registration, package, and image data\nProduct moderation workflow with approved, pending, and rejected states\nDedicated agriculture and veterinary syndicate dashboards\nSyndicate visibility into categories, vendors, products, orders, sales, reports, content, and notifications\nCentral admin management for vendors, syndicates, products, employees, users, orders, coupons, categories, subcategories, cities, pages, banners, notifications, and contact messages\nPlatform-wide operational dashboards and reporting views\nCustomer-facing product search and specialized catalog selection",
+      "ar": "تصفح منفصل للمنتجات الزراعية والبيطرية\nلوحات مخصصة للبائعين الزراعيين والبيطريين\nإدارة المنتجات والخصومات والطلبات والعمولات والإشعارات وبيانات المتجر\nإدخال منظم للمنتجات بالعربية والإنجليزية مع السعر والكمية والمصنع والعلامة التجارية وبلد المنشأ وبيانات التسجيل والتعبئة والصور\nسير مراجعة للمنتجات بحالات معتمد وقيد المراجعة ومرفوض\nلوحات مستقلة للنقابات الزراعية والبيطرية\nمتابعة النقابات للتصنيفات والبائعين والمنتجات والطلبات والمبيعات والتقارير والمحتوى والإشعارات\nإدارة مركزية للبائعين والنقابات والمنتجات والموظفين والمستخدمين والطلبات والكوبونات والتصنيفات والتصنيفات الفرعية والمدن والصفحات واللافتات والإشعارات ورسائل التواصل\nلوحات تشغيل وتقارير لمتابعة نشاط المنصة\nبحث موجه للعملاء واختيار كتالوج المنتجات المتخصص"
+    },
+    "business_outcomes": {
+      "en": "Creates one specialized digital destination for veterinary and agricultural supply discovery and purchasing\nSeparates agriculture and veterinary catalogs so professionals can focus on the products relevant to their work\nGives suppliers self-service operational workspaces for catalog and order management\nIntroduces a structured product moderation workflow before products reach approved status\nProvides each syndicate with sector-specific visibility into vendors, products, orders, sales, and reports\nGives platform administrators centralized oversight of the wider marketplace operation",
+      "ar": "توفير وجهة رقمية متخصصة لاكتشاف وشراء المستلزمات البيطرية والزراعية\nفصل الكتالوج الزراعي عن البيطري حتى يصل كل مختص إلى المنتجات المرتبطة بمجاله\nمنح الموردين مساحات تشغيل ذاتية لإدارة الكتالوج والطلبات\nإضافة سير منظم لمراجعة المنتجات قبل وصولها إلى حالة الاعتماد\nتوفير رؤية خاصة بكل نقابة حول البائعين والمنتجات والطلبات والمبيعات والتقارير التابعة لقطاعها\nمنح إدارة المنصة إشرافاً مركزياً على عمليات السوق ككل"
+    },
+    "target_audience": {
+      "en": "Veterinary doctors, agricultural engineers, veterinary medical suppliers and warehouses, agricultural suppliers and warehouses, agriculture and veterinary syndicates, operational employees, and platform administrators in Syria.",
+      "ar": "الأطباء البيطريون والمهندسون الزراعيون والمستودعات والموردون الطبيون البيطريون والمستودعات والموردون الزراعيون والنقابات الزراعية والبيطرية والموظفون التشغيليون وإدارة المنصة في سوريا."
+    },
+    "tech_stack": [],
+    "cover_image": "systems/vetora-cover.png",
+    "cover_image_alt": {
+      "en": "Vetora administration dashboard showing platform-wide operational insights.",
+      "ar": "لوحة إدارة فيتورا وتظهر مؤشرات تشغيلية على مستوى المنصة."
+    },
+    "gallery": [
+      "systems/gallery/vetora-01-agriculture-vendor-dashboard.png",
+      "systems/gallery/vetora-02-product-moderation.png",
+      "systems/gallery/vetora-03-agriculture-syndicate-dashboard.png",
+      "systems/gallery/vetora-04-veterinary-syndicate-dashboard.png",
+      "systems/gallery/vetora-05-structured-product-entry.png"
+    ],
+    "demo_url": null,
+    "live_url": "https://msz.hexaterminal.com/",
+    "is_featured": true,
+    "sort_order": 2,
+    "publication_intent": "published"
+  },
+  "privacy": {
+    "client_name": null,
+    "instruction": "The client name is intentionally private. Do not infer, expose, or seed it."
+  },
+  "evidence_limits": [
+    "Do not publish user names, phone numbers, national IDs, emails, credentials, or raw account data from the capture.",
+    "Do not claim quantified sales, conversion, time-saving, adoption, or revenue outcomes.",
+    "Do not claim syndicate approval/rejection authority unless separately verified.",
+    "Do not infer the technology stack from the public UI or URLs.",
+    "The exact customer-side checkout/payment flow was not fully captured; describe purchasing at the platform level only."
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "package_version": "V1",
+  "entity": "industries",
+  "industries": [
+    {
+      "slug": "furniture-interiors",
+      "name": {
+        "en": "Furniture & Interiors",
+        "ar": "الأثاث والديكور"
+      },
+      "summary": {
+        "en": "Digital systems for furniture and interiors businesses that need better ways to organize, present, and help customers discover their products.",
+        "ar": "حلول رقمية لأعمال الأثاث والديكور التي تحتاج إلى طرق أفضل لتنظيم منتجاتها وعرضها وتسهيل اكتشافها للعملاء."
+      },
+      "description": {
+        "en": "Furniture and interiors businesses often manage highly visual catalogs across multiple rooms, categories, styles, and price ranges. A well-structured digital experience can make these catalogs easier to organize, browse, filter, and present while creating a clearer path from product discovery to customer enquiry. Our work with Malik Group demonstrates this approach through a structured furniture catalog designed around product discovery and direct enquiry.",
+        "ar": "تتعامل أعمال الأثاث والديكور عادةً مع كتالوجات بصرية كبيرة موزعة على عدة غرف وتصنيفات وأنماط ونطاقات سعرية. تساعد التجربة الرقمية المنظمة على جعل هذه المنتجات أسهل في التنظيم والتصفح والتصفية والعرض، مع منح العميل مساراً أوضح من اكتشاف المنتج إلى التواصل مع النشاط التجاري. ويُعد مشروع Malik Group مثالاً على هذا الأسلوب من خلال كتالوج أثاث منظم مبني حول اكتشاف المنتجات والاستفسار المباشر عنها."
+      },
+      "icon": null,
+      "cover_image": null,
+      "cover_image_alt": {
+        "en": null,
+        "ar": null
+      },
+      "sort_order": 1,
+      "publication_intent": "published",
+      "relationships": {
+        "systems": [
+          "malik-group"
+        ],
+        "case_studies": [
+          "malik-group-furniture-catalog"
+        ]
+      }
+    },
+    {
+      "slug": "agriculture-agri-supplies",
+      "name": {
+        "en": "Agriculture & Agri-Supplies",
+        "ar": "الزراعة والمستلزمات الزراعية"
+      },
+      "summary": {
+        "en": "Digital platforms and operational systems for agricultural suppliers, professionals, and sector organizations.",
+        "ar": "منصات وأنظمة تشغيل رقمية للموردين والمهنيين والجهات العاملة في القطاع الزراعي."
+      },
+      "description": {
+        "en": "Agricultural supply workflows bring together professional buyers, specialized vendors, product catalogs, orders, reporting, and sector-specific oversight. Digital platforms can make it easier to organize these interactions, separate relevant product categories, give suppliers operational tools, and provide stakeholders with clearer visibility. Vetora demonstrates this through a dedicated agriculture marketplace experience for agricultural engineers, suppliers, employees, administrators, and the agriculture syndicate.",
+        "ar": "تجمع عمليات المستلزمات الزراعية بين المشترين المهنيين والموردين المتخصصين وكتالوجات المنتجات والطلبات والتقارير والمتابعة الخاصة بالقطاع. تساعد المنصات الرقمية على تنظيم هذه العلاقات وفصل التصنيفات المناسبة ومنح الموردين أدوات تشغيل واضحة وتوفير رؤية أفضل للجهات المعنية. وتمثل فيتورا مثالاً على ذلك من خلال تجربة سوق زراعية مخصصة للمهندسين الزراعيين والموردين والموظفين والإدارة والنقابة الزراعية."
+      },
+      "icon": null,
+      "cover_image": null,
+      "cover_image_alt": {
+        "en": null,
+        "ar": null
+      },
+      "sort_order": 2,
+      "publication_intent": "published",
+      "relationships": {
+        "systems": [
+          "vetora"
+        ],
+        "case_studies": []
+      }
+    },
+    {
+      "slug": "veterinary-animal-health",
+      "name": {
+        "en": "Veterinary & Animal Health",
+        "ar": "الطب البيطري وصحة الحيوان"
+      },
+      "summary": {
+        "en": "Digital platforms and operational systems for veterinary professionals, medical suppliers, and sector organizations.",
+        "ar": "منصات وأنظمة تشغيل رقمية للمهنيين البيطريين والموردين الطبيين والجهات العاملة في قطاع صحة الحيوان."
+      },
+      "description": {
+        "en": "Veterinary supply ecosystems involve professional buyers, specialized medical suppliers, detailed product information, orders, moderation, reporting, and sector-focused visibility. A dedicated digital platform can organize these workflows while keeping the veterinary catalog distinct from other product domains. Vetora demonstrates this model through a veterinary marketplace experience connecting veterinary doctors, suppliers, employees, administrators, and the veterinary syndicate.",
+        "ar": "تضم منظومات المستلزمات البيطرية مشترين مهنيين وموردين طبيين متخصصين وبيانات تفصيلية للمنتجات وطلبات ومراجعة وتقارير ومتابعة مرتبطة بالقطاع. تساعد المنصة الرقمية المتخصصة على تنظيم هذه العمليات مع إبقاء الكتالوج البيطري منفصلاً عن مجالات المنتجات الأخرى. وتمثل فيتورا هذا النموذج من خلال تجربة سوق بيطرية تربط الأطباء البيطريين بالموردين والموظفين والإدارة والنقابة البيطرية."
+      },
+      "icon": null,
+      "cover_image": null,
+      "cover_image_alt": {
+        "en": null,
+        "ar": null
+      },
+      "sort_order": 3,
+      "publication_intent": "published",
+      "relationships": {
+        "systems": [
+          "vetora"
+        ],
+        "case_studies": []
+      }
+    }
+  ],
+  "rules": [
+    "Do not create additional industries.",
+    "Do not claim broad industry specialization beyond the real systems used as evidence.",
+    "Industry images/icons remain empty in V1.",
+    "Attach relationships by stable slugs after the referenced records exist."
+  ]
+}
