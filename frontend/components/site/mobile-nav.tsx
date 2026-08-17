@@ -6,11 +6,14 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { primaryNavRoutes } from "@/lib/routes/registry";
+import { navChildren, primaryNavRoutes } from "@/lib/routes/registry";
 
 // Shares the primary-navigation source of truth with the desktop header
 // (lib/routes/registry.ts). `path: ""` (home) renders as href "/".
 const navItems = primaryNavRoutes().map(
+  (r) => [r.navKey as string, r.path || "/"] as const,
+);
+const aboutChildren = navChildren("about").map(
   (r) => [r.navKey as string, r.path || "/"] as const,
 );
 
@@ -40,17 +43,43 @@ export function MobileNav() {
       <DialogContent closeLabel={tc("close")} className="top-24 max-w-sm translate-y-0">
         <DialogTitle className="sr-only">{tc("openMenu")}</DialogTitle>
         <nav aria-label={tc("openMenu")} className="flex flex-col gap-1 p-4">
-          {navItems.map(([key, href]) => (
-            <Link
-              key={key}
-              href={href}
-              aria-current={isActive(href) ? "page" : undefined}
-              onClick={() => setOpen(false)}
-              className="focus-ring rounded-[var(--radius-md)] px-3 py-3 text-base font-semibold text-foreground hover:bg-muted"
-            >
-              {t(key)}
-            </Link>
-          ))}
+          {navItems.map(([key, href]) =>
+            key === "about" ? (
+              <div key={key} className="rounded-[var(--radius-md)] border border-border bg-surface p-2">
+                <Link
+                  href={href}
+                  aria-current={isActive(href) ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                  className="focus-ring flex rounded-[var(--radius-md)] px-3 py-3 text-base font-semibold text-foreground hover:bg-muted"
+                >
+                  {t(key)}
+                </Link>
+                <div className="mt-1 flex flex-col gap-1 ps-3">
+                  {aboutChildren.map(([childKey, childHref]) => (
+                    <Link
+                      key={childKey}
+                      href={childHref}
+                      aria-current={isActive(childHref) ? "page" : undefined}
+                      onClick={() => setOpen(false)}
+                      className="focus-ring rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                    >
+                      {t(childKey)}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={key}
+                href={href}
+                aria-current={isActive(href) ? "page" : undefined}
+                onClick={() => setOpen(false)}
+                className="focus-ring rounded-[var(--radius-md)] px-3 py-3 text-base font-semibold text-foreground hover:bg-muted"
+              >
+                {t(key)}
+              </Link>
+            ),
+          )}
           {/* Search lives here on mobile: the header bar has no room for it
               below sm (see header.tsx), so this is its only entry point on a
               phone -- it must not be dropped from the drawer. */}

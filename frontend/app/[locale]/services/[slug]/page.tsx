@@ -7,7 +7,6 @@ import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { CTA } from "@/components/site/cta";
 import { CaseStudyCard } from "@/components/site/case-study-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -172,14 +171,6 @@ export default async function ServiceDetailPage({
           </Container>
         </Section>
       ) : null}
-
-      <CTA
-        eyebrow={t("detailCtaBadge")}
-        title={t("detailCtaTitle")}
-        subtitle={t("detailCtaSubtitle")}
-        buttonLabel={t("detailCtaButton")}
-        secondaryButtonLabel={t("detailCtaSecondaryButton")}
-      />
     </>
   );
 }

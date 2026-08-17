@@ -67,6 +67,7 @@ export interface RouteDefinition {
   readonly path: string;
   /** `messages.*.nav` key. Present ⇒ shown in the primary navigation. */
   readonly navKey?: string;
+  readonly navParentId?: string;
   /** Footer column, if the route appears in the footer. */
   readonly footerGroup?: FooterGroup;
   /** `messages.*.nav` (or legal) key used as the breadcrumb label. */
@@ -202,6 +203,19 @@ export const ROUTES: readonly RouteDefinition[] = [
     structuredData: "AboutPage",
   },
   {
+    id: "faq",
+    path: "/about/faq",
+    navKey: "faq",
+    navParentId: "about",
+    footerGroup: "company",
+    breadcrumbKey: "faq",
+    pageType: "hub",
+    indexable: true,
+    inSitemap: true,
+    contentState: "current",
+    structuredData: "AboutPage",
+  },
+  {
     id: "contact",
     path: "/contact",
     navKey: "contact",
@@ -323,7 +337,11 @@ function trustRoute(id: string, path: string): RouteDefinition {
 
 /** Primary navigation, in declared order. */
 export function primaryNavRoutes(): RouteDefinition[] {
-  return ROUTES.filter((r) => r.navKey);
+  return ROUTES.filter((r) => r.navKey && !r.navParentId);
+}
+
+export function navChildren(parentId: string): RouteDefinition[] {
+  return ROUTES.filter((r) => r.navKey && r.navParentId === parentId);
 }
 
 /** Footer routes for a given column, in declared order. */

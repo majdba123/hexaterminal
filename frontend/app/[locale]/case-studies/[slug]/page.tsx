@@ -7,7 +7,6 @@ import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { CTA } from "@/components/site/cta";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import type { CaseStudy } from "@/lib/api/types";
@@ -219,14 +218,6 @@ export default async function CaseStudyDetailPage({
           </Container>
         </Section>
       ) : null}
-
-      <CTA
-        eyebrow={t("detailCtaBadge")}
-        title={t("detailCtaTitle")}
-        subtitle={t("detailCtaSubtitle")}
-        buttonLabel={t("detailCtaButton")}
-        secondaryButtonLabel={t("detailCtaSecondaryButton")}
-      />
     </>
   );
 }

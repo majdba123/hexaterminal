@@ -7,7 +7,6 @@ import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { CTA } from "@/components/site/cta";
 import { Card, CardContent } from "@/components/ui/card";
 
 export async function generateMetadata({
@@ -146,14 +145,6 @@ export default async function AboutPage({
           </Container>
         </Section>
       ) : null}
-
-      <CTA
-        eyebrow={t("finalCtaBadge")}
-        title={t("finalCtaTitle")}
-        subtitle={t("finalCtaSubtitle")}
-        buttonLabel={t("finalCtaButton")}
-        secondaryButtonLabel={t("finalCtaSecondaryButton")}
-      />
     </>
   );
 }

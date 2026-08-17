@@ -9,7 +9,6 @@ import { Breadcrumb } from "@/components/site/breadcrumb";
 import { SystemsListingCard } from "@/components/site/systems-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
-import { CTA } from "@/components/site/cta";
 import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
@@ -81,13 +80,6 @@ export default async function SystemsPage({
           )}
         </Container>
       </Section>
-      <CTA
-        eyebrow={t("finalCtaBadge")}
-        title={t("finalCtaTitle")}
-        subtitle={t("finalCtaSubtitle")}
-        buttonLabel={t("finalCtaButton")}
-        secondaryButtonLabel={t("finalCtaSecondaryButton")}
-      />
     </>
   );
 }

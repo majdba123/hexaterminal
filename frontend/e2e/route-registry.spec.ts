@@ -3,6 +3,7 @@ import en from "../messages/en.json";
 import ar from "../messages/ar.json";
 import {
   ROUTES,
+  navChildren,
   primaryNavRoutes,
   footerRoutes,
   sitemapStaticPaths,
@@ -71,11 +72,12 @@ test.describe("Route registry consistency", () => {
       "home",
       "services",
       "systems",
-      "industries",
       "case-studies",
+      "industries",
       "about",
       "contact",
     ]);
+    expect(navChildren("about").map((r) => r.id)).toEqual(["faq"]);
   });
 
   test("secondary routes remain registered but outside primary navigation", () => {
@@ -96,6 +98,12 @@ test.describe("Route registry consistency", () => {
       "case-studies",
       "industries",
       "pricing",
+    ]);
+    expect(footerRoutes("company").map((r) => r.id)).toEqual([
+      "about",
+      "faq",
+      "contact",
+      "start-a-project",
     ]);
     expect(footerRoutes("legal").map((r) => r.id)).toEqual(["privacy", "terms"]);
     expect(

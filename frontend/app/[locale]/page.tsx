@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getHome, getArticles, getFaqs } from "@/lib/api/client";
+import { getHome, getArticles } from "@/lib/api/client";
 import { Hero } from "@/components/site/hero";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
@@ -8,13 +8,9 @@ import { ServiceCard } from "@/components/site/service-card";
 import { HomeSystemsShowcase } from "@/components/site/home-systems-showcase";
 import { HomeCaseStudiesShowcase } from "@/components/site/home-case-studies-showcase";
 import { ArticleCard } from "@/components/site/article-card";
-import { CTA } from "@/components/site/cta";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Link } from "@/i18n/navigation";
-import { JsonLd } from "@/components/site/json-ld";
-import { faqPageJsonLd } from "@/lib/seo/jsonld";
 import { Star } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,10 +23,9 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [home, articles, faqs, t] = await Promise.all([
+  const [home, articles, t] = await Promise.all([
     getHome(locale),
     getArticles(locale, 1, 3),
-    getFaqs(locale),
     getTranslations("home"),
   ]);
 
@@ -42,12 +37,6 @@ export default async function HomePage({
 
   return (
     <>
-      {faqs.length > 0 ? (
-        <JsonLd
-          data={faqPageJsonLd(faqs.map((faq) => ({ question: faq.question, answer: faq.answer })))}
-        />
-      ) : null}
-
       <Hero />
 
       {home.services.length > 0 ? (
@@ -193,29 +182,6 @@ export default async function HomePage({
         </Section>
       ) : null}
 
-      {faqs.length > 0 ? (
-        <Section className="bg-surface">
-          <Container narrow>
-            <SectionHeading badge={t("faqBadge")} title={t("faqTitle")} />
-            <Accordion type="single" collapsible className="rounded-[var(--radius-lg)] border border-border bg-background px-6">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`faq-${index}`}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Container>
-        </Section>
-      ) : null}
-
-      <CTA
-        eyebrow={t("finalCtaBadge")}
-        title={t("finalCtaTitle")}
-        subtitle={t("finalCtaSubtitle")}
-        buttonLabel={t("finalCtaButton")}
-        secondaryButtonLabel={t("finalCtaSecondaryButton")}
-      />
     </>
   );
 }

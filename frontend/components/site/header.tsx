@@ -8,12 +8,16 @@ import { LocaleSwitcher } from "@/components/site/locale-switcher";
 import { MobileNav } from "@/components/site/mobile-nav";
 import { HeaderShell } from "@/components/site/header-shell";
 import { NavLink } from "@/components/site/nav-link";
-import { primaryNavRoutes } from "@/lib/routes/registry";
+import { NavGroup } from "@/components/site/nav-group";
+import { navChildren, primaryNavRoutes } from "@/lib/routes/registry";
 
 // Primary navigation is derived from the single-source-of-truth route registry
 // (lib/routes/registry.ts) so nav, footer, breadcrumbs, and the sitemap can
 // never drift apart. `path: ""` (home) renders as href "/".
 const navItems = primaryNavRoutes().map(
+  (r) => [r.navKey as string, r.path || "/"] as const,
+);
+const aboutChildren = navChildren("about").map(
   (r) => [r.navKey as string, r.path || "/"] as const,
 );
 
@@ -75,9 +79,18 @@ export async function Header() {
           aria-label="Main"
           className="hidden xl:flex xl:flex-1 xl:items-center xl:justify-center xl:gap-0.5"
         >
-          {navItems.map(([key, href]) => (
-            <NavLink key={key} href={href} label={t(key)} />
-          ))}
+          {navItems.map(([key, href]) =>
+            key === "about" ? (
+              <NavGroup
+                key={key}
+                label={t(key)}
+                href={href}
+                items={aboutChildren.map(([childKey, childHref]) => ({ label: t(childKey), href: childHref }))}
+              />
+            ) : (
+              <NavLink key={key} href={href} label={t(key)} />
+            ),
+          )}
         </nav>
 
         <div className="ms-auto flex items-center gap-1 xl:ms-0">
