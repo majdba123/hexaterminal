@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Public;
 
 use App\Http\Resources\V1\Public\Concerns\EmbedsSeoMeta;
+use App\Http\Resources\V1\Public\Concerns\ResolvesPublicMediaUrls;
 use App\Models\CaseStudy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,6 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class CaseStudyResource extends JsonResource
 {
     use EmbedsSeoMeta;
+    use ResolvesPublicMediaUrls;
 
     public function toArray(Request $request): array
     {
@@ -32,9 +34,12 @@ class CaseStudyResource extends JsonResource
             'project_classification' => $this->project_classification,
             'project_url' => $this->publicProjectUrl(),
             'video_url' => $this->video_url,
-            'cover_image' => $this->cover_image,
+            'cover_image' => $this->publicMediaUrl($this->cover_image),
             'cover_image_alt' => $this->cover_image_alt,
-            'gallery' => $this->gallery ?? [],
+            'gallery' => array_values(array_filter(array_map(
+                fn (?string $path): ?string => $this->publicMediaUrl($path),
+                $this->gallery ?? [],
+            ))),
             'is_featured' => $this->is_featured,
             'service' => new ServiceResource($this->whenLoaded('serviceOffering')),
             'system' => new SystemSummaryResource($this->whenLoaded('system')),

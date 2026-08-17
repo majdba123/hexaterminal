@@ -73,7 +73,7 @@ class FaqItemsSeederTest extends TestCase
         $this->assertDatabaseCount('faqs', 10);
         $this->assertDatabaseCount('systems', 1);
         $this->assertDatabaseCount('industries', 0);
-        $this->assertDatabaseCount('case_studies', 0);
+        $this->assertDatabaseCount('case_studies', 1);
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertDatabaseCount('articles', 0);
 

@@ -6,6 +6,7 @@ use App\Models\CompanySetting;
 use App\Models\Service;
 use App\Models\TeamMember;
 use App\Services\TeamMemberSeedImageSynchronizer;
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\TeamMembersSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
@@ -87,14 +88,14 @@ class TeamMembersSeederTest extends TestCase
 
         Storage::fake('public');
 
-        $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $this->seed(DatabaseSeeder::class);
 
         $this->assertDatabaseCount('service_offerings', 3);
         $this->assertDatabaseCount('company_settings', 1);
         $this->assertDatabaseCount('team_members', 1);
         $this->assertDatabaseCount('systems', 1);
         $this->assertDatabaseCount('industries', 0);
-        $this->assertDatabaseCount('case_studies', 0);
+        $this->assertDatabaseCount('case_studies', 1);
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertSame(Service::CORE_SERVICE_SLUGS, Service::query()->orderBy('sort_order')->pluck('slug')->all());
         $this->assertSame('majdbayer77@gmail.com', CompanySetting::current()->email);

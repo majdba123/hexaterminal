@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Public;
 
+use App\Http\Resources\V1\Public\Concerns\ResolvesPublicMediaUrls;
 use App\Models\CaseStudy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,6 +18,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class CaseStudySummaryResource extends JsonResource
 {
+    use ResolvesPublicMediaUrls;
+
     public function toArray(Request $request): array
     {
         return [
@@ -24,7 +27,7 @@ class CaseStudySummaryResource extends JsonResource
             'title' => $this->title,
             'summary' => $this->summary,
             'client_name' => $this->client_name,
-            'cover_image' => $this->cover_image,
+            'cover_image' => $this->publicMediaUrl($this->cover_image),
             'cover_image_alt' => $this->cover_image_alt,
             'is_featured' => $this->is_featured,
         ];

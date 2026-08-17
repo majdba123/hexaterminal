@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             EngagementModelsSeeder::class,
             FaqItemsSeeder::class,
             SystemsSeeder::class,
+            MalikCaseStudySeeder::class,
         ]);
     }
 }

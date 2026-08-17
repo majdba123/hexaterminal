@@ -1,0 +1,96 @@
+{
+  "package_version": "V1",
+  "entity": "case_studies",
+  "record_count": 1,
+  "source_of_truth_notes": [
+    "Public Malik website capture proves the current catalog capabilities and live interface.",
+    "Project owner confirmed the pre-site workflow: Malik Group published furniture videos on social media; interested customers asked in comments; the team then explained products and manually sent additional photos for the specific item.",
+    "Project owner confirmed the implementation stack: Laravel + Blade.",
+    "No numeric business-performance metrics were provided; outcomes must remain qualitative and verifiable."
+  ],
+  "related_system_patch": {
+    "slug": "malik-group",
+    "tech_stack": [
+      "Laravel",
+      "Blade"
+    ],
+    "instruction": "Update only the existing Malik System tech_stack with these confirmed technologies. Do not modify its other approved content."
+  },
+  "case_study": {
+    "slug": "malik-group-furniture-catalog",
+    "title": {
+      "en": "Turning Social Media Product Enquiries into a Structured Furniture Catalog",
+      "ar": "تحويل استفسارات السوشال ميديا إلى كتالوج أثاث رقمي منظم"
+    },
+    "summary": {
+      "en": "Malik Group was already reaching customers through social media, but product enquiries depended on repeated manual explanations and photo sharing. We built a Laravel and Blade-based furniture catalog that gives customers a structured way to discover products, browse categories, filter the catalog, review product details and images, and then move directly to WhatsApp for a focused enquiry.",
+      "ar": "كان Malik Group يصل إلى العملاء عبر منصات التواصل الاجتماعي، لكن استفسارات المنتجات كانت تعتمد على الشرح اليدوي المتكرر وإرسال الصور لكل عميل. بنينا كتالوج أثاث باستخدام Laravel وBlade يمنح العميل طريقة منظمة لاكتشاف المنتجات، وتصفح التصنيفات، وتصفية الكتالوج، ومراجعة تفاصيل المنتج وصوره، ثم الانتقال مباشرة إلى WhatsApp لاستفسار أكثر تحديداً."
+    },
+    "context": {
+      "en": "Before the website, Malik Group primarily presented furniture through videos on social media. When a customer became interested in a specific item, they asked about it in the comments, and the team continued the conversation manually by explaining the product and sending additional photos based on the item the customer had selected. This worked as a direct sales interaction, but product discovery and basic product information remained dependent on repeated one-to-one communication.",
+      "ar": "قبل الموقع، كان Malik Group يعرض الأثاث بشكل أساسي من خلال فيديوهات على منصات التواصل الاجتماعي. عندما يهتم العميل بقطعة معينة، كان يسأل عنها في التعليقات، ثم يستمر التواصل بشكل يدوي عبر شرح المنتج وإرسال صور إضافية للقطعة التي اختارها العميل. كانت هذه الطريقة مناسبة للتواصل المباشر، لكن اكتشاف المنتجات والحصول على المعلومات الأساسية ظل يعتمد على تواصل متكرر مع كل عميل بشكل منفصل."
+    },
+    "problem": {
+      "en": "The challenge was not simply to put products online. Customers needed a way to explore a multi-category furniture catalog independently, understand available products, review images and visible pricing, and narrow their choices before contacting the business. At the same time, Malik Group needed to preserve the direct customer conversation that already worked for its sales process instead of forcing an unnecessary checkout flow.",
+      "ar": "لم يكن التحدي مجرد وضع المنتجات على موقع إلكتروني. كان العميل يحتاج إلى طريقة يستطيع من خلالها استكشاف كتالوج أثاث متعدد التصنيفات بنفسه، وفهم المنتجات المتاحة، ومراجعة الصور والأسعار الظاهرة، وتضييق خياراته قبل التواصل مع النشاط. وفي الوقت نفسه، كان من المهم الحفاظ على التواصل المباشر مع العميل، لأنه جزء أساسي من عملية البيع، بدلاً من فرض نظام Checkout غير مطلوب."
+    },
+    "constraints": {
+      "en": "Support a catalog spanning multiple room and furniture categories.\nKeep product discovery simple as the catalog grows.\nSupport multiple images for individual products.\nProvide useful search and price/category filtering.\nPreserve direct customer enquiry instead of forcing an online checkout flow.\nKeep new arrivals visible without hiding the broader catalog.\nMaintain a clear responsive browsing experience across devices.",
+      "ar": "دعم كتالوج موزع على عدة غرف وتصنيفات أثاث.\nالحفاظ على سهولة اكتشاف المنتجات مع نمو الكتالوج.\nدعم عدة صور لكل منتج.\nتوفير البحث والتصفية حسب السعر والتصنيف.\nالحفاظ على الاستفسار المباشر مع العميل بدلاً من فرض Checkout إلكتروني.\nإبراز أحدث المنتجات بدون إخفاء الوصول إلى الكتالوج الكامل.\nتقديم تجربة تصفح واضحة ومتجاوبة على مختلف الأجهزة."
+    },
+    "solution": {
+      "en": "We structured the website around product discovery. Visitors can browse by room and category, see new arrivals, access the full catalog, filter by category, product name and price range, and open dedicated product pages with multiple images and relevant product information. Instead of replacing Malik Group’s existing direct-sales model, the website strengthens it: customers can understand and narrow their product choice first, then continue through a direct WhatsApp enquiry about the specific item that interests them.",
+      "ar": "بنينا تجربة الموقع حول اكتشاف المنتجات. يستطيع الزائر التصفح حسب الغرفة والتصنيف، ومشاهدة أحدث المنتجات، والدخول إلى الكتالوج الكامل، والتصفية حسب التصنيف واسم المنتج ونطاق السعر، وفتح صفحة مستقلة لكل منتج تحتوي على عدة صور ومعلومات مرتبطة به. وبدلاً من استبدال أسلوب البيع المباشر لدى Malik Group، عزز الموقع هذا الأسلوب: يستطيع العميل أولاً فهم المنتج وتضييق خياراته، ثم الانتقال إلى استفسار مباشر عبر WhatsApp عن القطعة التي تهمه."
+    },
+    "architecture": {
+      "en": "The project was implemented as a Laravel web application using Blade for server-rendered interfaces. The application keeps catalog navigation, category-driven browsing, filtering, product-detail flows, image galleries, and customer-facing enquiry paths within one cohesive Laravel application. The confirmed implementation stack for this project is Laravel and Blade.",
+      "ar": "تم تنفيذ المشروع كتطبيق ويب باستخدام Laravel وBlade لواجهات العرض المعتمدة على Server Rendering. تجمع بنية التطبيق بين التنقل داخل الكتالوج، والتصفح حسب التصنيفات، والتصفية، وصفحات تفاصيل المنتجات، ومعارض الصور، ومسار الاستفسار الموجه للعملاء ضمن تطبيق Laravel واحد متكامل. التقنيات المؤكدة في هذا المشروع هي Laravel وBlade."
+    },
+    "outcomes": {
+      "en": "Product discovery is now available through one structured branded catalog rather than depending only on individual social-media posts.\nCustomers can browse categories and narrow products before starting a direct conversation.\nProduct pages provide images and relevant context before the customer contacts the business.\nThe catalog creates a clear path from social-media interest to website discovery and then to a focused WhatsApp enquiry.\nThe existing direct-sales relationship is preserved while the repetitive product-discovery step is moved into a self-service digital experience.\nNew arrivals can be highlighted while the complete catalog remains accessible.",
+      "ar": "أصبح اكتشاف المنتجات متاحاً من خلال كتالوج منظم يحمل هوية Malik Group بدلاً من الاعتماد فقط على منشورات السوشال ميديا المنفصلة.\nأصبح بإمكان العميل تصفح التصنيفات وتضييق خياراته قبل بدء التواصل المباشر.\nتوفر صفحات المنتجات الصور والمعلومات المرتبطة بالمنتج قبل تواصل العميل مع النشاط.\nأنشأ الكتالوج مساراً واضحاً من الاهتمام عبر السوشال ميديا إلى استكشاف الموقع ثم الاستفسار المحدد عبر WhatsApp.\nتم الحفاظ على علاقة البيع المباشر مع نقل جزء اكتشاف المنتج المتكرر إلى تجربة رقمية يستطيع العميل استخدامها بنفسه.\nيمكن إبراز المنتجات الجديدة مع إبقاء الكتالوج الكامل متاحاً."
+    },
+    "evidence": {
+      "en": "Live production website: https://malik.hexaterminal.com/\nProject-owner-confirmed pre-site workflow: social-media furniture videos → customer comments/enquiries → manual product explanation and photo sharing.\nCaptured public interface evidence: homepage, room/category browsing, full catalog, filtering, category listing, product-detail pages, multi-image galleries, and WhatsApp enquiry actions.\nConfirmed implementation stack: Laravel + Blade.",
+      "ar": "الموقع المباشر: https://malik.hexaterminal.com/\nآلية العمل قبل الموقع كما أكدها صاحب المشروع: فيديوهات أثاث على السوشال ميديا ← استفسارات وتعليقات العملاء ← شرح يدوي للمنتج وإرسال الصور.\nأدلة من الواجهة العامة الملتقطة: الصفحة الرئيسية، التصفح حسب الغرفة والتصنيف، الكتالوج الكامل، التصفية، صفحات التصنيفات، صفحات تفاصيل المنتجات، معارض الصور المتعددة، وخيارات الاستفسار عبر WhatsApp.\nالتقنيات المؤكدة: Laravel + Blade."
+    },
+    "features": {
+      "en": "Room and category-based product browsing\nNew arrivals showcase\nFull furniture catalog\nProduct-name search\nCategory filtering\nMinimum and maximum price filtering\nProduct cards with key information\nDedicated product detail pages\nMulti-image product galleries\nCategory and breadcrumb navigation\nDirect WhatsApp product enquiries\nResponsive customer-facing storefront",
+      "ar": "تصفح المنتجات حسب الغرفة والتصنيف\nعرض أحدث المنتجات\nكتالوج كامل للأثاث\nالبحث باسم المنتج\nالتصفية حسب التصنيف\nالتصفية حسب الحد الأدنى والأعلى للسعر\nبطاقات منتجات تعرض المعلومات الأساسية\nصفحات مستقلة لتفاصيل المنتجات\nمعارض صور متعددة لكل منتج\nتنقل حسب التصنيف والمسار\nاستفسار مباشر عن المنتج عبر WhatsApp\nواجهة متجاوبة موجهة للعملاء"
+    },
+    "client_name": "Malik Group",
+    "project_name": "Malik Group Furniture Catalog",
+    "video_url": null,
+    "cover_image": "case-studies/malik-group/malik-group-case-study-cover.png",
+    "cover_image_alt": {
+      "en": "Malik Group furniture catalog interface showing the product discovery experience.",
+      "ar": "واجهة كتالوج أثاث Malik Group وتظهر تجربة اكتشاف المنتجات."
+    },
+    "gallery": [
+      "case-studies/malik-group/gallery/01-shop-by-room.png",
+      "case-studies/malik-group/gallery/02-full-catalog.png",
+      "case-studies/malik-group/gallery/03-category-page.png",
+      "case-studies/malik-group/gallery/04-product-detail.png"
+    ],
+    "relations": {
+      "service_slug": "ecommerce-business-websites",
+      "system_slug": "malik-group",
+      "industry_slugs": []
+    },
+    "project_classification": "ecommerce_business_website",
+    "featured": true,
+    "sort_order": 1,
+    "publication_intent": "published"
+  },
+  "do_not_invent": [
+    "Numeric sales or conversion improvements",
+    "Revenue impact",
+    "Project budget",
+    "Delivery duration or deadline",
+    "Exact Laravel major version unless verified from the repository/composer.lock",
+    "Database technology",
+    "Hosting provider",
+    "Checkout/payment/order functionality",
+    "Industry relation that does not already exist in the CMS"
+  ]
+}

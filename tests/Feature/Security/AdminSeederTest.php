@@ -4,6 +4,7 @@ namespace Tests\Feature\Security;
 
 use App\Models\CaseStudy;
 use App\Models\CompanySetting;
+use App\Models\EngagementModel;
 use App\Models\Industry;
 use App\Models\PricingProfile;
 use App\Models\Service;
@@ -68,7 +69,7 @@ class AdminSeederTest extends TestCase
         $this->assertDatabaseCount('company_settings', 1);
         $this->assertDatabaseCount('team_members', 1);
         $this->assertDatabaseCount('systems', 1);
-        $this->assertDatabaseCount('case_studies', 0);
+        $this->assertDatabaseCount('case_studies', 1);
         $this->assertDatabaseCount('industries', 0);
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertDatabaseCount('articles', 0);
@@ -82,7 +83,8 @@ class AdminSeederTest extends TestCase
             ->assertJsonCount(3, 'data.services')
             ->assertJsonCount(1, 'data.featured_systems')
             ->assertJsonPath('data.featured_systems.0.slug', 'malik-group')
-            ->assertJsonCount(0, 'data.featured_case_studies');
+            ->assertJsonCount(1, 'data.featured_case_studies')
+            ->assertJsonPath('data.featured_case_studies.0.slug', 'malik-group-furniture-catalog');
 
         $this->getJson('/api/v1/public/services/custom-erp-crm-systems?locale=ar')
             ->assertOk()
@@ -121,17 +123,17 @@ class AdminSeederTest extends TestCase
 
         $this->assertSame(
             ['discovery-sprint', 'fixed-scope-project', 'milestone-based-delivery', 'ongoing-support'],
-            \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('slug')->all()
+            EngagementModel::published()->orderBy('sort_order')->pluck('slug')->all()
         );
         $this->assertSame(
             ['discovery_sprint', 'fixed_project', 'milestone_based', 'support_plan'],
-            \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('billing_model')->all()
+            EngagementModel::published()->orderBy('sort_order')->pluck('billing_model')->all()
         );
         $this->assertSame(
             array_fill(0, 4, 'request_quote'),
-            \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('pricing_display_mode')->all()
+            EngagementModel::published()->orderBy('sort_order')->pluck('pricing_display_mode')->all()
         );
-        $this->assertSame([1, 2, 3, 4], \App\Models\EngagementModel::published()->orderBy('sort_order')->pluck('sort_order')->all());
+        $this->assertSame([1, 2, 3, 4], EngagementModel::published()->orderBy('sort_order')->pluck('sort_order')->all());
         $this->assertSame(0, PricingProfile::count());
 
         $this->getJson('/api/v1/public/pricing?locale=en')

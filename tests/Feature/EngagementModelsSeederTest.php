@@ -94,7 +94,7 @@ class EngagementModelsSeederTest extends TestCase
         $this->assertDatabaseCount('pricing_profiles', 0);
         $this->assertDatabaseCount('systems', 1);
         $this->assertDatabaseCount('industries', 0);
-        $this->assertDatabaseCount('case_studies', 0);
+        $this->assertDatabaseCount('case_studies', 1);
         $this->assertDatabaseCount('testimonials', 0);
         $this->assertDatabaseCount('articles', 0);
         $this->assertDatabaseCount('faqs', 10);

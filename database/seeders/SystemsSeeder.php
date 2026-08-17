@@ -16,6 +16,9 @@ class SystemsSeeder extends Seeder
     {
         $definition = $this->systemDefinition();
         $images = app(SystemSeedImageSynchronizer::class);
+        $definition['tech_stack'] = ($definition['slug'] ?? null) === 'malik-group'
+            ? ['Laravel', 'Blade']
+            : ($definition['tech_stack'] ?? []);
 
         $system = System::firstOrNew(['slug' => $definition['slug']]);
         $system->fill([
@@ -30,7 +33,7 @@ class SystemsSeeder extends Seeder
             'features' => $definition['features'],
             'business_outcomes' => $definition['business_outcomes'],
             'target_audience' => $definition['target_audience'],
-            'tech_stack' => $definition['tech_stack'] ?? [],
+            'tech_stack' => $definition['tech_stack'],
             'cover_image' => $images->sync($definition['cover_image']),
             'cover_image_alt' => $definition['cover_image_alt'],
             'gallery' => $images->syncMany($definition['gallery'] ?? []),
