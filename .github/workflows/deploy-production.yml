@@ -23,12 +23,37 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, pdo_sqlite
-          coverage: none
+      - name: Install PHP 8.3 and Composer
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          for attempt in 1 2 3; do
+            if sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+              php8.3-cli \
+              php8.3-common \
+              php8.3-curl \
+              php8.3-intl \
+              php8.3-mbstring \
+              php8.3-sqlite3 \
+              php8.3-xml \
+              php8.3-zip \
+              composer \
+              unzip; then
+              break
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              exit 1
+            fi
+
+            echo "PHP runtime installation failed on attempt $attempt, retrying after backoff..." >&2
+            sleep $((attempt * 15))
+          done
+
+          sudo update-alternatives --set php /usr/bin/php8.3
+          php -v
+          composer --version
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
