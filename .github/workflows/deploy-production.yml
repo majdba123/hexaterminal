@@ -45,7 +45,6 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          composer config --global source-fallback true
 
           for attempt in 1 2 3; do
             if composer install --prefer-install=source --no-interaction --no-progress; then
@@ -227,7 +226,6 @@ jobs:
             git rev-parse HEAD
 
             export COMPOSER_ALLOW_SUPERUSER=1
-            composer config --global source-fallback true
             for attempt in 1 2 3; do
               if composer install \
                 --no-dev \
