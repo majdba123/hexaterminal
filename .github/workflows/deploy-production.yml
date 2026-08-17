@@ -67,11 +67,10 @@ jobs:
       - name: Install backend dependencies
         env:
           COMPOSER_ALLOW_SUPERUSER: 1
-          COMPOSER_AUTH: >-
-            {"github-oauth":{"github.com":"${{ github.token }}"}}
         shell: bash
         run: |
           set -Eeuo pipefail
+          composer config --global github-oauth.github.com "${{ github.token }}"
           composer config --global source-fallback true
 
           for attempt in 1 2 3; do
@@ -254,7 +253,7 @@ jobs:
             git rev-parse HEAD
 
             export COMPOSER_ALLOW_SUPERUSER=1
-            export COMPOSER_AUTH='{"github-oauth":{"github.com":"${{ github.token }}"}}'
+            composer config --global github-oauth.github.com "${{ github.token }}"
             composer config --global source-fallback true
             for attempt in 1 2 3; do
               if composer install \
