@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\CaseStudy;
 use App\Models\Service;
 use App\Models\System;
-use App\Models\SystemUseCase;
 use App\Services\CaseStudySeedImageSynchronizer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
@@ -31,8 +30,6 @@ class VetoraCaseStudySeeder extends Seeder
         if (! $service) {
             throw new \RuntimeException("The approved service [{$relations['service_slug']}] must exist before seeding the Vetora case study.");
         }
-
-        SystemUseCase::query()->where('system_id', $system->id)->delete();
 
         $images = app(CaseStudySeedImageSynchronizer::class);
         $caseStudy = CaseStudy::firstOrNew(['slug' => $caseStudyData['slug']]);
