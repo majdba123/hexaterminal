@@ -42,12 +42,13 @@
       "ar": "الأطباء البيطريون والمهندسون الزراعيون والمستودعات والموردون الطبيون البيطريون والمستودعات والموردون الزراعيون والنقابات الزراعية والبيطرية والموظفون التشغيليون وإدارة المنصة في سوريا."
     },
     "tech_stack": [],
-    "cover_image": "systems/vetora-cover.png",
+    "cover_image": "systems/vetora-cover-public.png",
     "cover_image_alt": {
-      "en": "Vetora administration dashboard showing platform-wide operational insights.",
-      "ar": "لوحة إدارة فيتورا وتظهر مؤشرات تشغيلية على مستوى المنصة."
+      "en": "Vetora public marketplace homepage presenting agriculture and veterinary product markets.",
+      "ar": "الواجهة العامة لمنصة فيتورا وتعرض السوقين الزراعي والبيطري."
     },
     "gallery": [
+      "systems/gallery/vetora-00-public-marketplace.png",
       "systems/gallery/vetora-01-agriculture-vendor-dashboard.png",
       "systems/gallery/vetora-02-product-moderation.png",
       "systems/gallery/vetora-03-agriculture-syndicate-dashboard.png",

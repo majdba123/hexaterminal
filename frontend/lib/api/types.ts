@@ -73,10 +73,23 @@ export interface System {
   live_url: string | null;
   is_featured: boolean;
   industries: Industry[];
+  use_cases: SystemUseCase[];
   /** Lightweight refs -- see App\Http\Resources\V1\Public\CaseStudySummaryResource. */
   case_studies: CaseStudySummary[];
   updated_at: string | null;
   seo: SeoMeta | null;
+}
+
+export interface SystemUseCase {
+  slug: string;
+  title: string;
+  actor: string | null;
+  summary: string | null;
+  workflow: string | null;
+  outcome: string | null;
+  image: string | null;
+  image_alt: string | null;
+  sort_order: number;
 }
 
 /** See App\Http\Resources\V1\Public\SystemSummaryResource. */

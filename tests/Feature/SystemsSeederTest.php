@@ -71,7 +71,7 @@ class SystemsSeederTest extends TestCase
 
         $this->assertDatabaseCount('systems', 2);
         $this->assertSame(['malik-group', 'vetora'], System::query()->orderBy('sort_order')->pluck('slug')->all());
-        $this->assertCount(11, Storage::disk('public')->allFiles('systems'));
+        $this->assertCount(12, Storage::disk('public')->allFiles('systems'));
     }
 
     public function test_system_resource_uses_the_active_public_storage_url_contract(): void
@@ -108,8 +108,9 @@ class SystemsSeederTest extends TestCase
         $this->assertSame('published', $system->status);
         $this->assertNull($system->demo_url);
         $this->assertSame('https://msz.hexaterminal.com/', $system->live_url);
-        $this->assertSame('systems/vetora-cover.png', $system->cover_image);
+        $this->assertSame('systems/vetora-cover-public.png', $system->cover_image);
         $this->assertSame([
+            'systems/gallery/vetora-00-public-marketplace.png',
             'systems/gallery/vetora-01-agriculture-vendor-dashboard.png',
             'systems/gallery/vetora-02-product-moderation.png',
             'systems/gallery/vetora-03-agriculture-syndicate-dashboard.png',
@@ -128,10 +129,10 @@ class SystemsSeederTest extends TestCase
             ->assertJsonPath('data.name', 'Vetora')
             ->assertJsonPath('data.tech_stack', [])
             ->assertJsonPath('data.live_url', 'https://msz.hexaterminal.com/')
-            ->assertJsonPath('data.cover_image', url('/storage/systems/vetora-cover.png'))
-            ->assertJsonCount(5, 'data.gallery')
-            ->assertJsonPath('data.gallery.0', url('/storage/systems/gallery/vetora-01-agriculture-vendor-dashboard.png'))
-            ->assertJsonPath('data.gallery.4', url('/storage/systems/gallery/vetora-05-structured-product-entry.png'));
+            ->assertJsonPath('data.cover_image', url('/storage/systems/vetora-cover-public.png'))
+            ->assertJsonCount(6, 'data.gallery')
+            ->assertJsonPath('data.gallery.0', url('/storage/systems/gallery/vetora-00-public-marketplace.png'))
+            ->assertJsonPath('data.gallery.5', url('/storage/systems/gallery/vetora-05-structured-product-entry.png'));
 
         $this->getJson('/api/v1/public/systems/vetora?locale=ar')
             ->assertOk()
@@ -141,5 +142,6 @@ class SystemsSeederTest extends TestCase
 
         $this->assertDatabaseCount('systems', 2);
         $this->assertSame(1, System::query()->where('slug', 'vetora')->count());
+        $this->assertCount(12, Storage::disk('public')->allFiles('systems'));
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature\Api\V1;
 
 use App\Models\CaseStudy;
 use App\Models\System;
+use App\Models\SystemUseCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -50,6 +51,30 @@ class SystemDetailTest extends TestCase
             'system_id' => $system->id,
             'is_published' => false,
         ]);
+        SystemUseCase::create([
+            'system_id' => $system->id,
+            'slug' => 'later-use-case',
+            'title' => ['en' => 'Later use case'],
+            'is_published' => true,
+            'published_at' => now()->subMinute(),
+            'sort_order' => 10,
+        ]);
+        SystemUseCase::create([
+            'system_id' => $system->id,
+            'slug' => 'first-use-case',
+            'title' => ['en' => 'First use case'],
+            'workflow' => ['en' => "Step one\nStep two"],
+            'outcome' => ['en' => 'Keeps work visible'],
+            'is_published' => true,
+            'published_at' => now()->subMinute(),
+            'sort_order' => 1,
+        ]);
+        SystemUseCase::create([
+            'system_id' => $system->id,
+            'slug' => 'draft-use-case',
+            'title' => ['en' => 'Draft use case'],
+            'is_published' => false,
+        ]);
 
         $this->getJson('/api/v1/public/systems/workflow-platform')
             ->assertOk()
@@ -60,6 +85,11 @@ class SystemDetailTest extends TestCase
             ->assertJsonPath('data.features', "CMS capability one\nCMS capability two")
             ->assertJsonPath('data.target_audience', 'CMS audience')
             ->assertJsonPath('data.tech_stack.0', 'CMS technology')
+            ->assertJsonPath('data.use_cases.0.slug', 'first-use-case')
+            ->assertJsonPath('data.use_cases.0.workflow', "Step one\nStep two")
+            ->assertJsonPath('data.use_cases.0.outcome', 'Keeps work visible')
+            ->assertJsonPath('data.use_cases.1.slug', 'later-use-case')
+            ->assertJsonCount(2, 'data.use_cases')
             ->assertJsonPath('data.case_studies.0.slug', 'first-related-work')
             ->assertJsonPath('data.case_studies.1.slug', 'later-related-work')
             ->assertJsonCount(2, 'data.case_studies');
@@ -83,6 +113,7 @@ class SystemDetailTest extends TestCase
         $this->getJson('/api/v1/public/systems/minimal-system')
             ->assertOk()
             ->assertJsonPath('data.tech_stack', [])
+            ->assertJsonPath('data.use_cases', [])
             ->assertJsonPath('data.case_studies', []);
 
         $this->getJson('/api/v1/public/systems/draft-system')->assertNotFound();

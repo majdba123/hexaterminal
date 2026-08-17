@@ -42,6 +42,7 @@ class SystemResource extends JsonResource
             'live_url' => $this->live_url,
             'is_featured' => $this->is_featured,
             'industries' => IndustryResource::collection($this->whenLoaded('industries')),
+            'use_cases' => SystemUseCaseResource::collection($this->whenLoaded('useCases')),
             // Lightweight CaseStudy summaries -- avoids nesting the full
             // CaseStudyResource (which itself embeds a System) to prevent
             // System <-> CaseStudy recursive nesting.

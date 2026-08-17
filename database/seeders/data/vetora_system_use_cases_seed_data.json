@@ -1,0 +1,308 @@
+{
+  "package_version": "V1",
+  "system_slug": "vetora",
+  "purpose": "Create a real System Use Cases domain for Vetora and render it on the existing System detail page.",
+  "schema_contract": {
+    "entity": "SystemUseCase",
+    "table": "system_use_cases",
+    "relationship": "System hasMany SystemUseCases; SystemUseCase belongsTo System",
+    "recommended_fields": [
+      "id",
+      "system_id",
+      "slug",
+      "title (translated JSON)",
+      "actor (translated JSON)",
+      "summary (translated JSON)",
+      "workflow (translated JSON multiline text)",
+      "outcome (translated JSON)",
+      "image",
+      "image_alt (translated JSON)",
+      "sort_order",
+      "is_published",
+      "timestamps"
+    ],
+    "unique_identity": [
+      "system_id",
+      "slug"
+    ],
+    "note": "If an equivalent current entity already exists, reuse it instead of creating a duplicate domain."
+  },
+  "use_cases": [
+    {
+      "slug": "choose-specialized-market",
+      "sort_order": 1,
+      "title": {
+        "en": "Choose the Relevant Professional Market",
+        "ar": "اختيار السوق المتخصص المناسب"
+      },
+      "actor": {
+        "en": "Veterinary Doctor / Agricultural Engineer",
+        "ar": "طبيب بيطري / مهندس زراعي"
+      },
+      "summary": {
+        "en": "Professionals start by choosing the agriculture or veterinary market so the platform can focus their browsing experience on the products and categories relevant to their work.",
+        "ar": "يبدأ المختص باختيار السوق الزراعي أو البيطري حتى تعرض المنصة المنتجات والتصنيفات المرتبطة بمجاله بشكل أكثر تركيزاً."
+      },
+      "workflow": {
+        "en": "Open Vetora\nChoose Agriculture or Veterinary\nLoad the matching catalog and categories\nContinue to product discovery",
+        "ar": "فتح فيتورا\nاختيار زراعي أو بيطري\nعرض الكتالوج والتصنيفات المطابقة\nالانتقال إلى اكتشاف المنتجات"
+      },
+      "outcome": {
+        "en": "Keeps product discovery focused on the professional domain relevant to the customer.",
+        "ar": "يجعل اكتشاف المنتجات مركزاً على المجال المهني المرتبط بالمستخدم."
+      },
+      "image": "system-use-cases/vetora/01-public-market-entry.png",
+      "image_source": "assets/public/vetora-public-home-ar.png",
+      "image_alt": {
+        "en": "Vetora public marketplace homepage introducing agriculture and veterinary product markets.",
+        "ar": "الواجهة العامة لمنصة فيتورا وتعرض السوقين الزراعي والبيطري."
+      },
+      "evidence": [
+        "Owner-confirmed business purpose",
+        "Public-facing Vetora homepage screenshot",
+        "Customer product-domain selector capture"
+      ]
+    },
+    {
+      "slug": "discover-and-order-supplies",
+      "sort_order": 2,
+      "title": {
+        "en": "Discover and Order Specialized Supplies",
+        "ar": "اكتشاف وطلب المستلزمات المتخصصة"
+      },
+      "actor": {
+        "en": "Veterinary Doctor / Agricultural Engineer",
+        "ar": "طبيب بيطري / مهندس زراعي"
+      },
+      "summary": {
+        "en": "Vetora gives doctors and agricultural engineers one marketplace for reaching veterinary medical and agricultural supplies from specialized warehouses and suppliers in Syria.",
+        "ar": "تمنح فيتورا الأطباء والمهندسين الزراعيين سوقاً واحداً للوصول إلى المستلزمات الطبية البيطرية والزراعية من المستودعات والموردين المختصين في سوريا."
+      },
+      "workflow": {
+        "en": "Choose the professional market\nBrowse/search relevant products\nReview available product information\nCreate an order through the platform",
+        "ar": "اختيار السوق المهني\nتصفح أو البحث عن المنتجات المناسبة\nمراجعة معلومات المنتج المتاحة\nإنشاء الطلب عبر المنصة"
+      },
+      "outcome": {
+        "en": "Creates a direct digital path between professional buyers and specialized veterinary or agricultural suppliers.",
+        "ar": "ينشئ مساراً رقمياً مباشراً بين المشترين المهنيين والموردين الزراعيين أو البيطريين المختصين."
+      },
+      "image": "system-use-cases/vetora/02-public-marketplace.png",
+      "image_source": "assets/public/vetora-public-home-ar.png",
+      "image_alt": {
+        "en": "Vetora customer-facing marketplace experience for agricultural and veterinary supplies.",
+        "ar": "تجربة السوق الموجهة للعملاء في فيتورا للمستلزمات الزراعية والبيطرية."
+      },
+      "evidence": [
+        "Business purpose explicitly confirmed by the project owner",
+        "Order modules observed across operational workspaces",
+        "Payment method and exact checkout steps are intentionally not claimed"
+      ]
+    },
+    {
+      "slug": "vendor-manages-store",
+      "sort_order": 3,
+      "title": {
+        "en": "Vendor Manages Its Store Operations",
+        "ar": "إدارة المورد لعمليات متجره"
+      },
+      "actor": {
+        "en": "Agriculture / Veterinary Vendor",
+        "ar": "مورد زراعي / بيطري"
+      },
+      "summary": {
+        "en": "Each supplier has a dedicated workspace for managing products, discounts, orders, commissions, notifications, and store information.",
+        "ar": "يمتلك كل مورد مساحة عمل مخصصة لإدارة المنتجات والخصومات والطلبات والعمولات والإشعارات وبيانات المتجر."
+      },
+      "workflow": {
+        "en": "Open vendor workspace\nManage catalog and offers\nFollow incoming orders\nReview commission and notifications\nMaintain store profile",
+        "ar": "فتح مساحة المورد\nإدارة الكتالوج والعروض\nمتابعة الطلبات الواردة\nمراجعة العمولات والإشعارات\nإدارة بيانات المتجر"
+      },
+      "outcome": {
+        "en": "Gives suppliers a self-service operational workspace inside the same marketplace.",
+        "ar": "يمنح الموردين مساحة تشغيل ذاتية ضمن السوق نفسه."
+      },
+      "image": "system-use-cases/vetora/03-vendor-workspace.png",
+      "image_source": "assets/use_cases/uc03-vendor-workspace.png",
+      "image_alt": {
+        "en": "Vetora vendor dashboard for supplier operations.",
+        "ar": "لوحة المورد في فيتورا لإدارة العمليات."
+      },
+      "evidence": [
+        "Agriculture and veterinary vendor dashboards and modules"
+      ]
+    },
+    {
+      "slug": "vendor-submits-structured-product",
+      "sort_order": 4,
+      "title": {
+        "en": "Submit Structured Product Information",
+        "ar": "إضافة بيانات منتج بشكل منظم"
+      },
+      "actor": {
+        "en": "Agriculture / Veterinary Vendor",
+        "ar": "مورد زراعي / بيطري"
+      },
+      "summary": {
+        "en": "Vendors add specialized product records using structured fields for commercial, manufacturer, registration, package, pricing, inventory, description, and image information.",
+        "ar": "يضيف الموردون المنتجات المتخصصة من خلال حقول منظمة تشمل البيانات التجارية والمصنع والتسجيل والتعبئة والسعر والمخزون والوصف والصور."
+      },
+      "workflow": {
+        "en": "Open Add Product\nChoose category/domain\nEnter bilingual product and commercial data\nAdd price, quantity, registration and package information\nUpload images\nSubmit the product",
+        "ar": "فتح إضافة منتج\nاختيار التصنيف والمجال\nإدخال بيانات المنتج والبيانات التجارية بالعربية والإنجليزية\nإضافة السعر والكمية وبيانات التسجيل والتعبئة\nرفع الصور\nإرسال المنتج"
+      },
+      "outcome": {
+        "en": "Standardizes product data before it moves through the platform's catalog and moderation workflows.",
+        "ar": "يوحّد بيانات المنتجات قبل انتقالها ضمن الكتالوج وسير المراجعة في المنصة."
+      },
+      "image": "system-use-cases/vetora/04-structured-product-submission.png",
+      "image_source": "assets/use_cases/uc04-structured-product-submission.png",
+      "image_alt": {
+        "en": "Vetora structured product-entry form used by suppliers.",
+        "ar": "نموذج إضافة منتج منظم يستخدمه الموردون في فيتورا."
+      },
+      "evidence": [
+        "Captured vendor Add Product form"
+      ]
+    },
+    {
+      "slug": "employee-moderates-products",
+      "sort_order": 5,
+      "title": {
+        "en": "Employee Reviews Product Submissions",
+        "ar": "مراجعة الموظف للمنتجات المضافة"
+      },
+      "actor": {
+        "en": "Operational Employee",
+        "ar": "موظف تشغيلي"
+      },
+      "summary": {
+        "en": "Employees work through a moderation workspace where submitted products can be reviewed across approved, pending, and rejected states.",
+        "ar": "يعمل الموظفون ضمن مساحة مراجعة للمنتجات المضافة، مع حالات معتمد وقيد المراجعة ومرفوض."
+      },
+      "workflow": {
+        "en": "Open moderation workspace\nReview submitted product information\nInspect the product record\nMove it through the existing moderation status workflow",
+        "ar": "فتح مساحة المراجعة\nمراجعة معلومات المنتج المرسل\nفحص سجل المنتج\nمتابعته ضمن حالات المراجعة الموجودة في النظام"
+      },
+      "outcome": {
+        "en": "Adds an operational review layer to the marketplace's product publishing process.",
+        "ar": "يضيف طبقة مراجعة تشغيلية إلى عملية نشر المنتجات في السوق."
+      },
+      "image": "system-use-cases/vetora/05-product-moderation.png",
+      "image_source": "assets/use_cases/uc05-product-moderation.png",
+      "image_alt": {
+        "en": "Vetora employee product moderation workspace.",
+        "ar": "مساحة مراجعة المنتجات للموظفين في فيتورا."
+      },
+      "evidence": [
+        "Employee product moderation capture with approved/pending/rejected states"
+      ]
+    },
+    {
+      "slug": "syndicate-monitors-sector",
+      "sort_order": 6,
+      "title": {
+        "en": "Syndicate Monitors Its Sector",
+        "ar": "متابعة النقابة للقطاع الخاص بها"
+      },
+      "actor": {
+        "en": "Agriculture / Veterinary Syndicate",
+        "ar": "النقابة الزراعية / النقابة البيطرية"
+      },
+      "summary": {
+        "en": "Each syndicate has a sector-specific dashboard for visibility into vendors, products, categories, orders, sales, reports, content, and notifications related to its domain.",
+        "ar": "تمتلك كل نقابة لوحة خاصة بقطاعها لمتابعة الموردين والمنتجات والتصنيفات والطلبات والمبيعات والتقارير والمحتوى والإشعارات المرتبطة بمجالها."
+      },
+      "workflow": {
+        "en": "Open syndicate dashboard\nReview sector vendors and products\nMonitor orders and sales\nOpen reports and operational summaries\nFollow notifications/content",
+        "ar": "فتح لوحة النقابة\nمراجعة الموردين والمنتجات التابعة للقطاع\nمتابعة الطلبات والمبيعات\nفتح التقارير والملخصات التشغيلية\nمتابعة الإشعارات والمحتوى"
+      },
+      "outcome": {
+        "en": "Provides sector-specific operational visibility without mixing agriculture and veterinary data into one generic view.",
+        "ar": "يوفر رؤية تشغيلية خاصة بكل قطاع بدون دمج البيانات الزراعية والبيطرية في واجهة عامة واحدة."
+      },
+      "image": "system-use-cases/vetora/06-syndicate-sector-monitoring.png",
+      "image_source": "assets/use_cases/uc06-syndicate-sector-monitoring.png",
+      "image_alt": {
+        "en": "Vetora agriculture syndicate dashboard with sector operational summaries.",
+        "ar": "لوحة النقابة الزراعية في فيتورا وتعرض ملخصات تشغيلية للقطاع."
+      },
+      "evidence": [
+        "Agriculture syndicate dashboard",
+        "Veterinary syndicate dashboard",
+        "No approval/rejection authority is claimed"
+      ]
+    },
+    {
+      "slug": "vendor-tracks-orders-and-commissions",
+      "sort_order": 7,
+      "title": {
+        "en": "Track Orders and Platform Commissions",
+        "ar": "متابعة الطلبات وعمولات المنصة"
+      },
+      "actor": {
+        "en": "Agriculture / Veterinary Vendor",
+        "ar": "مورد زراعي / بيطري"
+      },
+      "summary": {
+        "en": "Vendor workspaces include dedicated order and commission views so suppliers can follow commercial activity from the same operational environment.",
+        "ar": "تتضمن مساحة المورد شاشات مخصصة للطلبات والعمولات حتى يتمكن من متابعة النشاط التجاري من بيئة تشغيل واحدة."
+      },
+      "workflow": {
+        "en": "Open Orders\nReview incoming order information\nOpen Commission view\nTrack platform commission information associated with vendor activity",
+        "ar": "فتح الطلبات\nمراجعة معلومات الطلبات الواردة\nفتح قسم العمولات\nمتابعة بيانات عمولة المنصة المرتبطة بنشاط المورد"
+      },
+      "outcome": {
+        "en": "Keeps supplier order handling and commission visibility connected to the vendor workspace.",
+        "ar": "يبقي معالجة طلبات المورد ومتابعة العمولات ضمن مساحة تشغيل موحدة."
+      },
+      "image": "system-use-cases/vetora/07-vendor-commission.png",
+      "image_source": "assets/use_cases/uc07-vendor-commission.png",
+      "image_alt": {
+        "en": "Vetora vendor commission view.",
+        "ar": "واجهة متابعة عمولات المورد في فيتورا."
+      },
+      "evidence": [
+        "Vendor Orders and Commission modules"
+      ]
+    },
+    {
+      "slug": "admin-manages-marketplace",
+      "sort_order": 8,
+      "title": {
+        "en": "Admin Manages the Marketplace Ecosystem",
+        "ar": "إدارة المنصة لكامل منظومة السوق"
+      },
+      "actor": {
+        "en": "Platform Administrator",
+        "ar": "مدير المنصة"
+      },
+      "summary": {
+        "en": "The central administration workspace manages the wider platform across vendors, syndicates, products, employees, users, orders, catalog structure, coupons, cities, content, notifications, and contact activity.",
+        "ar": "تدير لوحة الإدارة المركزية المنصة عبر الموردين والنقابات والمنتجات والموظفين والمستخدمين والطلبات وبنية الكتالوج والكوبونات والمدن والمحتوى والإشعارات ورسائل التواصل."
+      },
+      "workflow": {
+        "en": "Open central dashboard\nMonitor platform activity\nManage participants and users\nManage catalog and commercial configuration\nReview orders/content/notifications",
+        "ar": "فتح لوحة الإدارة المركزية\nمتابعة نشاط المنصة\nإدارة الأطراف والمستخدمين\nإدارة الكتالوج والإعدادات التجارية\nمراجعة الطلبات والمحتوى والإشعارات"
+      },
+      "outcome": {
+        "en": "Gives the platform one central operational control point across its multi-user marketplace.",
+        "ar": "يوفر للمنصة نقطة تحكم تشغيلية مركزية عبر السوق متعدد أنواع المستخدمين."
+      },
+      "image": "system-use-cases/vetora/08-admin-operations.png",
+      "image_source": "assets/use_cases/uc08-admin-operations.png",
+      "image_alt": {
+        "en": "Vetora central administration dashboard.",
+        "ar": "لوحة الإدارة المركزية في فيتورا."
+      },
+      "evidence": [
+        "Admin dashboard and captured admin modules"
+      ]
+    }
+  ],
+  "publication_rules": [
+    "Do not expose package evidence arrays in the public API; they are implementation/validation references only.",
+    "Do not publish captured customer names, phone numbers, emails, IDs, credentials, or other PII.",
+    "Do not claim payment methods, quantified results, or syndicate approval authority.",
+    "Use only approved public-facing or operational screenshots that are safe to publish."
+  ]
+}

@@ -103,6 +103,7 @@ export default async function SystemDetailPage({
   const problemParagraphs = storyParagraphs(system.problem);
   const solutionParagraphs = storyParagraphs(system.solution);
   const galleryImages = system.gallery.filter(Boolean);
+  const useCases = system.use_cases;
   const hasLiveUrl = Boolean(system.live_url);
   const hasStory = overviewParagraphs.length > 0 || problemParagraphs.length > 0 || solutionParagraphs.length > 0;
   const studioCapabilities = [
@@ -297,6 +298,85 @@ export default async function SystemDetailPage({
                   </article>
                 ) : null}
               </div>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {useCases.length > 0 ? (
+        <Section className="border-y border-border bg-surface py-10 sm:py-14">
+          <Container>
+            <SectionHeading
+              align="start"
+              className="mb-8 gap-3"
+              badge={t("useCasesBadge")}
+              title={t("useCasesTitle")}
+              subtitle={t("useCasesSubtitle")}
+            />
+            <div className="grid gap-4 xl:grid-cols-2">
+              {useCases.map((useCase, index) => {
+                const workflowSteps = splitLines(useCase.workflow);
+
+                return (
+                  <article
+                    key={useCase.slug}
+                    className="overflow-hidden rounded-[var(--radius-xl)] border border-border bg-background shadow-sm"
+                  >
+                    {useCase.image ? (
+                      <div className="relative aspect-[16/10] border-b border-border bg-muted">
+                        <Image
+                          src={useCase.image}
+                          alt={useCase.image_alt ?? useCase.title}
+                          fill
+                          className="object-cover"
+                          sizes="(min-width: 1280px) 40vw, (min-width: 768px) 50vw, 100vw"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="p-5 sm:p-6">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="inline-flex size-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-secondary">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        {useCase.actor ? (
+                          <span className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground">
+                            {useCase.actor}
+                          </span>
+                        ) : null}
+                      </div>
+                      <h2 className="mt-4 text-xl font-bold tracking-tight text-foreground">{useCase.title}</h2>
+                      {useCase.summary ? (
+                        <p className="mt-3 text-pretty text-sm leading-6 text-muted-foreground">{useCase.summary}</p>
+                      ) : null}
+
+                      {workflowSteps.length > 0 ? (
+                        <div className="mt-5">
+                          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                            {t("useCasesWorkflowLabel")}
+                          </p>
+                          <ol className="mt-3 grid gap-2">
+                            {workflowSteps.map((step, stepIndex) => (
+                              <li key={`${useCase.slug}-${stepIndex}`} className="flex gap-3 text-sm leading-6 text-foreground">
+                                <span className="text-secondary">{String(stepIndex + 1).padStart(2, "0")}</span>
+                                <span className="text-pretty">{step}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+                      ) : null}
+
+                      {useCase.outcome ? (
+                        <div className="mt-5 rounded-[var(--radius-lg)] border border-primary/15 bg-primary/5 px-4 py-3">
+                          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">
+                            {t("useCasesOutcomeLabel")}
+                          </p>
+                          <p className="mt-2 text-pretty text-sm leading-6 text-foreground">{useCase.outcome}</p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </Container>
         </Section>

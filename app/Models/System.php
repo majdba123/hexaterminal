@@ -88,6 +88,14 @@ class System extends Model
         return $this->hasMany(CaseStudy::class);
     }
 
+    /**
+     * @return HasMany<SystemUseCase, $this>
+     */
+    public function useCases(): HasMany
+    {
+        return $this->hasMany(SystemUseCase::class)->orderBy('sort_order');
+    }
+
     /** @return MorphOne<SeoMeta, $this> */
     public function seo(): MorphOne
     {
