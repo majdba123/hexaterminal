@@ -6,7 +6,6 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Dot,
-  Expand,
   Layers3,
   Network,
   Workflow,
@@ -59,10 +58,10 @@ function galleryLayoutClass(count: number, index: number) {
 
 function galleryAspectClass(count: number, index: number) {
   if (count === 1) return "aspect-[16/10]";
-  if (count === 2) return index === 0 ? "aspect-[16/10]" : "aspect-[5/4]";
-  if (index === 0) return "aspect-[16/10] md:aspect-auto";
+  if (count === 2) return index === 0 ? "aspect-[16/11]" : "aspect-[4/3]";
+  if (index === 0) return "aspect-[4/3] md:aspect-auto";
   if (index < 3) return "aspect-[16/10]";
-  return "aspect-[16/11]";
+  return "aspect-[5/4]";
 }
 
 export async function generateMetadata({
@@ -106,7 +105,6 @@ export default async function SystemDetailPage({
   const galleryImages = system.gallery.filter(Boolean);
   const hasLiveUrl = Boolean(system.live_url);
   const hasStory = overviewParagraphs.length > 0 || problemParagraphs.length > 0 || solutionParagraphs.length > 0;
-  const hasValueAudience = businessValue.length > 0 || audiencePoints.length > 0;
   const studioCapabilities = [
     { icon: Layers3, label: t("ownershipStrategy") },
     { icon: Workflow, label: t("ownershipEngineering") },
@@ -120,10 +118,6 @@ export default async function SystemDetailPage({
   const snapshotItems = [
     { label: t("snapshotType"), value: t(`type.${system.type}`) },
     ...(system.category ? [{ label: t("snapshotCategory"), value: system.category }] : []),
-    {
-      label: t("snapshotBuiltFor"),
-      value: system.short_description ?? system.tagline ?? t("snapshotScopeDefault"),
-    },
     {
       label: hasLiveUrl ? t("snapshotStatus") : t("snapshotDelivery"),
       value: hasLiveUrl ? t("snapshotLive") : t("snapshotCustomBuild"),
@@ -195,29 +189,32 @@ export default async function SystemDetailPage({
                   </Link>
                 </Button>
               </div>
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">{t("builtByLabel")}</span>
+                {studioCapabilities.map(({ label }) => (
+                  <span key={label} className="inline-flex items-center gap-2">
+                    <Dot className="size-4 text-secondary" />
+                    <span>{label}</span>
+                  </span>
+                ))}
+              </div>
             </div>
 
             {system.cover_image ? (
-              <div className="relative isolate lg:pt-1">
-                <div className="absolute inset-x-8 bottom-4 top-10 rounded-[calc(var(--radius-xl)+0.25rem)] bg-primary/7 blur-3xl" />
-                <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-border/80 bg-background p-2 shadow-[0_18px_55px_rgba(15,23,42,0.10)]">
-                  <div className="flex items-center gap-1.5 border-b border-border/70 px-3 py-2">
-                    <span className="size-2 rounded-full bg-border" />
-                    <span className="size-2 rounded-full bg-border" />
-                    <span className="size-2 rounded-full bg-border" />
-                  </div>
-                  <div className="relative aspect-[16/11] overflow-hidden rounded-[calc(var(--radius-lg)-0.125rem)] bg-muted/40">
+              <div className="relative isolate">
+                <div className="absolute inset-5 rounded-[calc(var(--radius-xl)+0.25rem)] bg-primary/8 blur-3xl" />
+                <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-border/80 bg-background p-3 shadow-[0_24px_80px_rgba(15,23,42,0.12)]">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[calc(var(--radius-lg)-0.125rem)] border border-border/70 bg-muted">
                     <Image
                       src={system.cover_image}
                       alt={system.cover_image_alt ?? system.name}
                       fill
-                      className="object-contain p-3 sm:p-4"
+                      className="object-cover"
                       sizes="(min-width: 1024px) 42vw, 100vw"
                       priority
                     />
                   </div>
                 </div>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">{t("heroMediaCaption")}</p>
               </div>
             ) : null}
           </div>
@@ -226,31 +223,13 @@ export default async function SystemDetailPage({
 
       <Section className="pb-8 pt-0 sm:pb-10">
         <Container>
-          <div className="rounded-[var(--radius-xl)] border border-border bg-background p-4 shadow-sm lg:p-5">
-            <div className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {t("builtByLabel")}
-                </p>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground">{t("builtByBody")}</p>
+          <div className="grid gap-3 rounded-[var(--radius-xl)] border border-border bg-background p-4 shadow-sm sm:grid-cols-2 xl:grid-cols-3 lg:p-5">
+            {snapshotItems.map((item) => (
+              <div key={item.label} className="rounded-[var(--radius-lg)] border border-border/70 bg-surface px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
+                <p className="mt-1.5 text-sm font-medium leading-6 text-foreground">{item.value}</p>
               </div>
-              <ul className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-3">
-                {studioCapabilities.map(({ icon: Icon, label }) => (
-                  <li key={label} className="flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-2">
-                    <Icon className="size-4 text-secondary" />
-                    <span>{label}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-4 grid gap-3 border-t border-border pt-4 sm:grid-cols-2 xl:grid-cols-4">
-              {snapshotItems.map((item) => (
-                <div key={item.label} className="rounded-[var(--radius-lg)] border border-border/70 bg-surface px-4 py-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                  <p className="mt-1.5 text-sm font-medium leading-6 text-foreground">{item.value}</p>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </Container>
       </Section>
@@ -272,15 +251,15 @@ export default async function SystemDetailPage({
                 </div>
               </div>
               <div className="rounded-[var(--radius-xl)] border border-border bg-background p-4 shadow-sm sm:p-5">
-                {overviewParagraphs.length > 0 ? (
+                {problemParagraphs.length > 0 ? (
                   <article className="rounded-[var(--radius-lg)] border border-border/80 bg-surface px-5 py-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {t("overviewBadge")}
+                      {t("challengeBadge")}
                     </p>
-                    <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground">{t("overviewTitle")}</h2>
+                    <h2 className="mt-3 text-xl font-bold tracking-tight text-foreground">{t("challengeTitle")}</h2>
                     <div className="mt-4 space-y-3.5 text-pretty text-base leading-7 text-foreground">
-                      {overviewParagraphs.map((paragraph, index) => (
-                        <p key={`overview-${index}`} className="whitespace-pre-line">
+                      {problemParagraphs.map((paragraph, index) => (
+                        <p key={`problem-${index}`} className="whitespace-pre-line">
                           {paragraph}
                         </p>
                       ))}
@@ -288,43 +267,116 @@ export default async function SystemDetailPage({
                   </article>
                 ) : null}
 
-                {(problemParagraphs.length > 0 || solutionParagraphs.length > 0) && (
-                  <div className="relative mt-3 grid gap-3 xl:grid-cols-2">
-                    <div className="pointer-events-none absolute inset-x-[8%] top-0 hidden h-px bg-border xl:block" />
-                    {problemParagraphs.length > 0 ? (
-                      <article className="rounded-[var(--radius-lg)] border border-border/80 bg-surface px-5 py-5">
+                {(solutionParagraphs.length > 0 || overviewParagraphs.length > 0) ? (
+                  <article className="mt-3 rounded-[var(--radius-lg)] border border-primary/15 bg-primary/5 px-5 py-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">
+                      {t("solutionBadge")}
+                    </p>
+                    <h2 className="mt-3 text-xl font-bold tracking-tight text-foreground">{t("solutionTitle")}</h2>
+                    <div className="mt-4 space-y-3.5 text-pretty text-base leading-7 text-foreground">
+                      {solutionParagraphs.map((paragraph, index) => (
+                        <p key={`solution-${index}`} className="whitespace-pre-line">
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                    {overviewParagraphs.length > 0 ? (
+                      <div className="mt-5 border-t border-border/70 pt-5">
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                          {t("challengeBadge")}
+                          {t("overviewBadge")}
                         </p>
-                        <h2 className="mt-3 text-xl font-bold tracking-tight text-foreground">{t("challengeTitle")}</h2>
-                        <div className="mt-4 space-y-3.5 text-pretty text-base leading-7 text-foreground">
-                          {problemParagraphs.map((paragraph, index) => (
-                            <p key={`problem-${index}`} className="whitespace-pre-line">
+                        <div className="mt-3 space-y-3.5 text-pretty text-base leading-7 text-foreground">
+                          {overviewParagraphs.map((paragraph, index) => (
+                            <p key={`overview-${index}`} className="whitespace-pre-line">
                               {paragraph}
                             </p>
                           ))}
                         </div>
-                      </article>
+                      </div>
                     ) : null}
-
-                    {solutionParagraphs.length > 0 ? (
-                      <article className="rounded-[var(--radius-lg)] border border-primary/15 bg-primary/5 px-5 py-5">
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary">
-                          {t("solutionBadge")}
-                        </p>
-                        <h2 className="mt-3 text-xl font-bold tracking-tight text-foreground">{t("solutionTitle")}</h2>
-                        <div className="mt-4 space-y-3.5 text-pretty text-base leading-7 text-foreground">
-                          {solutionParagraphs.map((paragraph, index) => (
-                            <p key={`solution-${index}`} className="whitespace-pre-line">
-                              {paragraph}
-                            </p>
-                          ))}
-                        </div>
-                      </article>
-                    ) : null}
-                  </div>
-                )}
+                  </article>
+                ) : null}
               </div>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {galleryImages.length > 0 ? (
+        <Section className="py-10 sm:py-14">
+          <Container>
+            <SectionHeading
+              align="start"
+              className="mb-8 gap-3"
+              badge={t("galleryBadge")}
+              title={t("galleryTitle")}
+              subtitle={t("gallerySubtitle")}
+            />
+            <div className="grid gap-4 md:grid-cols-12 md:auto-rows-[minmax(180px,1fr)]">
+              {galleryImages.map((image, index) => (
+                <figure
+                  key={`${image}-${index}`}
+                  className={cn(
+                    "group relative overflow-hidden rounded-[var(--radius-xl)] border border-border bg-muted shadow-sm",
+                    galleryLayoutClass(galleryImages.length, index),
+                    galleryAspectClass(galleryImages.length, index),
+                  )}
+                >
+                  <Image
+                    src={image}
+                    alt={system.cover_image_alt ?? system.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    sizes={
+                      galleryImages.length === 1
+                        ? "100vw"
+                        : galleryImages.length === 2
+                          ? "(min-width: 768px) 50vw, 100vw"
+                          : "(min-width: 768px) 33vw, 100vw"
+                    }
+                  />
+                </figure>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {businessValue.length > 0 ? (
+        <Section className="border-y border-border bg-surface py-10 sm:py-14">
+          <Container>
+            <div className={cn("grid gap-4", audiencePoints.length > 0 ? "xl:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]" : "")}>
+              <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {t("businessValueBadge")}
+                </p>
+                <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground">{t("businessValueTitle")}</h2>
+                <ul className="mt-5 grid gap-3">
+                  {businessValue.map((item, index) => (
+                    <li key={`${item}-${index}`} className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-secondary" />
+                      <span className="text-pretty text-sm leading-6 text-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {audiencePoints.length > 0 ? (
+                <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {t("audienceBadge")}
+                  </p>
+                  <h2 className="mt-3 text-xl font-bold tracking-tight text-foreground">{t("audienceTitle")}</h2>
+                  <ul className="mt-5 grid gap-3">
+                    {audiencePoints.map((item, index) => (
+                      <li key={`${item}-${index}`} className="flex items-start gap-2 text-sm leading-6 text-foreground">
+                        <Dot className="mt-0.5 size-5 shrink-0 text-secondary" />
+                        <span className="text-pretty">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
             </div>
           </Container>
         </Section>
@@ -357,130 +409,23 @@ export default async function SystemDetailPage({
         </Section>
       ) : null}
 
-      {hasValueAudience ? (
+      {businessValue.length === 0 && audiencePoints.length > 0 ? (
         <Section className="border-y border-border bg-surface py-10 sm:py-14">
-          <Container>
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              {businessValue.length > 0 ? (
-                <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {t("businessValueBadge")}
-                  </p>
-                  <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground">{t("businessValueTitle")}</h2>
-                  <ul className="mt-5 grid gap-3">
-                    {businessValue.map((item, index) => (
-                      <li key={`${item}-${index}`} className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-secondary" />
-                        <span className="text-pretty text-sm leading-6 text-foreground">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-
-              {audiencePoints.length > 0 ? (
-                <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {t("audienceBadge")}
-                  </p>
-                  <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground">{t("audienceTitle")}</h2>
-                  <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {audiencePoints.map((item, index) => (
-                      <li key={`${item}-${index}`} className="flex items-start gap-2 text-sm leading-6 text-foreground">
-                        <Dot className="mt-0.5 size-5 shrink-0 text-secondary" />
-                        <span className="text-pretty">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
+          <Container narrow>
+            <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {t("audienceBadge")}
+              </p>
+              <h2 className="mt-3 text-xl font-bold tracking-tight text-foreground">{t("audienceTitle")}</h2>
+              <ul className="mt-5 grid gap-3">
+                {audiencePoints.map((item, index) => (
+                  <li key={`${item}-${index}`} className="flex items-start gap-2 text-sm leading-6 text-foreground">
+                    <Dot className="mt-0.5 size-5 shrink-0 text-secondary" />
+                    <span className="text-pretty">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </Container>
-        </Section>
-      ) : null}
-
-      {galleryImages.length > 0 ? (
-        <Section className="py-10 sm:py-14">
-          <Container>
-            <SectionHeading
-              align="start"
-              className="mb-6 gap-3"
-              badge={t("galleryBadge")}
-              title={t("galleryTitle")}
-              subtitle={t("gallerySubtitle")}
-            />
-            <div className="grid gap-3 md:grid-cols-12 md:auto-rows-[minmax(220px,1fr)]">
-              {galleryImages.map((image, index) => (
-                <a
-                  key={`${image}-${index}`}
-                  href={image}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "group relative block overflow-hidden rounded-[var(--radius-xl)] border border-border bg-background p-2 shadow-sm transition-transform duration-300 hover:-translate-y-0.5",
-                    galleryLayoutClass(galleryImages.length, index),
-                    galleryAspectClass(galleryImages.length, index),
-                  )}
-                >
-                  <figure className="relative h-full overflow-hidden rounded-[calc(var(--radius-lg)-0.125rem)] bg-muted/40">
-                    <Image
-                      src={image}
-                      alt={system.cover_image_alt ?? system.name}
-                      fill
-                      className="object-contain p-2 transition-transform duration-500 group-hover:scale-[1.015]"
-                      sizes={
-                        galleryImages.length === 1
-                          ? "100vw"
-                          : galleryImages.length === 2
-                            ? "(min-width: 768px) 50vw, 100vw"
-                            : "(min-width: 768px) 38vw, 100vw"
-                      }
-                    />
-                    <span className="absolute end-3 top-3 inline-flex items-center gap-1 rounded-full border border-border/80 bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground opacity-0 transition-opacity group-hover:opacity-100">
-                      <Expand className="size-3.5" />
-                      {t("galleryOpen")}
-                    </span>
-                  </figure>
-                </a>
-              ))}
-            </div>
-          </Container>
-        </Section>
-      ) : null}
-
-      {(system.tech_stack.length > 0 || system.case_studies.length > 0) ? (
-        <Section className="border-y border-border bg-surface py-10 sm:py-14">
-          <Container>
-            {system.tech_stack.length > 0 ? (
-              <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {t("technologyLabel")}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {system.tech_stack.map((technology) => (
-                    <Badge key={technology} variant="outline">
-                      {technology}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-
-            {system.case_studies.length > 0 ? (
-              <div className={cn(system.tech_stack.length > 0 ? "mt-8" : "")}>
-                <SectionHeading
-                  align="start"
-                  className="mb-8 gap-3"
-                  badge={t("relatedWorkBadge")}
-                  title={t("relatedWorkTitle")}
-                />
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {system.case_studies.map((caseStudy) => (
-                    <CaseStudyCard key={caseStudy.slug} caseStudy={caseStudy} headingLevel="h3" />
-                  ))}
-                </div>
-              </div>
-            ) : null}
           </Container>
         </Section>
       ) : null}
@@ -514,6 +459,45 @@ export default async function SystemDetailPage({
           </div>
         </Container>
       </Section>
+
+      {(system.tech_stack.length > 0 || system.case_studies.length > 0) ? (
+        <Section className="border-y border-border bg-surface py-10 sm:py-14">
+          <Container>
+            {system.case_studies.length > 0 ? (
+              <div>
+                <SectionHeading
+                  align="start"
+                  className="mb-8 gap-3"
+                  badge={t("relatedWorkBadge")}
+                  title={t("relatedWorkTitle")}
+                />
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {system.case_studies.map((caseStudy) => (
+                    <CaseStudyCard key={caseStudy.slug} caseStudy={caseStudy} headingLevel="h3" />
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {system.tech_stack.length > 0 ? (
+              <div className={cn(system.case_studies.length > 0 ? "mt-8" : "")}>
+                <div className="rounded-[var(--radius-xl)] border border-border bg-background p-6 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {t("technologyLabel")}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {system.tech_stack.map((technology) => (
+                      <Badge key={technology} variant="outline">
+                        {technology}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
 
       <section className="pb-12 pt-0 sm:pb-16">
         <Container>
