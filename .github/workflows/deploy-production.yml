@@ -42,7 +42,23 @@ jobs:
       - name: Install backend dependencies
         env:
           COMPOSER_ALLOW_SUPERUSER: 1
-        run: composer install --prefer-dist --no-interaction
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          composer config --global source-fallback true
+
+          for attempt in 1 2 3; do
+            if composer install --prefer-install=source --no-interaction --no-progress; then
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              exit 1
+            fi
+
+            echo "composer install failed on attempt $attempt, retrying after backoff..." >&2
+            sleep $((attempt * 15))
+          done
 
       - name: Prepare validation environment
         shell: bash
@@ -211,11 +227,24 @@ jobs:
             git rev-parse HEAD
 
             export COMPOSER_ALLOW_SUPERUSER=1
-            composer install \
-              --no-dev \
-              --prefer-dist \
-              --optimize-autoloader \
-              --no-interaction
+            composer config --global source-fallback true
+            for attempt in 1 2 3; do
+              if composer install \
+                --no-dev \
+                --prefer-install=source \
+                --optimize-autoloader \
+                --no-interaction \
+                --no-progress; then
+                break
+              fi
+
+              if [ "$attempt" -eq 3 ]; then
+                exit 1
+              fi
+
+              echo "composer install failed on attempt $attempt, retrying after backoff..." >&2
+              sleep $((attempt * 15))
+            done
 
             cd "$FRONTEND_DIR"
             test -f package.json
