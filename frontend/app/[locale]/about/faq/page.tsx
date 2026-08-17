@@ -104,10 +104,10 @@ export default async function AboutFaqPage({
           <Breadcrumb items={[{ label: tNav("about"), href: "/about" }, { label: tNav("faq") }]} />
           <div className="max-w-3xl">
             <Badge>{tAbout("faqHeroBadge")}</Badge>
-            <h1 className="mt-4 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+            <h1 className="mt-4 max-w-4xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
               {tAbout("faqTitle")}
             </h1>
-            <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground">
+            <p className="ui-copy mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground">
               {tAbout("faqSubtitle")}
             </p>
           </div>
@@ -119,7 +119,7 @@ export default async function AboutFaqPage({
           {groups.length > 0 ? (
             <div className="grid gap-8 lg:grid-cols-[minmax(12rem,0.28fr)_minmax(0,0.72fr)] lg:gap-10">
               <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                <p className="ui-kicker text-muted-foreground">
                   {tAbout("faqBrowseLabel")}
                 </p>
                 <nav aria-label={tAbout("faqBrowseLabel")} className="-mx-5 overflow-x-auto px-5 lg:mx-0 lg:px-0">
@@ -131,7 +131,7 @@ export default async function AboutFaqPage({
                           className="focus-ring inline-flex whitespace-nowrap rounded-full border border-border bg-background px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground lg:flex lg:w-full lg:justify-between lg:rounded-[var(--radius-lg)] lg:px-4"
                         >
                           <span>{group.label}</span>
-                          <span className="hidden text-xs text-muted-foreground/80 lg:inline">
+                          <span className="ui-kicker hidden text-muted-foreground/80 lg:inline">
                             {group.items.length}
                           </span>
                         </a>
@@ -148,7 +148,7 @@ export default async function AboutFaqPage({
                       <h2 className="text-2xl font-bold tracking-tight text-foreground">
                         {group.label}
                       </h2>
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      <span className="ui-kicker text-muted-foreground">
                         0{groupIndex + 1}
                       </span>
                     </div>
@@ -160,7 +160,7 @@ export default async function AboutFaqPage({
                           value={`${group.id}-${index}`}
                           className="rounded-[var(--radius-lg)] border border-border/80 bg-background px-5 shadow-sm"
                         >
-                          <AccordionTrigger className="py-4 text-lg font-semibold">
+                          <AccordionTrigger className="py-4 text-lg font-semibold leading-snug">
                             {faq.question}
                           </AccordionTrigger>
                           <AccordionContent className="pb-4 text-sm leading-relaxed text-muted-foreground">
@@ -172,7 +172,7 @@ export default async function AboutFaqPage({
                   </section>
                 ))}
 
-                <div className="rounded-[var(--radius-xl)] border border-border/80 bg-surface px-5 py-4 text-sm text-muted-foreground">
+                <div className="rounded-[var(--radius-xl)] border border-border/80 bg-surface px-5 py-4 text-sm leading-relaxed text-muted-foreground">
                   <span className="font-semibold text-foreground">{tAbout("faqEndingPrompt")}</span>{" "}
                   <Link href="/contact" className="focus-ring rounded font-semibold text-secondary hover:text-foreground">
                     {tAbout("faqEndingContact")}

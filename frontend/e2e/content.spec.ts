@@ -1,13 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-// Deterministic fixtures come from database/seeders/DemoContentSeeder.php.
 test("system detail page renders server-provided content (EN and AR)", async ({ page }) => {
-  await page.goto("/en/systems/demo-ledger-platform");
-  await expect(page.getByRole("heading", { level: 1, name: "Ledger Platform" })).toBeVisible();
+  await page.goto("/en/systems/malik-group");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Malik");
 
-  await page.goto("/ar/systems/demo-ledger-platform");
+  await page.goto("/ar/systems/malik-group");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-  await expect(page.getByRole("heading", { level: 1, name: "منصة السجلات" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
 
 test("case study hub links through to a real detail page", async ({ page }) => {

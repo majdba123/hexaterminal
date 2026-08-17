@@ -117,7 +117,7 @@ export default async function TeamMemberDetailPage({
         ]}
       />
 
-      <Section as="div" className="bg-surface pb-10 pt-10 sm:pb-14 sm:pt-14">
+      <Section as="div" className="bg-surface pb-10 pt-10 sm:pb-12 sm:pt-14">
         <Container>
           <Breadcrumb
             items={[
@@ -128,7 +128,7 @@ export default async function TeamMemberDetailPage({
           />
 
           <div className="grid gap-8 lg:grid-cols-[minmax(18rem,0.42fr)_minmax(0,0.58fr)] lg:items-center">
-            <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-border/80 bg-background">
+            <div className="mx-auto w-full max-w-sm overflow-hidden rounded-[var(--radius-2xl)] border border-border/80 bg-background lg:mx-0 lg:max-w-none">
               <div className="relative aspect-[5/6] bg-muted">
                 {member.photo ? (
                   <Image
@@ -153,18 +153,18 @@ export default async function TeamMemberDetailPage({
               <div className="flex flex-wrap items-center gap-3">
                 {member.is_founder ? <Badge variant="secondary">{tTeam("founderBadge")}</Badge> : null}
                 {member.position ? (
-                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  <span className="ui-kicker text-muted-foreground">
                     {member.position}
                   </span>
                 ) : null}
               </div>
 
-              <h1 className="mt-4 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="mt-4 max-w-3xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                 {member.full_name}
               </h1>
 
               {member.specialization ? (
-                <p className="mt-4 text-pretty text-lg leading-relaxed text-foreground/85">
+                <p className="ui-copy mt-4 text-pretty text-lg leading-relaxed text-foreground/85">
                   {member.specialization}
                 </p>
               ) : null}
@@ -203,13 +203,13 @@ export default async function TeamMemberDetailPage({
       </Section>
 
       {member.bio ? (
-        <Section className="py-12 sm:py-16">
+        <Section className="py-12 sm:py-14">
           <Container narrow>
             <div className="max-w-3xl">
               <h2 className="text-2xl font-bold tracking-tight text-foreground">
                 {tTeam("aboutTitle")}
               </h2>
-              <div className="mt-5 whitespace-pre-line text-pretty text-base leading-relaxed text-foreground">
+              <div className="ui-copy mt-5 whitespace-pre-line text-pretty text-base leading-relaxed text-foreground">
                 {member.bio}
               </div>
             </div>
@@ -218,7 +218,7 @@ export default async function TeamMemberDetailPage({
       ) : null}
 
       {member.expertise && member.expertise.length > 0 ? (
-        <Section className="border-y border-border bg-surface py-12 sm:py-16">
+        <Section className="border-y border-border bg-surface py-12 sm:py-14">
           <Container narrow>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               {tTeam("expertiseTitle")}
@@ -238,7 +238,7 @@ export default async function TeamMemberDetailPage({
       ) : null}
 
       {member.languages && member.languages.length > 0 ? (
-        <Section className="py-12 sm:py-16">
+        <Section className="py-12 sm:py-14">
           <Container narrow>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               {tTeam("languagesTitle")}
@@ -258,7 +258,7 @@ export default async function TeamMemberDetailPage({
       ) : null}
 
       {claims.length > 0 ? (
-        <Section className="border-t border-border py-12 sm:py-16">
+        <Section className="border-t border-border py-12 sm:py-14">
           <Container narrow>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               {tTeam("claimsTitle")}
@@ -269,7 +269,7 @@ export default async function TeamMemberDetailPage({
                   key={group.category}
                   className="rounded-[var(--radius-xl)] border border-border/80 bg-surface p-5"
                 >
-                  <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
+                  <h3 className="ui-kicker text-secondary">
                     {group.label}
                   </h3>
                   <ul className="mt-4 space-y-3">

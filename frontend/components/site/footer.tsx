@@ -25,10 +25,10 @@ export async function Footer() {
   return (
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto max-w-(--container-content) px-5 py-10 sm:px-8 sm:py-12">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)_minmax(0,0.8fr)] lg:gap-10">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.75fr)_minmax(0,0.75fr)] lg:gap-10">
           <div className="flex flex-col gap-3">
             <Logo className="h-7 w-auto" />
-            <p className="max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">{t("tagline")}</p>
+            <p className="ui-copy max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">{t("tagline")}</p>
           </div>
 
           {linkGroups.map((group) => (

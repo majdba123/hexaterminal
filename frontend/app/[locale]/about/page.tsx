@@ -99,27 +99,27 @@ export default async function AboutPage({
 
   return (
     <>
-      <Section as="div" className="bg-surface pb-10 pt-10 sm:pb-14 sm:pt-14">
+      <Section as="div" className="bg-surface pb-10 pt-10 sm:pb-12 sm:pt-14">
         <Container>
           <Breadcrumb items={[{ label: t("title") }]} />
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(19rem,0.85fr)] lg:items-start">
             <div className="max-w-3xl">
               <Badge>{t("heroBadge")}</Badge>
-              <h1 className="mt-4 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="mt-4 max-w-4xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                 {t("heroTitle")}
               </h1>
-              <p className="mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
+              <p className="ui-copy mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
                 {t("heroSubtitle")}
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
-                <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="ui-kicker rounded-full border border-border bg-background px-3 py-1 text-muted-foreground">
                   {t("heroCapabilitySystems")}
                 </span>
-                <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="ui-kicker rounded-full border border-border bg-background px-3 py-1 text-muted-foreground">
                   {t("heroCapabilityPlatforms")}
                 </span>
-                <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="ui-kicker rounded-full border border-border bg-background px-3 py-1 text-muted-foreground">
                   {t("heroCapabilityBackend")}
                 </span>
               </div>
@@ -142,13 +142,13 @@ export default async function AboutPage({
             </div>
 
             <aside className="rounded-[var(--radius-xl)] border border-border/80 bg-background p-6 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
+              <p className="ui-kicker text-secondary">
                 {t("heroAsideLabel")}
               </p>
               <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground">
                 {t("heroAsideTitle")}
               </h2>
-              <p className="mt-3 text-pretty text-sm leading-relaxed text-muted-foreground">
+              <p className="ui-copy mt-3 text-pretty text-sm leading-relaxed text-muted-foreground">
                 {t("heroAsideBody")}
               </p>
               <ul className="mt-6 space-y-3 border-t border-border/70 pt-5">
@@ -166,15 +166,15 @@ export default async function AboutPage({
         </Container>
       </Section>
 
-      <Section className="pb-10 pt-0 sm:pb-14 sm:pt-0">
+      <Section className="pb-10 pt-0 sm:pb-12 sm:pt-0">
         <Container>
           <div className="grid gap-6 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-10">
             <div className="space-y-3">
               <Badge variant="outline">{t("deliveryModelBadge")}</Badge>
-              <h2 className="text-balance text-3xl font-extrabold tracking-tight text-foreground">
+              <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground">
                 {t("deliveryModelTitle")}
               </h2>
-              <p className="max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
+              <p className="ui-copy max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
                 {t("deliveryModelSubtitle")}
               </p>
             </div>
@@ -190,7 +190,7 @@ export default async function AboutPage({
                     >
                       <div className="flex items-center justify-between gap-3">
                         <Icon className="size-5 text-secondary" aria-hidden="true" />
-                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        <span className="ui-kicker text-muted-foreground">
                           0{index + 1}
                         </span>
                       </div>
@@ -205,18 +205,18 @@ export default async function AboutPage({
         </Container>
       </Section>
 
-      <Section className="border-y border-border bg-surface py-12 sm:py-16">
+      <Section className="border-y border-border bg-surface py-12 sm:py-14">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12">
             <div className="max-w-xl">
               <Badge>{t("positioningBadge")}</Badge>
-              <h2 className="mt-4 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 {t("positioningTitle")}
               </h2>
             </div>
 
             <div className="space-y-5">
-              <p className="max-w-2xl text-pretty text-base leading-relaxed text-foreground">
+              <p className="ui-copy max-w-2xl text-pretty text-base leading-relaxed text-foreground">
                 {t("positioningBody")}
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -225,7 +225,7 @@ export default async function AboutPage({
                     key={point}
                     className="rounded-[var(--radius-lg)] border border-border/80 bg-background px-4 py-4 text-sm leading-relaxed text-muted-foreground"
                   >
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-secondary">
+                    <span className="ui-kicker mb-2 block text-secondary">
                       0{point}
                     </span>
                     {t(`approachPoint${point}` as "approachPoint1")}
@@ -237,14 +237,14 @@ export default async function AboutPage({
         </Container>
       </Section>
 
-      <Section className="py-12 sm:py-16">
+      <Section className="py-12 sm:py-14">
         <Container>
           <div className="mb-8 flex max-w-3xl flex-col gap-3">
             <Badge variant="outline">{tHome("howWeWorkBadge")}</Badge>
-            <h2 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {tHome("howWeWorkTitle")}
             </h2>
-            <p className="text-pretty text-base leading-relaxed text-muted-foreground">
+            <p className="ui-copy text-pretty text-base leading-relaxed text-muted-foreground">
               {tHome("howWeWorkSubtitle")}
             </p>
           </div>
@@ -273,15 +273,15 @@ export default async function AboutPage({
         </Container>
       </Section>
 
-      <Section className="border-y border-border bg-surface py-12 sm:py-16">
+      <Section className="border-y border-border bg-surface py-12 sm:py-14">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10">
             <div className="space-y-3">
               <Badge>{t("trustBadge")}</Badge>
-              <h2 className="text-balance text-3xl font-extrabold tracking-tight text-foreground">
+              <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground">
                 {t("trustTitle")}
               </h2>
-              <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+              <p className="ui-copy text-pretty text-sm leading-relaxed text-muted-foreground">
                 {t("trustSubtitle")}
               </p>
             </div>
@@ -291,11 +291,11 @@ export default async function AboutPage({
                 <div
                   key={principle.key}
                   className={cn(
-                    "grid gap-3 px-5 py-5 sm:grid-cols-[14rem_minmax(0,1fr)] sm:gap-6 sm:px-6",
+                    "grid gap-3 px-5 py-4 sm:grid-cols-[14rem_minmax(0,1fr)] sm:gap-6 sm:px-6",
                     index !== principles.length - 1 && "border-b border-border/70",
                   )}
                 >
-                  <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-foreground">
+                  <h3 className="ui-kicker text-foreground">
                     {principle.title}
                   </h3>
                   <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
@@ -309,14 +309,14 @@ export default async function AboutPage({
       </Section>
 
       {team.length > 0 ? (
-        <Section id="team" className="py-12 sm:py-16">
+        <Section id="team" className="py-12 sm:py-14">
           <Container>
             <div className="mb-8 flex max-w-3xl flex-col gap-3">
               <Badge variant="outline">{t("teamBadge")}</Badge>
-              <h2 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 {t("teamTitle")}
               </h2>
-              <p className="text-pretty text-base leading-relaxed text-muted-foreground">
+              <p className="ui-copy text-pretty text-base leading-relaxed text-muted-foreground">
                 {t("teamSubtitle")}
               </p>
             </div>

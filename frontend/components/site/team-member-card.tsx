@@ -44,11 +44,11 @@ export function TeamMemberCard({
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 p-5">
+        <div className="flex flex-1 flex-col gap-4 p-5 sm:p-5">
           <div className="flex flex-wrap items-center gap-2">
             {member.is_founder ? <Badge variant="secondary">{founderLabel}</Badge> : null}
             {(member.github_url || member.linkedin_url) ? (
-              <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <div className="ui-kicker flex flex-wrap items-center gap-2 text-muted-foreground">
                 {member.github_url ? <span>GitHub</span> : null}
                 {member.linkedin_url ? <span>LinkedIn</span> : null}
               </div>
@@ -61,7 +61,7 @@ export function TeamMemberCard({
               <p className="text-sm font-medium text-muted-foreground">{member.position}</p>
             ) : null}
             {member.specialization ? (
-              <p className="text-pretty text-sm leading-relaxed text-foreground/80">
+              <p className="ui-copy text-pretty text-sm leading-relaxed text-foreground/80">
                 {member.specialization}
               </p>
             ) : null}

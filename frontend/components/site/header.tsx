@@ -14,12 +14,18 @@ import { navChildren, primaryNavRoutes } from "@/lib/routes/registry";
 // Primary navigation is derived from the single-source-of-truth route registry
 // (lib/routes/registry.ts) so nav, footer, breadcrumbs, and the sitemap can
 // never drift apart. `path: ""` (home) renders as href "/".
-const navItems = primaryNavRoutes().map(
-  (r) => [r.navKey as string, r.path || "/"] as const,
-);
-const aboutChildren = navChildren("about").map(
-  (r) => [r.navKey as string, r.path || "/"] as const,
-);
+const navItems = primaryNavRoutes().map((r) => ({
+  key: r.navKey as string,
+  href: r.path || "/",
+}));
+
+const aboutChildren = [
+  ...primaryNavRoutes().filter((route) => route.id === "about"),
+  ...navChildren("about"),
+].map((route) => ({
+  key: route.navKey as string,
+  href: route.path || "/",
+}));
 
 /**
  * Site header.
@@ -60,14 +66,14 @@ export async function Header() {
         </Link>
 
         {/*
-          Desktop navigation appears at xl, not lg.
+          Desktop navigation appears at 2xl, not xl.
 
-          At 1024 it cannot fit: the logo is ~260px, the utility cluster plus
-          CTA ~285px, which leaves ~465px for seven items -- about 66px each,
-          well below a readable label. The result was a real 201px horizontal
-          scrollbar on EVERY page at 1024x1366, not just the hero. Below xl the
-          existing drawer takes over, which is what the brief asks for ("do not
-          squeeze desktop navigation into the viewport").
+          After switching from system fonts to Manrope / IBM Plex Sans Arabic,
+          the previous xl handoff started overflowing again around 1280px: the
+          wider labels and CTA pushed the action cluster past the container.
+          The brief explicitly says not to force desktop navigation into a
+          viewport where it no longer fits, so the drawer remains in control
+          until 2xl.
         */}
         {/* Centred BETWEEN the brand and the actions, not absolutely centred
             on the row. An earlier `absolute left-1/2 -translate-x-1/2` version
@@ -77,15 +83,17 @@ export async function Header() {
             covers. As a flex child it can never overlap its siblings. */}
         <nav
           aria-label="Main"
-          className="hidden xl:flex xl:flex-1 xl:items-center xl:justify-center xl:gap-0.5"
+          className="hidden 2xl:flex 2xl:flex-1 2xl:items-center 2xl:justify-center 2xl:gap-0.5"
         >
-          {navItems.map(([key, href]) =>
+          {navItems.map(({ key, href }) =>
             key === "about" ? (
               <NavGroup
                 key={key}
-                label={t(key)}
-                href={href}
-                items={aboutChildren.map(([childKey, childHref]) => ({ label: t(childKey), href: childHref }))}
+                label={t("aboutGroup")}
+                items={aboutChildren.map(({ key: childKey, href: childHref }) => ({
+                  label: t(childKey === "about" ? "aboutUs" : childKey),
+                  href: childHref,
+                }))}
               />
             ) : (
               <NavLink key={key} href={href} label={t(key)} />
@@ -93,7 +101,7 @@ export async function Header() {
           )}
         </nav>
 
-        <div className="ms-auto flex items-center gap-1 xl:ms-0">
+        <div className="ms-auto flex items-center gap-1 2xl:ms-0">
           {/* Utility cluster -- deliberately low-contrast and grouped.
               Search drops out below sm: the logo lockup is wide (~5.9:1), and
               logo + three icon buttons + menu overflowed a 375px header. It
@@ -116,12 +124,12 @@ export async function Header() {
 
           {/* Separates "tools" from "the thing we want you to do". Hidden on
               mobile, where the CTA is not rendered anyway. */}
-          <span className="mx-2 hidden h-6 w-px bg-border sm:block" aria-hidden="true" />
+          <span className="mx-2 hidden h-6 w-px bg-border 2xl:block" aria-hidden="true" />
 
           <Button
             asChild
             size="sm"
-            className="hidden shadow-sm shadow-primary/20 sm:inline-flex"
+            className="hidden shadow-sm shadow-primary/20 2xl:inline-flex"
           >
             <Link href="/start-a-project">{t("startProject")}</Link>
           </Button>

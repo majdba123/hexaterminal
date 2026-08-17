@@ -8,6 +8,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 const PORT = 3000;
 const baseURL = process.env.NEXT_PUBLIC_SITE_URL ?? `http://localhost:${PORT}`;
+const shouldStartWebServer = process.env.PLAYWRIGHT_SKIP_WEBSERVER !== "1";
 
 export default defineConfig({
   testDir: "./e2e",
@@ -44,18 +45,20 @@ export default defineConfig({
    * tests fail with `ECONNREFUSED`, a fetch timeout, or "Something went
    * wrong", check how the API was started before touching the app code.
    */
-  webServer: {
-    command: "npm run start",
-    url: `http://localhost:${PORT}`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-    env: {
-      API_URL: process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/public",
-      NEXT_PUBLIC_SITE_URL: baseURL,
-      NEXT_PUBLIC_ALLOW_INDEXING: process.env.NEXT_PUBLIC_ALLOW_INDEXING ?? "true",
-      // Enables the on-demand revalidation endpoint so e2e/revalidate.spec.ts
-      // can prove auth is enforced. A throwaway value; never a real secret.
-      REVALIDATE_SECRET: process.env.REVALIDATE_SECRET ?? "e2e-revalidate-secret",
-    },
-  },
+  webServer: shouldStartWebServer
+    ? {
+        command: "npm run start",
+        url: `http://localhost:${PORT}`,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+        env: {
+          API_URL: process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/public",
+          NEXT_PUBLIC_SITE_URL: baseURL,
+          NEXT_PUBLIC_ALLOW_INDEXING: process.env.NEXT_PUBLIC_ALLOW_INDEXING ?? "true",
+          // Enables the on-demand revalidation endpoint so e2e/revalidate.spec.ts
+          // can prove auth is enforced. A throwaway value; never a real secret.
+          REVALIDATE_SECRET: process.env.REVALIDATE_SECRET ?? "e2e-revalidate-secret",
+        },
+      }
+    : undefined,
 });

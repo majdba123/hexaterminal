@@ -53,7 +53,7 @@ export default async function TeamPage({
   const eligibleForPersonJsonLd = team.filter((member) => member.person_jsonld_eligible);
 
   return (
-    <Section as="div" className="pb-12 pt-10 sm:pb-16 sm:pt-14">
+    <Section as="div" className="pb-12 pt-10 sm:pb-14 sm:pt-14">
       <JsonLd data={breadcrumbJsonLd([{ name: t("title"), path: "/team" }], locale)} />
       {eligibleForPersonJsonLd.map((member) => (
         <JsonLd
@@ -71,10 +71,10 @@ export default async function TeamPage({
 
       <Container>
         <Breadcrumb items={[{ label: t("title") }]} />
-        <h1 className="max-w-2xl text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+        <h1 className="max-w-3xl text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
+        <p className="ui-copy mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
           {t("subtitle")}
         </p>
 
