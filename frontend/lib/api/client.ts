@@ -180,6 +180,11 @@ export async function getTeam(locale: string) {
   return result?.data ?? [];
 }
 
+export async function getTeamMember(locale: string, slug: string) {
+  const result = await apiFetch<ApiEnvelope<TeamMember>>(`/team/${slug}`, locale);
+  return result?.data ?? null;
+}
+
 export async function getTrustPages(locale: string) {
   const result = await apiFetch<ApiEnvelope<TrustPage[]>>(
     "/trust-pages",

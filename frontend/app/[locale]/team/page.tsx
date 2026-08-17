@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { ExternalLink } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getTeam } from "@/lib/api/client";
 import { Container } from "@/components/site/container";
 import { Section } from "@/components/site/section";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 import { EmptyState } from "@/components/site/empty-state";
-import { Card, CardContent } from "@/components/ui/card";
 import { JsonLd } from "@/components/site/json-ld";
+import { TeamMemberCard } from "@/components/site/team-member-card";
 import { breadcrumbJsonLd, personJsonLd } from "@/lib/seo/jsonld";
 import { localeAlternates, absoluteUrl } from "@/lib/seo/alternates";
 import { resolveRobots } from "@/lib/seo/indexing";
@@ -27,10 +25,15 @@ export async function generateMetadata({
       canonical: absoluteUrl(locale, "/team"),
       ...localeAlternates("/team"),
     },
-    // Content-blocked in the route registry until founder-approved team
-    // content exists -- see frontend/lib/routes/registry.ts.
     robots: resolveRobots(true),
   };
+}
+
+function teamGridClass(count: number) {
+  if (count <= 1) return "max-w-xl";
+  if (count === 2) return "md:grid-cols-2";
+  if (count === 3) return "md:grid-cols-2 xl:grid-cols-3";
+  return "md:grid-cols-2 xl:grid-cols-4";
 }
 
 export default async function TeamPage({
@@ -50,7 +53,7 @@ export default async function TeamPage({
   const eligibleForPersonJsonLd = team.filter((member) => member.person_jsonld_eligible);
 
   return (
-    <Section as="div">
+    <Section as="div" className="pb-12 pt-10 sm:pb-16 sm:pt-14">
       <JsonLd data={breadcrumbJsonLd([{ name: t("title"), path: "/team" }], locale)} />
       {eligibleForPersonJsonLd.map((member) => (
         <JsonLd
@@ -76,74 +79,21 @@ export default async function TeamPage({
         </p>
 
         {team.length > 0 ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div
+            className={
+              team.length === 1
+                ? "mt-10 max-w-xl"
+                : `mt-10 grid gap-6 ${teamGridClass(team.length)}`
+            }
+          >
             {team.map((member) => (
-              <Card key={member.slug} className="overflow-hidden">
-                <div className="relative aspect-square w-full overflow-hidden bg-muted">
-                  {member.photo ? (
-                    <Image
-                      src={member.photo}
-                      alt={member.photo_alt ?? member.full_name}
-                      fill
-                      className="object-cover"
-                      sizes="(min-width: 1024px) 25vw, 50vw"
-                    />
-                  ) : (
-                    <div className="flex size-full items-center justify-center bg-linear-to-br from-primary/15 to-accent/15 text-3xl font-black text-primary/30">
-                      {member.first_name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <CardContent className="flex flex-col gap-1">
-                  <h3 className="text-sm font-bold text-foreground">{member.full_name}</h3>
-                  {member.position ? (
-                    <p className="text-xs text-muted-foreground">{member.position}</p>
-                  ) : null}
-                  {member.bio ? (
-                    <p className="mt-2 line-clamp-3 text-pretty text-xs leading-relaxed text-muted-foreground">
-                      {member.bio}
-                    </p>
-                  ) : null}
-                  {member.expertise && member.expertise.length > 0 ? (
-                    <ul className="mt-2 flex flex-wrap gap-1">
-                      {member.expertise.map((skill) => (
-                        <li
-                          key={skill}
-                          className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-                        >
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {member.github_url || member.linkedin_url ? (
-                    <div className="mt-3 flex gap-3">
-                      {member.github_url ? (
-                        <a
-                          href={member.github_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="focus-ring rounded text-muted-foreground hover:text-foreground"
-                          aria-label="GitHub"
-                        >
-                          <ExternalLink className="size-4" />
-                        </a>
-                      ) : null}
-                      {member.linkedin_url ? (
-                        <a
-                          href={member.linkedin_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="focus-ring rounded text-muted-foreground hover:text-foreground"
-                          aria-label="LinkedIn"
-                        >
-                          <ExternalLink className="size-4" />
-                        </a>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </CardContent>
-              </Card>
+              <TeamMemberCard
+                key={member.slug}
+                member={member}
+                href={`/about/team/${member.slug}`}
+                ctaLabel={t("viewProfile")}
+                founderLabel={t("founderBadge")}
+              />
             ))}
           </div>
         ) : (

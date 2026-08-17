@@ -260,9 +260,47 @@
     "heroBadge": "About HexaTerminal",
     "heroTitle": "We build software around how businesses actually operate.",
     "heroSubtitle": "HexaTerminal designs and develops ERP and CRM systems, web platforms, mobile applications, and business software with a focus on real workflows, reliable architecture, and long-term usability.",
+    "heroCapabilitySystems": "Business Systems",
+    "heroCapabilityPlatforms": "Web & Mobile Platforms",
+    "heroCapabilityBackend": "Backend / Architecture / Integrations",
+    "heroAsideLabel": "What makes the difference",
+    "heroAsideTitle": "HexaTerminal builds complete software systems, not isolated interface work.",
+    "heroAsideBody": "We work from the operational problem through the architecture, product flow, backend logic, data structure, and integrations needed to make the system reliable in real use.",
+    "heroAsidePoint1": "Operational understanding comes before screen design.",
+    "heroAsidePoint2": "Product, backend, and data decisions are shaped together.",
+    "heroAsidePoint3": "Delivery stays maintainable after launch, not just presentable on day one.",
+    "deliveryModelBadge": "What we actually build",
+    "deliveryModelTitle": "How we create business value through complete system delivery.",
+    "deliveryModelSubtitle": "The work moves from operational diagnosis to architecture, product experience, connected backend logic, and maintainable delivery.",
+    "deliveryModel": {
+      "problem": {
+        "title": "Operational problem",
+        "body": "We start with the workflow breakdown, business friction, and decision points the software needs to improve."
+      },
+      "architecture": {
+        "title": "System architecture",
+        "body": "We define the structure around permissions, data movement, integrations, and long-term operational reliability."
+      },
+      "experience": {
+        "title": "Product experience",
+        "body": "Interfaces are shaped as part of the system so users can move through the workflow clearly and with less friction."
+      },
+      "backend": {
+        "title": "Backend, data, integrations",
+        "body": "The product layer is backed by the logic, data model, and service connections needed for real production use."
+      },
+      "delivery": {
+        "title": "Maintainable delivery",
+        "body": "The goal is software that can keep evolving without becoming fragile after launch."
+      }
+    },
     "positioningBadge": "Our approach",
     "positioningTitle": "Business needs first. Technology second.",
     "positioningBody": "We start by understanding the workflow, users, data, and operational problem before deciding how the software should be built. The goal is not to add more tools, but to create a system that makes the business easier to operate.",
+    "approachPoint1": "We begin with the operation behind the request, not a preselected stack.",
+    "approachPoint2": "We map users, handoffs, permissions, and data before deciding how the product should behave.",
+    "approachPoint3": "We connect product experience to backend logic instead of treating them as separate projects.",
+    "approachPoint4": "We favor software that can be extended and maintained after the first delivery milestone.",
     "trustBadge": "How we work",
     "trustTitle": "Built for clear, practical delivery.",
     "trustSubtitle": "The work stays grounded in the operational problem and the people who need to use the system.",
@@ -287,14 +325,31 @@
     "teamBadge": "The people behind the work",
     "teamTitle": "The team",
     "teamSubtitle": "Approved public profiles of the people contributing to HexaTerminal.",
+    "teamFounder": "Founder",
+    "teamViewProfile": "View profile",
+    "faqHeroBadge": "FAQ",
     "faqTitle": "Frequently Asked Questions",
     "faqSubtitle": "Answers to common questions about how we work, what we build, and what to expect when discussing a project with HexaTerminal.",
+    "faqGeneralCategory": "General",
+    "faqBrowseLabel": "Browse by category",
     "faqEmptyTitle": "No published FAQs yet",
-    "faqEmptyDescription": "We do not have published FAQ entries right now. If you have a specific question, contact us and we will help."
+    "faqEmptyDescription": "We do not have published FAQ entries right now. If you have a specific question, contact us and we will help.",
+    "faqEndingPrompt": "Still have a question?",
+    "faqEndingContact": "Contact us",
+    "faqEndingDivider": "or",
+    "faqEndingStart": "Start a Project"
   },
   "team": {
     "title": "Team",
-    "subtitle": "The people building your system."
+    "subtitle": "Public profiles of the people building HexaTerminal systems.",
+    "founderBadge": "Founder",
+    "viewProfile": "View profile",
+    "githubLabel": "GitHub",
+    "linkedinLabel": "LinkedIn",
+    "aboutTitle": "About",
+    "expertiseTitle": "Expertise",
+    "languagesTitle": "Languages",
+    "claimsTitle": "Public professional claims"
   },
   "trust": {
     "reviewedOn": "Reviewed {date}",
