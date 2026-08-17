@@ -32,10 +32,12 @@ for (const width of widths) {
       "/en/about",
       "/en/about/faq",
       "/en/about/team/majd-bayer",
+      "/en/case-studies/malik-group-furniture-catalog",
       "/en/systems/demo-ledger-platform",
       "/ar/about",
       "/ar/about/faq",
       "/ar/about/team/majd-bayer",
+      "/ar/case-studies/malik-group-furniture-catalog",
       "/ar/systems/demo-ledger-platform",
     ]) {
       await page.goto(route);
