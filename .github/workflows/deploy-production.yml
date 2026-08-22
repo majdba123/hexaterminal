@@ -151,6 +151,7 @@ jobs:
             tests/Feature/Security/SlugValidationTest.php \
             tests/Feature/Security/StorageRouteTest.php \
             tests/Feature/Security/UploadAllowlistTest.php \
+            tests/Feature/Deployment/ProductionMediaSmokeGuardTest.php \
             tests/Feature/Pricing \
             tests/Feature/RevalidationTest.php
 
@@ -216,6 +217,7 @@ jobs:
             APP_DIR="/var/www/hexaterminal"
             FRONTEND_DIR="$APP_DIR/frontend"
             BACKEND_HEALTH_URL="https://api.hexaterminal.com/api/health/ready"
+            MEDIA_SMOKE_URL="https://api.hexaterminal.com/storage/service-offerings/custom-erp-crm-systems.png"
             FRONTEND_HEALTH_URL="https://hexaterminal.com/api/health"
             PUBLIC_PAGE_URL="https://hexaterminal.com/en"
 
@@ -292,6 +294,29 @@ jobs:
               --retry-connrefused \
               --max-time 15 \
               "$BACKEND_HEALTH_URL"
+
+            # This must be served by the Laravel/Nginx media origin, never by
+            # the Next.js frontend. Keep TLS validation enabled: a bad API
+            # certificate is a failed production deployment.
+            MEDIA_HEADERS="$(curl \
+              --fail \
+              --silent \
+              --show-error \
+              --head \
+              --retry 5 \
+              --retry-delay 3 \
+              --retry-connrefused \
+              --max-time 15 \
+              "$MEDIA_SMOKE_URL")"
+            printf '%s\n' "$MEDIA_HEADERS" | grep -qiE '^content-type: image/(png|jpeg|webp|avif|gif)'
+            if printf '%s\n' "$MEDIA_HEADERS" | grep -qiE '^content-type: text/html'; then
+              echo "Public media returned HTML instead of an image." >&2
+              exit 1
+            fi
+            if printf '%s\n' "$MEDIA_HEADERS" | grep -qiE '^x-powered-by: next\.js'; then
+              echo "Public media was routed to Next.js instead of the API origin." >&2
+              exit 1
+            fi
 
             curl \
               --fail \
