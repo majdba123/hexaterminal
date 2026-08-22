@@ -147,8 +147,16 @@ Health of the build was verified with:
 ## Storage / media
 
 - Laravel `storage/app/public` must be linked: `php artisan storage:link`.
-- Public media is served through the hardened storage route (traversal/dotfile/
-  extension checks — see `tests/Feature/Security/StorageRouteTest.php`).
+- Public media at `/storage/*` is intended to be served directly by the web
+  server from the Laravel `public/storage` symlink. If you run a split
+  PHP-FPM + Nginx/containerized topology, mount the same persisted
+  `storage/app/public` volume into the web container read-only at the path the
+  symlink resolves to; do not copy uploads into image layers during deploys.
+- `/storage/*` must never execute PHP and must remain non-executable/static-only.
+  The legacy `/api/storage/{path}` route is a separate hardened fallback surface
+  with traversal/dotfile/extension checks (see
+  `tests/Feature/Security/StorageRouteTest.php`), not the primary production
+  media path.
 - Frontend `next.config.ts` `images.remotePatterns` whitelists the media hosts;
   add your production media/CDN host there before switching real image URLs.
 

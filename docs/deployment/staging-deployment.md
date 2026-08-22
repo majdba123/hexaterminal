@@ -194,6 +194,14 @@ outage. Point the load balancer at `/api/health/ready` for the API and
     MIME allowlist. Never use bare `FileUpload::make()` or `->image()`:
     `->image()` accepts `image/*`, which includes `image/svg+xml`, and
     Filament preserves the client-supplied file extension.
+- In compose, `api_web` must mount **both**:
+  `../../public:/var/www/hexa/public:ro` and
+  `storage_app:/var/www/hexa/public/storage:ro`. This direct mount is
+  intentional: `public/storage` is gitignored, so the Nginx container must
+  not depend on the symlink created inside the separate Laravel container.
+  This is load-bearing: Nginx serves `/storage/*` directly from that mounted
+  public-media volume, so it has to be the same persisted volume Laravel writes.
+  Never copy uploads into image layers or into a second volume during deploys.
 - Uploads are **not** committed; in compose they persist on the `storage_app`
   volume.
 - Real assets in `frontend/public/media` (logo, hero/showreel video + posters,

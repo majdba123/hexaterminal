@@ -34,9 +34,11 @@ class UploadAllowlistTest extends TestCase
 
     public function test_image_helper_allows_only_raster_formats(): void
     {
-        $accepted = Uploads::image('cover_image')->getAcceptedFileTypes();
+        $upload = Uploads::image('cover_image');
+        $accepted = $upload->getAcceptedFileTypes();
 
         $this->assertSame(Uploads::IMAGE_MIMES, $accepted);
+        $this->assertSame('public', $upload->getDiskName());
 
         foreach ($accepted as $mime) {
             $this->assertStringStartsWith('image/', $mime);
@@ -46,10 +48,13 @@ class UploadAllowlistTest extends TestCase
 
     public function test_document_helper_allows_only_pdf(): void
     {
+        $upload = Uploads::document('cv_file');
+
         $this->assertSame(
             ['application/pdf'],
-            Uploads::document('cv_file')->getAcceptedFileTypes(),
+            $upload->getAcceptedFileTypes(),
         );
+        $this->assertSame('public', $upload->getDiskName());
     }
 
     /**

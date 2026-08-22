@@ -52,6 +52,7 @@ class Uploads
     public static function image(string $name): FileUpload
     {
         return FileUpload::make($name)
+            ->disk('public')
             ->image()
             ->acceptedFileTypes(self::IMAGE_MIMES);
     }
@@ -63,6 +64,7 @@ class Uploads
     public static function document(string $name): FileUpload
     {
         return FileUpload::make($name)
+            ->disk('public')
             ->acceptedFileTypes(self::DOCUMENT_MIMES);
     }
 

@@ -71,7 +71,12 @@ services:
       - app
     volumes:
       - ./nginx/api-staging.conf:/etc/nginx/conf.d/default.conf:ro
-      - app_public:/var/www/hexa/public:ro
+      # Serve the real Laravel public tree. Do not assume this host checkout
+      # includes public/storage: it is gitignored and created in the app image.
+      - ../../public:/var/www/hexa/public:ro
+      # Nginx must see the exact same persisted public-disk files Laravel
+      # writes at the path it serves. It never needs write access to them.
+      - storage_app:/var/www/hexa/public/storage:ro
     ports:
       - "8080:443"   # map behind your TLS edge
     healthcheck:
@@ -111,4 +116,3 @@ services:
 volumes:
   db_data:
   storage_app:
-  app_public:
