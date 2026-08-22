@@ -15,7 +15,12 @@ class ProductionRevalidationDeployGuardTest extends TestCase
         $this->assertStringContainsString('https://hexaterminal.com/api/revalidate', $workflow);
         $this->assertStringContainsString('REVALIDATE_SECRET', $workflow);
         $this->assertStringContainsString('hash_equals($secret, (string) $frontend["REVALIDATE_SECRET"])', $workflow);
-        $this->assertStringContainsString('Invalid production revalidation configuration.', $workflow);
+        $this->assertStringContainsString('Invalid production revalidation configuration:', $workflow);
+        $this->assertStringContainsString('backend disabled', $workflow);
+        $this->assertStringContainsString('backend URL is incorrect', $workflow);
+        $this->assertStringContainsString('backend secret is missing', $workflow);
+        $this->assertStringContainsString('frontend secret is missing', $workflow);
+        $this->assertStringContainsString('backend and frontend secrets differ', $workflow);
         $this->assertStringContainsString(
             'tests/Feature/Deployment/ProductionRevalidationDeployGuardTest.php',
             $workflow,
