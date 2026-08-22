@@ -65,7 +65,7 @@
       "industry_slugs": []
     },
     "project_classification": "web_mobile_platform",
-    "featured": false,
+    "featured": true,
     "sort_order": 2,
     "publication_intent": "published"
   }

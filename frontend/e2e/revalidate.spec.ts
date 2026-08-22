@@ -43,4 +43,27 @@ test.describe("On-demand revalidation endpoint", () => {
     expect(Array.isArray(body.paths)).toBe(true);
     expect(body.paths).toContain("/en/systems/demo-ledger-platform");
   });
+
+  test("revalidates both homepage locales for a Case Study", async ({ request }) => {
+    const res = await request.post("/api/revalidate", {
+      headers: { "x-revalidate-secret": SECRET },
+      data: {
+        resource: "case-studies",
+        slug: "vetora-specialized-marketplace-operations",
+        ts: Math.floor(Date.now() / 1000),
+      },
+    });
+
+    expect(res.status()).toBe(200);
+    const body = await res.json();
+    expect(body.paths).toEqual(expect.arrayContaining([
+      "/en",
+      "/ar",
+      "/en/case-studies",
+      "/ar/case-studies",
+      "/en/case-studies/vetora-specialized-marketplace-operations",
+      "/ar/case-studies/vetora-specialized-marketplace-operations",
+      "/sitemap.xml",
+    ]));
+  });
 });

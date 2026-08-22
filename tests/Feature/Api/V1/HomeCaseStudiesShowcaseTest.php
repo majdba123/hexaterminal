@@ -59,6 +59,24 @@ class HomeCaseStudiesShowcaseTest extends TestCase
             ->assertJsonCount(0, 'data.featured_case_studies');
     }
 
+    public function test_featured_membership_and_cover_image_are_identical_across_locales(): void
+    {
+        $caseStudy = $this->makeCaseStudy('locale-invariant-case-study', 0, true);
+        $caseStudy->update(['cover_image' => 'systems/vetora-cover-public.png']);
+
+        $english = $this->getJson('/api/v1/public/home?locale=en')
+            ->assertOk()
+            ->json('data.featured_case_studies');
+        $arabic = $this->getJson('/api/v1/public/home?locale=ar')
+            ->assertOk()
+            ->json('data.featured_case_studies');
+
+        $this->assertSame(collect($english)->pluck('slug')->all(), collect($arabic)->pluck('slug')->all());
+        $this->assertSame($english[0]['cover_image'], $arabic[0]['cover_image']);
+        $this->assertTrue($english[0]['is_featured']);
+        $this->assertTrue($arabic[0]['is_featured']);
+    }
+
     private function makeCaseStudy(string $slug, int $sortOrder, bool $featured, bool $published = true): CaseStudy
     {
         return CaseStudy::create([

@@ -5,6 +5,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      allow_fresh_seed:
+        description: 'Destructively reset and reseed the production database. Never use with real CMS data.'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -152,6 +158,9 @@ jobs:
             tests/Feature/Security/StorageRouteTest.php \
             tests/Feature/Security/UploadAllowlistTest.php \
             tests/Feature/Deployment/ProductionMediaSmokeGuardTest.php \
+            tests/Feature/Deployment/ProductionRevalidationDeployGuardTest.php \
+            tests/Feature/Deployment/ProductionFreshSeedSafetyTest.php \
+            tests/Feature/VetoraCaseStudyFeaturedSeedTest.php \
             tests/Feature/Pricing \
             tests/Feature/RevalidationTest.php
 
@@ -264,11 +273,9 @@ jobs:
             npm run build
 
             cd "$APP_DIR"
-            # Destructive preview reset: only enable GitHub environment/repository
-            # variable ALLOW_FRESH_SEED=true while preview data is explicitly
-            # wanted. This drops every table and all CMS/business data. Remove
-            # the variable before entering real data through Admin.
-            ALLOW_FRESH_SEED="${{ secrets.ALLOW_FRESH_SEED }}"
+            # A push deploy can never reset CMS data. Fresh seeding is an
+            # explicit manual-dispatch recovery operation only.
+            ALLOW_FRESH_SEED="${{ github.event_name == 'workflow_dispatch' && inputs.allow_fresh_seed || 'false' }}"
             if [ "$ALLOW_FRESH_SEED" = "true" ]; then
               php artisan migrate:fresh --seed --force
             else
@@ -278,6 +285,7 @@ jobs:
             php artisan optimize:clear
             php artisan optimize
             php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); $expected = "https://api.hexaterminal.com/storage"; $actual = config("filesystems.disks.public.url"); if ($actual !== $expected) { fwrite(STDERR, "Invalid public media URL: {$actual}\n"); exit(1); }'
+            php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); $frontend = Dotenv\Dotenv::parse(file_get_contents($argv[1])); $secret = (string) config("revalidation.secret"); if (! config("revalidation.enabled") || config("revalidation.url") !== "https://hexaterminal.com/api/revalidate" || $secret === "" || ! isset($frontend["REVALIDATE_SECRET"]) || ! hash_equals($secret, (string) $frontend["REVALIDATE_SECRET"])) { fwrite(STDERR, "Invalid production revalidation configuration.\n"); exit(1); }' "$FRONTEND_DIR/.env.production"
             php artisan queue:restart
 
             systemctl restart hexa-frontend

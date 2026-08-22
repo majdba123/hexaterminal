@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\FaqItem;
+use App\Models\CaseStudy;
 use App\Models\Service;
 use App\Services\RevalidationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
@@ -120,5 +122,26 @@ class RevalidationTest extends TestCase
 
         $this->assertNotNull($service->id);
         $this->assertTrue(Service::where('slug', 'ok')->exists());
+    }
+
+    public function test_saving_a_case_study_clears_both_locale_home_caches(): void
+    {
+        config(['revalidation.enabled' => false]);
+
+        $caseStudy = CaseStudy::create([
+            'slug' => 'locale-cache-check',
+            'title' => ['en' => 'Locale cache check', 'ar' => 'فحص ذاكرة التخزين المؤقت'],
+            'summary' => ['en' => 'Summary', 'ar' => 'ملخص'],
+            'is_featured' => false,
+            'is_published' => true,
+        ]);
+
+        Cache::put('api:v1:public:home:list:en:all', 'en', now()->addMinute());
+        Cache::put('api:v1:public:home:list:ar:all', 'ar', now()->addMinute());
+
+        $caseStudy->update(['is_featured' => true]);
+
+        $this->assertFalse(Cache::has('api:v1:public:home:list:en:all'));
+        $this->assertFalse(Cache::has('api:v1:public:home:list:ar:all'));
     }
 }

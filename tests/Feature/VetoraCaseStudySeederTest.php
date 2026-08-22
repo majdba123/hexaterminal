@@ -56,7 +56,7 @@ class VetoraCaseStudySeederTest extends TestCase
         $this->assertNull($caseStudy->client_name);
         $this->assertNull($caseStudy->project_url);
         $this->assertNull($caseStudy->video_url);
-        $this->assertFalse($caseStudy->is_featured);
+        $this->assertTrue($caseStudy->is_featured);
         $this->assertTrue($caseStudy->is_published);
         $this->assertNotNull($caseStudy->published_at);
         $this->assertCount(0, $caseStudy->industries);
