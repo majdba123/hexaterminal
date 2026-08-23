@@ -134,9 +134,12 @@ jobs:
         run: |
           set -Eeuo pipefail
 
+          # Exercise migrations, idempotent seeders, and legacy migration once,
+          # then reset to a schema-only test database so API tests own all fixtures.
           php artisan migrate --force
           php artisan db:seed --force
           php artisan hexa:migrate-legacy-content
+          php artisan migrate:fresh --force
 
       - name: Run Laravel validation suite
         shell: bash
