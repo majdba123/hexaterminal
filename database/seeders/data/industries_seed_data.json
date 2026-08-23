@@ -32,7 +32,7 @@
       "summary": {"en": "Operational systems for lead management, qualification, pipelines, reservations, contracts, commissions, and revenue visibility.", "ar": "أنظمة تشغيل لإدارة العملاء المحتملين والتأهيل ومسارات البيع والحجوزات والعقود والعمولات ورؤية الإيرادات."},
       "description": {"en": "Sales teams need more than a contact database. We build systems that connect lead discovery and qualification with ownership, pipelines, inventory or service availability, approvals, contracts, commissions, and management reporting. LeadScope AI and Rakez demonstrate how evidence-first discovery and cross-domain sales workflows can live inside a controlled operational system.", "ar": "فرق المبيعات تحتاج أكثر من قاعدة بيانات جهات اتصال. نبني أنظمة تربط اكتشاف العملاء وتأهيلهم بملكية العميل ومسار البيع والمخزون أو التوفر والموافقات والعقود والعمولات وتقارير الإدارة. يوضح LeadScope AI وراكز كيف يمكن جمع اكتشاف العملاء المبني على الأدلة مع عمليات البيع متعددة المجالات ضمن نظام تشغيلي منضبط."},
       "icon": null, "cover_image": null, "cover_image_alt": {"en": null, "ar": null}, "sort_order": 4, "publication_intent": "published",
-      "relationships": {"systems": ["leadscope-ai", "rakez-erp"], "case_studies": ["rakez-erp-operating-platform", "rakez-reservation-sales-credit"]}
+      "relationships": {"systems": ["leadscope-ai", "rakez-erp"], "case_studies": ["rakez-erp-operating-platform", "rakez-reservation-sales-credit-flow"]}
     },
     {
       "slug": "marketing-growth-attribution",
@@ -48,7 +48,7 @@
       "summary": {"en": "ERP, CRM, inventory, contract, finance, commission, and customer-operation systems for real-estate teams.", "ar": "أنظمة ERP وCRM والمخزون والعقود والمالية والعمولات وعمليات العملاء لفرق العقارات."},
       "description": {"en": "Real-estate operations combine leads, projects, units, availability, reservations, negotiations, contracts, payment schedules, financing, commissions, claims, marketing attribution, and executive reporting. Dhura and Rakez demonstrate our approach to building one operational source of truth across these workflows instead of leaving each department in a separate tool.", "ar": "تجمع العمليات العقارية العملاء والمشاريع والوحدات والتوفر والحجوزات والتفاوض والعقود وجداول الدفعات والتمويل والعمولات والمطالبات والإسناد التسويقي والتقارير التنفيذية. توضح ذُرى وراكز نهجنا في بناء مصدر تشغيلي موحد لهذه المسارات بدل إبقاء كل قسم داخل أداة منفصلة."},
       "icon": null, "cover_image": null, "cover_image_alt": {"en": null, "ar": null}, "sort_order": 6, "publication_intent": "published",
-      "relationships": {"systems": ["dhura", "rakez-erp"], "case_studies": ["rakez-erp-operating-platform", "rakez-reservation-sales-credit", "rakez-financial-workflows"]}
+      "relationships": {"systems": ["dhura", "rakez-erp"], "case_studies": ["rakez-erp-operating-platform", "rakez-reservation-sales-credit-flow", "rakez-financial-workflows"]}
     },
     {
       "slug": "commerce-retail-operations",
@@ -64,7 +64,7 @@
       "summary": {"en": "Governed AI agents, copilots, retrieval, workflow automation, and tool execution inside real business systems.", "ar": "وكلاء AI منضبطون ومساعدون ذكيون وRAG وأتمتة سير العمل وتنفيذ الأدوات داخل أنظمة أعمال حقيقية."},
       "description": {"en": "Agentic AI should not become a parallel super-admin. We design AI-assisted systems where tools inherit application permissions, tenant and record scope, audit requirements, and human confirmation boundaries. HireLens AI, LeadScope AI, and Rakez demonstrate different forms of evidence-grounded AI and guarded operational execution.", "ar": "يجب ألا يتحول Agentic AI إلى Super Admin موازٍ. نصمم أنظمة مدعومة بالذكاء الاصطناعي ترث فيها الأدوات صلاحيات التطبيق ونطاق المستأجر والسجلات ومتطلبات التدقيق وحدود التأكيد البشري. توضح HireLens AI وLeadScope AI وراكز أشكالاً مختلفة من AI المبني على الأدلة والتنفيذ التشغيلي المنضبط."},
       "icon": null, "cover_image": null, "cover_image_alt": {"en": null, "ar": null}, "sort_order": 8, "publication_intent": "published",
-      "relationships": {"systems": ["hirelens-ai", "leadscope-ai", "rakez-erp"], "case_studies": ["rakez-operational-ai"]}
+      "relationships": {"systems": ["hirelens-ai", "leadscope-ai", "rakez-erp"], "case_studies": ["rakez-operational-ai-execution-gates"]}
     }
   ],
   "rules": [
