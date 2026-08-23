@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\System;
 use App\Models\TeamMember;
 use App\Services\SystemSeedImageSynchronizer;
-use App\Services\TeamMemberSeedImageSynchronizer;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use JsonException;
@@ -24,7 +23,6 @@ class HexaPortfolioSeeder extends Seeder
     /** @param array<string, mixed> $data */
     private function seedTeamMember(array $data): void
     {
-        $photos = app(TeamMemberSeedImageSynchronizer::class);
         $member = TeamMember::firstOrNew(['slug' => $data['slug']]);
         $member->fill([
             'first_name' => $data['first_name'], 'last_name' => $data['last_name'],
@@ -32,7 +30,7 @@ class HexaPortfolioSeeder extends Seeder
             'specialization' => $data['specialization'], 'expertise' => $data['expertise'],
             'languages' => $data['languages'], 'location' => $data['location'],
             'email' => null, 'phone' => null,
-            'photo' => $photos->sync('yusuf-jojeh.webp', 'team/yusuf-jojeh.webp'),
+            'photo' => 'https://hexaterminal.com/team/yusuf-jojeh.webp',
             'photo_alt' => $data['photo_alt'], 'github_url' => $data['github_url'],
             'linkedin_url' => $data['linkedin_url'], 'cv_file' => null,
             'is_published' => true, 'publication_consent' => true,
