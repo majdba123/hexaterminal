@@ -12,6 +12,14 @@ trait ResolvesPublicMediaUrls
             return null;
         }
 
+        // Root-relative assets are intentionally served by the frontend itself
+        // (for example /team/yusuf-jojeh.webp). Preserve them as-is so Next.js
+        // treats them as local images instead of routing them through a remote
+        // image host/optimizer path that can fail with HTTP 400.
+        if (str_starts_with($path, '/')) {
+            return $path;
+        }
+
         if (filter_var($path, FILTER_VALIDATE_URL)) {
             return $path;
         }
