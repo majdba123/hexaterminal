@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             ServicesSeeder::class,
             CompanySettingsSeeder::class,
+            TrustPagesSeeder::class,
             TeamMembersSeeder::class,
             EngagementModelsSeeder::class,
             FaqItemsSeeder::class,

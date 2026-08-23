@@ -1,0 +1,604 @@
+{
+  "trust_pages": [
+    {
+      "slug": "security",
+      "page_type": "security",
+      "sort_order": 1,
+      "title": {
+        "en": "Security",
+        "ar": "الأمن"
+      },
+      "summary": {
+        "en": "Security is handled as an engineering responsibility throughout architecture, implementation, deployment, and ongoing maintenance.",
+        "ar": "نتعامل مع الأمن باعتباره مسؤولية هندسية مستمرة تشمل المعمارية والتنفيذ والنشر والصيانة اللاحقة."
+      },
+      "sections": {
+        "en": [
+          {
+            "heading": "Security starts with system design",
+            "body": "Security is considered from the point where the workflow, user roles, and data boundaries are being defined. Before implementation, the goal is to understand who should access what, which actions need approval, what data is sensitive, and where the application could be exposed to misuse. That keeps security tied to the real operation of the system instead of being treated as a cosmetic checklist at the end."
+          },
+          {
+            "heading": "Access control and request validation",
+            "body": "Applications are structured around authentication, authorization, and role-based access rules that match the business process. Protected actions are enforced server-side, not only in the interface. Input validation, permission checks, and error handling are applied at the request boundary so invalid or unauthorized actions do not depend on client behavior to be rejected."
+          },
+          {
+            "heading": "Sensitive data handling and environment separation",
+            "body": "Sensitive application data is handled according to the needs of the project and the sensitivity of the workflow. Environments, credentials, and secrets are separated so development convenience does not leak into production operations. Dependencies and configuration are reviewed as part of delivery, and external integrations are treated as part of the security surface rather than as isolated add-ons."
+          },
+          {
+            "heading": "Deployment, monitoring, and recovery considerations",
+            "body": "Security does not stop when the code is merged. Deployment practices, logging, operational visibility, backup expectations, and recovery needs are considered as part of production readiness. The exact controls vary by project, but the principle stays the same: least-privilege access where practical, deliberate configuration, and a system that can be maintained responsibly after launch."
+          }
+        ],
+        "ar": [
+          {
+            "heading": "الأمن يبدأ من تصميم النظام",
+            "body": "يُؤخذ الأمن بعين الاعتبار منذ مرحلة فهم سير العمل وتحديد الأدوار وحدود البيانات. قبل بدء التنفيذ، نحدد من يملك صلاحية الوصول، وما الإجراءات التي تحتاج إلى موافقات، وما البيانات الحساسة، وأين يمكن أن يتعرض النظام لسوء الاستخدام. بهذه الطريقة يبقى الأمن مرتبطًا بالتشغيل الفعلي للنظام، وليس مجرد قائمة شكلية تضاف في النهاية."
+          },
+          {
+            "heading": "التحكم في الوصول والتحقق من الطلبات",
+            "body": "يتم بناء التطبيقات على أساس المصادقة والتفويض وصلاحيات الأدوار بما يتوافق مع العملية التجارية. الإجراءات الحساسة تُفرض من جهة الخادم وليس فقط من خلال الواجهة. كما يتم تطبيق التحقق من المدخلات وفحص الصلاحيات ومعالجة الأخطاء عند حدود الطلب نفسها، بحيث لا يعتمد رفض الطلب غير الصحيح أو غير المصرح به على سلوك الواجهة الأمامية."
+          },
+          {
+            "heading": "التعامل مع البيانات الحساسة وفصل البيئات",
+            "body": "يتم التعامل مع البيانات الحساسة بحسب طبيعة المشروع وحساسية سير العمل. كما يتم فصل البيئات والاعتمادات والأسرار حتى لا تنتقل اعتبارات التطوير إلى بيئة الإنتاج. وتُراجع الاعتماديات والإعدادات ضمن عملية التسليم، كما تُعامل التكاملات الخارجية باعتبارها جزءًا من السطح الأمني للنظام وليست عناصر منفصلة عنه."
+          },
+          {
+            "heading": "اعتبارات النشر والمراقبة والاستعادة",
+            "body": "الأمن لا ينتهي عند اكتمال البرمجة. يتم النظر إلى ممارسات النشر والسجلات والرؤية التشغيلية ومتطلبات النسخ الاحتياطي والاستعادة ضمن جاهزية الإنتاج. قد تختلف الضوابط الدقيقة من مشروع لآخر، لكن المبدأ ثابت: أقل قدر مناسب من الصلاحيات، إعدادات مقصودة، ونظام يمكن صيانته بمسؤولية بعد الإطلاق."
+          }
+        ]
+      },
+      "faqs": {
+        "en": [
+          {
+            "question": "Do you claim formal certifications on this page?",
+            "answer": "No. This page describes how HexaTerminal approaches security in delivery and implementation. It does not claim certifications, audit results, or guarantees that are not independently verified."
+          },
+          {
+            "question": "Are backups and monitoring always included?",
+            "answer": "They are considered as part of project delivery, but the final scope depends on the hosting model, the operational workflow, the risk level, and who will own the production environment after launch."
+          }
+        ],
+        "ar": [
+          {
+            "question": "هل تتضمن هذه الصفحة ادعاءات عن شهادات رسمية؟",
+            "answer": "لا. هذه الصفحة تشرح منهج HexaTerminal العملي في الأمن أثناء التنفيذ والتسليم، ولا تتضمن ادعاءات عن شهادات أو تدقيقات أو ضمانات غير موثقة بشكل مستقل."
+          },
+          {
+            "question": "هل النسخ الاحتياطي والمراقبة جزء ثابت في كل مشروع؟",
+            "answer": "يتم أخذهما بعين الاعتبار ضمن التسليم، لكن النطاق النهائي يعتمد على بيئة الاستضافة وطبيعة التشغيل ومستوى المخاطر والجهة التي ستدير بيئة الإنتاج بعد الإطلاق."
+          }
+        ]
+      },
+      "cta": null,
+      "publication": {
+        "is_published": true,
+        "status": "published",
+        "noindex": true,
+        "show_in_nav": false,
+        "show_in_footer": false
+      },
+      "approvals": {
+        "founder_approved": true,
+        "legal_approved": false,
+        "security_approved": true
+      },
+      "seo": {
+        "title": {
+          "en": "HexaTerminal Security Approach",
+          "ar": "منهج HexaTerminal في الأمن"
+        },
+        "description": {
+          "en": "How HexaTerminal approaches access control, validation, deployment security, and sensitive data handling in custom software projects.",
+          "ar": "كيف تتعامل HexaTerminal مع التحكم في الوصول والتحقق من الطلبات وأمن النشر وحماية البيانات الحساسة في المشاريع البرمجية المخصصة."
+        },
+        "canonical_url": null,
+        "og_image": null,
+        "noindex": true,
+        "nofollow": false
+      }
+    },
+    {
+      "slug": "engineering-standards",
+      "page_type": "engineering_standards",
+      "sort_order": 2,
+      "title": {
+        "en": "Engineering Standards",
+        "ar": "المعايير الهندسية"
+      },
+      "summary": {
+        "en": "Engineering standards are used to keep business software understandable, maintainable, and dependable beyond the first release.",
+        "ar": "تُستخدم المعايير الهندسية لضمان أن يبقى البرنامج التجاري واضحًا وقابلًا للصيانة ويمكن الاعتماد عليه بعد الإطلاق الأول."
+      },
+      "sections": {
+        "en": [
+          {
+            "heading": "Business understanding before implementation",
+            "body": "Technical work begins with the operating model of the business, not with isolated code tasks. The aim is to understand workflows, responsibilities, exceptions, approvals, integrations, and reporting needs before deciding how the system should be structured. That early clarity affects architecture, permissions, data design, and long-term maintainability."
+          },
+          {
+            "heading": "Clear boundaries in code and data",
+            "body": "Systems are organized around clear responsibilities so business rules, data access, interfaces, and background processes do not collapse into one layer. Reusable services and components are preferred where they improve consistency, while database design and API contracts are shaped to support the real workflows of the product rather than incidental implementation shortcuts."
+          },
+          {
+            "heading": "Validation, testing, and delivery discipline",
+            "body": "Validation and error handling are treated as part of the core behavior of the system. Important workflows are checked before release, and testing or verification depth is matched to project risk and complexity. Where delivery includes collaboration across contributors, code review and quality checks help protect the maintainability of the result rather than focusing only on speed of output."
+          },
+          {
+            "heading": "Performance, scalability, and handover",
+            "body": "Performance and scalability decisions are made according to actual needs, expected usage, and operational constraints, not as generic over-engineering. Documentation, deployment discipline, and handover matter because a system should remain understandable to the people who will extend, operate, or inherit it later."
+          }
+        ],
+        "ar": [
+          {
+            "heading": "فهم العمل قبل التنفيذ",
+            "body": "يبدأ العمل التقني من نموذج التشغيل الفعلي للأعمال، وليس من مهام برمجية معزولة. الهدف هو فهم سير العمل والمسؤوليات والحالات الاستثنائية والموافقات والتكاملات واحتياجات التقارير قبل اتخاذ قرار حول شكل النظام. هذا الوضوح المبكر يؤثر مباشرة في المعمارية والصلاحيات وتصميم البيانات وقابلية الصيانة على المدى الطويل."
+          },
+          {
+            "heading": "حدود واضحة في الكود والبيانات",
+            "body": "يتم تنظيم الأنظمة بحيث تكون المسؤوليات واضحة، فلا تختلط قواعد العمل مع الوصول إلى البيانات أو الواجهات أو العمليات الخلفية في طبقة واحدة. ويتم الاعتماد على الخدمات والمكونات القابلة لإعادة الاستخدام عندما تحسن الاتساق، بينما يُصاغ تصميم قاعدة البيانات وعقود الـ API لخدمة سير العمل الحقيقي للمنتج لا لتسهيل اختصارات تنفيذية مؤقتة."
+          },
+          {
+            "heading": "التحقق والاختبار والانضباط في التسليم",
+            "body": "يُعامل التحقق من البيانات ومعالجة الأخطاء كجزء من السلوك الأساسي للنظام. وتتم مراجعة المسارات المهمة قبل الإطلاق، مع مواءمة عمق الاختبار أو التحقق مع مستوى المخاطر وتعقيد المشروع. وعندما يشمل التسليم تعاون أكثر من مساهم، تساعد مراجعة الكود وضوابط الجودة في حماية قابلية الصيانة، وليس فقط في تسريع الإنتاج."
+          },
+          {
+            "heading": "الأداء وقابلية التوسع والتسليم النهائي",
+            "body": "تُتخذ قرارات الأداء وقابلية التوسع وفق الحاجة الفعلية والاستخدام المتوقع والقيود التشغيلية، لا على أساس مبالغة هندسية عامة. كما أن التوثيق والانضباط في النشر والتسليم مهم لأنها تضمن أن يبقى النظام مفهومًا لمن سيشغله أو يطوره أو يستلمه لاحقًا."
+          }
+        ]
+      },
+      "faqs": {
+        "en": [
+          {
+            "question": "Do these standards mean every project gets the same architecture?",
+            "answer": "No. The standards guide how decisions are made and how quality is protected, but the actual architecture, testing depth, and delivery shape depend on the business problem being solved."
+          },
+          {
+            "question": "Why emphasize handover and maintainability?",
+            "answer": "Because software usually outlives the first implementation phase. Systems need to remain workable for future features, operational changes, support needs, and team transitions."
+          }
+        ],
+        "ar": [
+          {
+            "question": "هل تعني هذه المعايير أن كل مشروع يحصل على نفس المعمارية؟",
+            "answer": "لا. هذه المعايير توجه طريقة اتخاذ القرار وحماية الجودة، لكن المعمارية الفعلية وعمق الاختبار وشكل التسليم يعتمد على المشكلة التجارية المطلوب حلها."
+          },
+          {
+            "question": "لماذا التركيز على التسليم النهائي وقابلية الصيانة؟",
+            "answer": "لأن عمر النظام عادة يتجاوز مرحلة التنفيذ الأولى. يجب أن يبقى قابلًا للتعامل مع الميزات المستقبلية والتغييرات التشغيلية واحتياجات الدعم وتبدل الفرق."
+          }
+        ]
+      },
+      "cta": null,
+      "publication": {
+        "is_published": true,
+        "status": "published",
+        "noindex": true,
+        "show_in_nav": false,
+        "show_in_footer": false
+      },
+      "approvals": {
+        "founder_approved": false,
+        "legal_approved": false,
+        "security_approved": false
+      },
+      "seo": {
+        "title": {
+          "en": "HexaTerminal Engineering Standards",
+          "ar": "المعايير الهندسية في HexaTerminal"
+        },
+        "description": {
+          "en": "How HexaTerminal approaches architecture, validation, testing, maintainability, and handover in custom software delivery.",
+          "ar": "كيف تتعامل HexaTerminal مع المعمارية والتحقق والاختبار وقابلية الصيانة والتسليم النهائي في تطوير البرمجيات المخصصة."
+        },
+        "canonical_url": null,
+        "og_image": null,
+        "noindex": true,
+        "nofollow": false
+      }
+    },
+    {
+      "slug": "process",
+      "page_type": "process",
+      "sort_order": 3,
+      "title": {
+        "en": "Process",
+        "ar": "آلية العمل"
+      },
+      "summary": {
+        "en": "Projects move through a practical delivery path that starts with understanding the business and continues through launch, support, and iteration.",
+        "ar": "تسير المشاريع عبر مسار عملي يبدأ بفهم العمل التجاري ويستمر حتى الإطلاق والدعم والتحسين اللاحق."
+      },
+      "sections": {
+        "en": [
+          {
+            "heading": "Discovery and workflow understanding",
+            "body": "The first step is to understand the business context behind the request. That includes users, responsibilities, handoffs, bottlenecks, data movement, and the real operational problem that the system needs to solve. This stage reduces ambiguity before architecture or implementation decisions harden into scope."
+          },
+          {
+            "heading": "Solution architecture and system structure",
+            "body": "Once the workflow is clear, the solution can be shaped into modules, permissions, data relationships, integrations, and operational boundaries. This is where system architecture and user experience structure begin to align. The goal is to make sure the product shape reflects the business model instead of forcing the business into an arbitrary technical template."
+          },
+          {
+            "heading": "Development, validation, and launch",
+            "body": "Implementation follows the agreed structure, with ongoing validation against the intended workflow rather than isolated feature checklists alone. Before launch, the important flows are reviewed, tested, and prepared for use in the real environment. Launch is treated as a controlled transition into live operation, not simply the moment code becomes reachable."
+          },
+          {
+            "heading": "Support and iteration",
+            "body": "Once a system is live, real usage reveals improvements, edge cases, and operational adjustments. Support and iteration focus on helping the product stay aligned with how the business actually works. That may include refinement, stabilization, workflow adjustments, new modules, or integration expansion based on what the live environment makes visible."
+          }
+        ],
+        "ar": [
+          {
+            "heading": "الاستكشاف وفهم سير العمل",
+            "body": "تبدأ العملية بفهم السياق التجاري الحقيقي وراء الطلب. يشمل ذلك المستخدمين والمسؤوليات ونقاط التسليم والاختناقات وحركة البيانات والمشكلة التشغيلية الفعلية التي يجب أن يحلها النظام. تساعد هذه المرحلة على تقليل الغموض قبل أن تتحول قرارات المعمارية أو التنفيذ إلى نطاق ثابت."
+          },
+          {
+            "heading": "المعمارية وبنية النظام",
+            "body": "بعد اتضاح سير العمل، يمكن تشكيل الحل على هيئة وحدات وصلاحيات وعلاقات بيانات وتكاملات وحدود تشغيلية. في هذه المرحلة تبدأ المعمارية وهيكل تجربة الاستخدام بالاتساق معًا. الهدف هو أن يعكس شكل المنتج نموذج العمل نفسه، لا أن يُجبر العمل على قالب تقني جاهز."
+          },
+          {
+            "heading": "التطوير والتحقق والإطلاق",
+            "body": "يأتي التنفيذ بعد الاتفاق على البنية، مع استمرار التحقق من توافق العمل مع سير التشغيل المقصود وليس فقط مع قائمة ميزات منفصلة. وقبل الإطلاق، تتم مراجعة المسارات المهمة واختبارها وتجهيزها للاستخدام في البيئة الفعلية. الإطلاق هنا انتقال منضبط إلى التشغيل الحي، وليس مجرد إتاحة الكود."
+          },
+          {
+            "heading": "الدعم والتحسين المستمر",
+            "body": "بعد دخول النظام إلى الاستخدام الحقيقي، تظهر فرص التحسين والحالات الطرفية والتعديلات التشغيلية. يركز الدعم والتحسين على إبقاء المنتج متوافقًا مع طريقة عمل المؤسسة فعليًا. وقد يشمل ذلك تحسينات وظيفية أو تثبيتًا أو تعديلات في سير العمل أو وحدات جديدة أو توسعة في التكاملات بحسب ما يكشفه التشغيل الفعلي."
+          }
+        ]
+      },
+      "faqs": {
+        "en": [
+          {
+            "question": "Do projects always move in a rigid fixed sequence?",
+            "answer": "The stages are consistent, but the depth of each stage depends on the project. A mature requirement set needs a different level of discovery than an unclear or high-risk operational problem."
+          },
+          {
+            "question": "When does support begin?",
+            "answer": "Support is considered before launch, because handover, monitoring expectations, issue response, and post-launch ownership affect how the system should be delivered in the first place."
+          }
+        ],
+        "ar": [
+          {
+            "question": "هل تتحرك المشاريع دائمًا ضمن تسلسل جامد وثابت؟",
+            "answer": "المراحل الأساسية ثابتة، لكن عمق كل مرحلة يختلف حسب المشروع. فالمتطلبات الناضجة لا تحتاج نفس مقدار الاستكشاف الذي تحتاجه مشكلة تشغيلية غير واضحة أو عالية المخاطر."
+          },
+          {
+            "question": "متى يبدأ الدعم؟",
+            "answer": "يؤخذ الدعم بالحسبان قبل الإطلاق، لأن التسليم النهائي وتوقعات المراقبة والاستجابة للمشكلات وملكية ما بعد الإطلاق كلها تؤثر في طريقة بناء النظام من البداية."
+          }
+        ]
+      },
+      "cta": null,
+      "publication": {
+        "is_published": true,
+        "status": "published",
+        "noindex": true,
+        "show_in_nav": false,
+        "show_in_footer": false
+      },
+      "approvals": {
+        "founder_approved": false,
+        "legal_approved": false,
+        "security_approved": false
+      },
+      "seo": {
+        "title": {
+          "en": "HexaTerminal Delivery Process",
+          "ar": "آلية التسليم في HexaTerminal"
+        },
+        "description": {
+          "en": "How HexaTerminal moves from discovery and architecture to development, launch, support, and iteration.",
+          "ar": "كيف تنتقل HexaTerminal من الاستكشاف والمعمارية إلى التطوير والإطلاق والدعم والتحسين المستمر."
+        },
+        "canonical_url": null,
+        "og_image": null,
+        "noindex": true,
+        "nofollow": false
+      }
+    },
+    {
+      "slug": "technology",
+      "page_type": "technology",
+      "sort_order": 4,
+      "title": {
+        "en": "Technology",
+        "ar": "التقنية"
+      },
+      "summary": {
+        "en": "Technology choices are made to serve the product, the workflow, and the operating environment rather than to advertise a stack.",
+        "ar": "يتم اختيار التقنية لخدمة المنتج وسير العمل وبيئة التشغيل، وليس لاستعراض مجموعة أدوات تقنية."
+      },
+      "sections": {
+        "en": [
+          {
+            "heading": "Technology follows requirements",
+            "body": "The choice of framework, frontend approach, database model, and integration method should follow the requirements of the project. Maintainability, deployment environment, expected growth, system complexity, and the need to connect with existing tools all shape that decision. The stack is a means to support the product, not the product itself."
+          },
+          {
+            "heading": "Using proven tools where they fit",
+            "body": "HexaTerminal commonly works with technologies already reflected in the current site and delivery model, including Laravel, Blade, Next.js, HTTP APIs, and relational databases. These tools are useful because they support structured business logic, content workflows, clear boundaries between systems, and long-term maintainability when applied to the right problem."
+          },
+          {
+            "heading": "Architecture matters more than labels",
+            "body": "A modern system is rarely defined by one framework name alone. What matters is how the pieces work together: how the backend enforces business rules, how the frontend delivers the workflow, how integrations are handled, and how the operational model is supported after launch. Good technology decisions are made in relation to those concerns, not only to trends."
+          },
+          {
+            "heading": "Choosing for the next stage of the business",
+            "body": "Technology should also match the expected next stage of the organization. A system that will stay small has different needs from a platform expected to expand in roles, modules, integrations, and operational load. The goal is to choose tools that are appropriate now while still leaving the product in a position that can be extended responsibly later."
+          }
+        ],
+        "ar": [
+          {
+            "heading": "التقنية تتبع المتطلبات",
+            "body": "اختيار الإطار البرمجي أو أسلوب الواجهة الأمامية أو نموذج قاعدة البيانات أو طريقة التكامل يجب أن يتبع متطلبات المشروع. فالقابلية للصيانة وبيئة النشر والنمو المتوقع وتعقيد النظام والحاجة إلى الاتصال بالأدوات الحالية كلها عوامل تؤثر في القرار. التقنية هنا وسيلة لخدمة المنتج، وليست المنتج نفسه."
+          },
+          {
+            "heading": "استخدام أدوات مجربة عندما تكون مناسبة",
+            "body": "تعمل HexaTerminal عادة بتقنيات تنعكس بالفعل في الموقع الحالي ونمط التسليم، مثل Laravel وBlade وNext.js وواجهات HTTP APIs وقواعد البيانات العلائقية. هذه الأدوات مفيدة لأنها تدعم منطق الأعمال المنظم وسير المحتوى والحدود الواضحة بين الأنظمة وقابلية الصيانة على المدى الطويل عندما تُستخدم في السياق المناسب."
+          },
+          {
+            "heading": "المعمارية أهم من اسم الأداة",
+            "body": "نادراً ما يُعرَّف النظام الحديث باسم إطار واحد فقط. الأهم هو كيف تعمل الأجزاء معًا: كيف يفرض الـ backend قواعد العمل، وكيف توصل الواجهة الأمامية سير الاستخدام، وكيف تدار التكاملات، وكيف يُدعم النموذج التشغيلي بعد الإطلاق. القرارات التقنية الجيدة تُتخذ انطلاقًا من هذه الأسئلة، لا من مواكبة التوجهات فقط."
+          },
+          {
+            "heading": "الاختيار بما يناسب المرحلة القادمة من العمل",
+            "body": "يجب أن تناسب التقنية المرحلة التالية المتوقعة للمؤسسة أيضًا. فالنظام الذي سيبقى محدودًا ليس كمنصة مرشحة للتوسع في الأدوار والوحدات والتكاملات والحمل التشغيلي. الهدف هو اختيار أدوات مناسبة للحاضر، مع ترك المنتج في وضع يسمح بتوسيعه لاحقًا بشكل مسؤول."
+          }
+        ]
+      },
+      "faqs": {
+        "en": [
+          {
+            "question": "Do you force a preferred stack on every project?",
+            "answer": "No. Familiar tools can improve delivery quality, but the final choice still needs to fit the requirements, the hosting context, the integration surface, and the maintainability expectations of the project."
+          },
+          {
+            "question": "Why mention technologies at all if they are not the product?",
+            "answer": "Because stack choices affect cost, maintainability, deployment, hiring, performance, and future change. They matter, but they should be explained in relation to business needs rather than presented as the main value by themselves."
+          }
+        ],
+        "ar": [
+          {
+            "question": "هل تفرضون مجموعة أدوات مفضلة على كل مشروع؟",
+            "answer": "لا. الأدوات المألوفة قد تحسن جودة التسليم، لكن الاختيار النهائي يجب أن يناسب المتطلبات وبيئة الاستضافة ومساحة التكامل وتوقعات الصيانة الخاصة بالمشروع."
+          },
+          {
+            "question": "لماذا يتم ذكر التقنيات أصلًا إذا لم تكن هي المنتج؟",
+            "answer": "لأن اختيار الـ stack يؤثر في الكلفة وقابلية الصيانة والنشر والتوظيف والأداء والتغيير المستقبلي. هي مهمة، لكن يجب شرحها في سياق احتياجات العمل وليس باعتبارها القيمة الأساسية بحد ذاتها."
+          }
+        ]
+      },
+      "cta": null,
+      "publication": {
+        "is_published": true,
+        "status": "published",
+        "noindex": true,
+        "show_in_nav": false,
+        "show_in_footer": false
+      },
+      "approvals": {
+        "founder_approved": false,
+        "legal_approved": false,
+        "security_approved": false
+      },
+      "seo": {
+        "title": {
+          "en": "HexaTerminal Technology Approach",
+          "ar": "منهج HexaTerminal التقني"
+        },
+        "description": {
+          "en": "How HexaTerminal chooses frameworks, APIs, databases, and architectures based on product and operational needs.",
+          "ar": "كيف تختار HexaTerminal الأطر البرمجية وواجهات الـ API وقواعد البيانات والمعماريات بحسب احتياجات المنتج والتشغيل."
+        },
+        "canonical_url": null,
+        "og_image": null,
+        "noindex": true,
+        "nofollow": false
+      }
+    },
+    {
+      "slug": "responsible-ai",
+      "page_type": "responsible_ai",
+      "sort_order": 5,
+      "title": {
+        "en": "Responsible AI",
+        "ar": "الذكاء الاصطناعي المسؤول"
+      },
+      "summary": {
+        "en": "AI is useful when it supports a real workflow, but it should be introduced carefully and reviewed like any other high-impact system behavior.",
+        "ar": "يكون الذكاء الاصطناعي مفيدًا عندما يخدم سير عمل حقيقي، لكن يجب إدخاله بحذر ومراجعته مثل أي سلوك عالي الأثر داخل النظام."
+      },
+      "sections": {
+        "en": [
+          {
+            "heading": "Use AI where it adds product value",
+            "body": "AI should be used because it improves a workflow, reduces friction, helps classify information, assists a user, or creates a practical business capability. It should not be added simply because a system can technically connect to a model. The first question is whether the feature solves a meaningful operational problem."
+          },
+          {
+            "heading": "Human review for important workflows",
+            "body": "Where the output of an AI system can affect decisions, content, approvals, customer communication, or sensitive operations, human review and clear fallback behavior matter. AI output should not automatically be treated as correct or authoritative, especially where mistakes can affect data quality, process integrity, or trust."
+          },
+          {
+            "heading": "Privacy, permissions, and integration boundaries",
+            "body": "Sensitive data should not be sent to external AI services without an appropriate design decision. Permissions, data minimization, and system boundaries still apply when AI is part of the product. The question is not only what the model can do, but what information it should receive and what actions it should be allowed to influence."
+          },
+          {
+            "heading": "AI should complement deterministic logic",
+            "body": "AI can be valuable for assistance, interpretation, summarization, extraction, and content support, but it should not blindly replace deterministic business logic where rules need to be explicit and reliable. Responsible use usually means combining AI capabilities with validation, permissions, review, and conventional application logic rather than treating the model as the entire system."
+          }
+        ],
+        "ar": [
+          {
+            "heading": "استخدام الذكاء الاصطناعي عندما يضيف قيمة حقيقية",
+            "body": "ينبغي استخدام الذكاء الاصطناعي لأنه يحسن سير العمل أو يقلل الاحتكاك أو يساعد في تصنيف المعلومات أو يدعم المستخدم أو يخلق قدرة عملية ذات قيمة تجارية. لا ينبغي إضافته لمجرد أن النظام يستطيع تقنيًا الاتصال بنموذج. السؤال الأول هو: هل تحل هذه الميزة مشكلة تشغيلية فعلية؟"
+          },
+          {
+            "heading": "المراجعة البشرية في المسارات المهمة",
+            "body": "عندما يمكن أن يؤثر ناتج الذكاء الاصطناعي في القرارات أو المحتوى أو الموافقات أو تواصل العملاء أو العمليات الحساسة، تصبح المراجعة البشرية وسلوكيات التراجع الواضحة ضرورية. لا ينبغي التعامل مع مخرجات الذكاء الاصطناعي تلقائيًا على أنها صحيحة أو مرجعية، خصوصًا عندما قد تؤثر الأخطاء في جودة البيانات أو سلامة العملية أو الثقة."
+          },
+          {
+            "heading": "الخصوصية والصلاحيات وحدود التكامل",
+            "body": "لا ينبغي إرسال البيانات الحساسة إلى خدمات ذكاء اصطناعي خارجية من دون قرار تصميم مناسب. وتبقى الصلاحيات وتقليل البيانات وحدود النظام عناصر أساسية حتى عندما يكون الذكاء الاصطناعي جزءًا من المنتج. فالسؤال ليس فقط ما الذي يستطيع النموذج فعله، بل ما المعلومات التي يجب أن يتلقاها وما الأفعال التي يجوز له التأثير فيها."
+          },
+          {
+            "heading": "الذكاء الاصطناعي يكمل المنطق الحتمي ولا يستبدله",
+            "body": "يمكن أن يكون الذكاء الاصطناعي مفيدًا في المساعدة والتفسير والتلخيص والاستخراج ودعم المحتوى، لكنه لا ينبغي أن يستبدل منطق الأعمال الحتمي بشكل أعمى عندما تكون القواعد بحاجة إلى وضوح واعتمادية. الاستخدام المسؤول يعني غالبًا دمج قدراته مع التحقق والصلاحيات والمراجعة ومنطق التطبيق التقليدي، لا التعامل معه على أنه النظام كله."
+          }
+        ]
+      },
+      "faqs": {
+        "en": [
+          {
+            "question": "Does responsible AI mean avoiding AI entirely?",
+            "answer": "No. It means applying it deliberately, with clear boundaries, validation, and review when the workflow deserves it."
+          },
+          {
+            "question": "Can AI decisions bypass business rules?",
+            "answer": "They should not. Business rules, permissions, validation, and fallback handling still need to govern what the system can ultimately accept or execute."
+          }
+        ],
+        "ar": [
+          {
+            "question": "هل يعني الذكاء الاصطناعي المسؤول تجنب الذكاء الاصطناعي تمامًا؟",
+            "answer": "لا. المقصود هو استخدامه بشكل مقصود وواضح الحدود، مع التحقق والمراجعة عندما يتطلب سير العمل ذلك."
+          },
+          {
+            "question": "هل يمكن لقرارات الذكاء الاصطناعي أن تتجاوز قواعد العمل؟",
+            "answer": "لا ينبغي ذلك. يجب أن تبقى قواعد العمل والصلاحيات والتحقق وآليات التراجع هي التي تحكم ما يمكن للنظام قبوله أو تنفيذه في النهاية."
+          }
+        ]
+      },
+      "cta": null,
+      "publication": {
+        "is_published": true,
+        "status": "published",
+        "noindex": true,
+        "show_in_nav": false,
+        "show_in_footer": false
+      },
+      "approvals": {
+        "founder_approved": false,
+        "legal_approved": false,
+        "security_approved": false
+      },
+      "seo": {
+        "title": {
+          "en": "HexaTerminal Responsible AI Approach",
+          "ar": "منهج HexaTerminal في الذكاء الاصطناعي المسؤول"
+        },
+        "description": {
+          "en": "How HexaTerminal uses AI carefully, with review, validation, privacy awareness, and clear operational boundaries.",
+          "ar": "كيف تستخدم HexaTerminal الذكاء الاصطناعي بحذر مع المراجعة والتحقق ومراعاة الخصوصية وحدود تشغيلية واضحة."
+        },
+        "canonical_url": null,
+        "og_image": null,
+        "noindex": true,
+        "nofollow": false
+      }
+    },
+    {
+      "slug": "accessibility",
+      "page_type": "accessibility",
+      "sort_order": 6,
+      "title": {
+        "en": "Accessibility",
+        "ar": "إمكانية الوصول"
+      },
+      "summary": {
+        "en": "Accessibility is addressed through implementation choices that improve clarity, usability, and resilience across devices and input methods.",
+        "ar": "تُعالج إمكانية الوصول من خلال قرارات تنفيذية تحسن الوضوح وسهولة الاستخدام والمرونة عبر الأجهزة وطرق الإدخال المختلفة."
+      },
+      "sections": {
+        "en": [
+          {
+            "heading": "Accessible structure begins with semantics",
+            "body": "Clear document structure, meaningful headings, labels, and predictable page organization make interfaces easier to understand for a wider range of users and tools. Accessibility starts with the HTML and component structure itself, not only with late-stage visual adjustments."
+          },
+          {
+            "heading": "Usability across input methods",
+            "body": "Interfaces should remain usable with keyboard navigation where the workflow calls for it, and interactive elements should communicate purpose clearly. Form controls, error messages, and validation states need to help users recover from mistakes instead of leaving them uncertain about what failed."
+          },
+          {
+            "heading": "Readable content and responsive layouts",
+            "body": "Readable contrast, sensible spacing, and responsive layouts support accessibility in practice because the interface has to remain usable across screen sizes and viewing conditions. Meaningful alt text for informative images and clear content hierarchy also help prevent the design from depending only on visual context."
+          },
+          {
+            "heading": "Accessibility as part of implementation quality",
+            "body": "Accessibility is treated as part of implementation quality rather than a decorative afterthought. It is considered during design and development decisions, especially on forms, navigation, content structure, and reusable components, while avoiding claims of compliance that have not been formally verified."
+          }
+        ],
+        "ar": [
+          {
+            "heading": "البنية القابلة للوصول تبدأ من الدلالات",
+            "body": "يساعد الهيكل الواضح للمستند والعناوين ذات المعنى والوسوم الصحيحة وتنظيم الصفحة المتوقع على جعل الواجهات أسهل للفهم أمام شريحة أوسع من المستخدمين والأدوات. تبدأ إمكانية الوصول من بنية HTML والمكونات نفسها، وليس فقط من تعديلات بصرية متأخرة."
+          },
+          {
+            "heading": "سهولة الاستخدام عبر وسائل الإدخال المختلفة",
+            "body": "يجب أن تبقى الواجهات قابلة للاستخدام عبر التنقل بلوحة المفاتيح عندما يتطلب سير العمل ذلك، كما ينبغي أن توضح العناصر التفاعلية غرضها بوضوح. كذلك يجب أن تساعد الحقول ورسائل الخطأ وحالات التحقق المستخدم على تصحيح المشكلة بدل تركه غير متأكد مما فشل."
+          },
+          {
+            "heading": "محتوى مقروء وتخطيطات متجاوبة",
+            "body": "يسهم التباين المقروء والمسافات المناسبة والتخطيطات المتجاوبة في دعم إمكانية الوصول عمليًا، لأن الواجهة يجب أن تبقى قابلة للاستخدام عبر أحجام الشاشات وظروف العرض المختلفة. كما أن النصوص البديلة ذات المعنى للصور المعلوماتية وتسلسل المحتوى الواضح يساعدان على عدم اعتماد الفهم على السياق البصري فقط."
+          },
+          {
+            "heading": "إمكانية الوصول كجزء من جودة التنفيذ",
+            "body": "تُعامل إمكانية الوصول كجزء من جودة التنفيذ وليست إضافة تجميلية. ويؤخذ بها أثناء قرارات التصميم والتطوير، خصوصًا في النماذج والتنقل وبنية المحتوى والمكونات القابلة لإعادة الاستخدام، مع تجنب ادعاءات الامتثال التي لم يتم التحقق منها رسميًا."
+          }
+        ]
+      },
+      "faqs": {
+        "en": [
+          {
+            "question": "Does this page claim formal WCAG certification?",
+            "answer": "No. It explains the implementation approach used to improve accessibility, without claiming formal certification or compliance levels that have not been independently verified."
+          },
+          {
+            "question": "Why is accessibility discussed alongside engineering quality?",
+            "answer": "Because accessibility depends heavily on implementation details such as semantics, labeling, form behavior, and navigation structure. Those are engineering decisions as much as design decisions."
+          }
+        ],
+        "ar": [
+          {
+            "question": "هل تتضمن هذه الصفحة ادعاءً بوجود اعتماد رسمي لـ WCAG؟",
+            "answer": "لا. هي تشرح منهج التنفيذ المستخدم لتحسين إمكانية الوصول، من دون ادعاء امتثال أو اعتماد رسمي لم يتم التحقق منه بشكل مستقل."
+          },
+          {
+            "question": "لماذا تُناقش إمكانية الوصول إلى جانب الجودة الهندسية؟",
+            "answer": "لأن إمكانية الوصول تعتمد بدرجة كبيرة على تفاصيل التنفيذ مثل الدلالات والوسوم وسلوك النماذج وبنية التنقل. وهذه قرارات هندسية بقدر ما هي قرارات تصميمية."
+          }
+        ]
+      },
+      "cta": null,
+      "publication": {
+        "is_published": true,
+        "status": "published",
+        "noindex": true,
+        "show_in_nav": false,
+        "show_in_footer": false
+      },
+      "approvals": {
+        "founder_approved": false,
+        "legal_approved": false,
+        "security_approved": false
+      },
+      "seo": {
+        "title": {
+          "en": "HexaTerminal Accessibility Approach",
+          "ar": "منهج HexaTerminal في إمكانية الوصول"
+        },
+        "description": {
+          "en": "How HexaTerminal considers semantics, keyboard usability, readable contrast, responsive layouts, and clear validation in implementation.",
+          "ar": "كيف تراعي HexaTerminal الدلالات وسهولة الاستخدام بلوحة المفاتيح والتباين المقروء والتخطيطات المتجاوبة ووضوح التحقق أثناء التنفيذ."
+        },
+        "canonical_url": null,
+        "og_image": null,
+        "noindex": true,
+        "nofollow": false
+      }
+    }
+  ]
+}
