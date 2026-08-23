@@ -44,7 +44,15 @@ function writeEnvironment(string $path, array $values): void
 
 $backend = readEnvironment($backendEnv);
 $frontend = readEnvironment($frontendProductionEnv);
-$secret = $frontend['REVALIDATE_SECRET'] ?? $backend['REVALIDATION_SECRET'] ?? bin2hex(random_bytes(32));
+$secret = trim((string) ($frontend['REVALIDATE_SECRET'] ?? ''));
+
+if ($secret === '') {
+    $secret = trim((string) ($backend['REVALIDATION_SECRET'] ?? ''));
+}
+
+if ($secret === '') {
+    $secret = bin2hex(random_bytes(32));
+}
 
 writeEnvironment($backendEnv, [
     'REVALIDATION_ENABLED' => 'true',
