@@ -30,7 +30,7 @@ class HexaPortfolioSeeder extends Seeder
             'specialization' => $data['specialization'], 'expertise' => $data['expertise'],
             'languages' => $data['languages'], 'location' => $data['location'],
             'email' => null, 'phone' => null,
-            'photo' => 'https://hexaterminal.com/team/yusuf-jojeh.webp',
+            'photo' => '/team/yusuf-jojeh.webp',
             'photo_alt' => $data['photo_alt'], 'github_url' => $data['github_url'],
             'linkedin_url' => $data['linkedin_url'], 'cv_file' => null,
             'is_published' => true, 'publication_consent' => true,
