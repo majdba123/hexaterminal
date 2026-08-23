@@ -9,13 +9,15 @@ class ProductionRevalidationDeployGuardTest extends TestCase
     public function test_production_deploy_validates_revalidation_wiring_without_logging_secrets(): void
     {
         $workflow = file_get_contents(base_path('.github/workflows/deploy-production.yml'));
+        $syncScript = file_get_contents(base_path('deploy/production/sync-revalidation-config.php'));
 
         $this->assertIsString($workflow);
+        $this->assertIsString($syncScript);
         $this->assertStringContainsString('config("revalidation.enabled")', $workflow);
-        $this->assertStringContainsString('Laravel revalidation configuration could not be saved.', $workflow);
-        $this->assertStringContainsString('REVALIDATION_SECRET', $workflow);
+        $this->assertStringContainsString('php deploy/production/sync-revalidation-config.php', $workflow);
+        $this->assertStringContainsString('REVALIDATION_SECRET', $syncScript);
         $this->assertStringContainsString('https://hexaterminal.com/api/revalidate', $workflow);
-        $this->assertStringContainsString('REVALIDATE_SECRET', $workflow);
+        $this->assertStringContainsString('REVALIDATE_SECRET', $syncScript);
         $this->assertStringContainsString('hash_equals($secret, (string) $frontend["REVALIDATE_SECRET"])', $workflow);
         $this->assertStringContainsString('Invalid production revalidation configuration:', $workflow);
         $this->assertStringContainsString('backend disabled', $workflow);

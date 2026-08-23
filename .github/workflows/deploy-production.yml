@@ -282,10 +282,12 @@ jobs:
               php artisan migrate --force
             fi
             php artisan hexa:sync-service-images
-            # The frontend owns the shared revalidation secret. Synchronize
-            # Laravel's server-only settings before caching config; values are
-            # never echoed into the deploy log.
-            php -r 'require "vendor/autoload.php"; $frontend = Dotenv\Dotenv::parse(file_get_contents($argv[1])); $secret = $frontend["REVALIDATE_SECRET"] ?? ""; if (! is_string($secret) || $secret === "") { fwrite(STDERR, "Frontend revalidation secret is missing.\n"); exit(1); } $path = $argv[2]; $contents = file_get_contents($path); if ($contents === false) { fwrite(STDERR, "Laravel environment file is unavailable.\n"); exit(1); } $quote = static fn (string $value): string => "\"".str_replace(["\\", "\"", "\r", "\n"], ["\\\\", "\\\"", "", ""], $value)."\""; foreach (["REVALIDATION_ENABLED" => "true", "REVALIDATION_URL" => "https://hexaterminal.com/api/revalidate", "REVALIDATION_SECRET" => $secret] as $key => $value) { $line = $key."=".$quote($value); $pattern = "/^".preg_quote($key, "/")."=.*/m"; $contents = preg_match($pattern, $contents) ? preg_replace($pattern, $line, $contents) : rtrim($contents)."\n".$line."\n"; } if (file_put_contents($path, $contents) === false) { fwrite(STDERR, "Laravel revalidation configuration could not be saved.\n"); exit(1); }' "$FRONTEND_DIR/.env.production" "$APP_DIR/.env"
+            # Keep Laravel and Next.js on one server-only secret. If this is
+            # the first deploy with revalidation enabled, create one securely.
+            php deploy/production/sync-revalidation-config.php \
+              "$APP_DIR/.env" \
+              "$FRONTEND_DIR/.env.production" \
+              "$FRONTEND_DIR/.env"
             php artisan optimize:clear
             php artisan optimize
             php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); $expected = "https://api.hexaterminal.com/storage"; $actual = config("filesystems.disks.public.url"); if ($actual !== $expected) { fwrite(STDERR, "Invalid public media URL: {$actual}\n"); exit(1); }'
