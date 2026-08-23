@@ -12,6 +12,8 @@ class ProductionRevalidationDeployGuardTest extends TestCase
 
         $this->assertIsString($workflow);
         $this->assertStringContainsString('config("revalidation.enabled")', $workflow);
+        $this->assertStringContainsString('Laravel revalidation configuration could not be saved.', $workflow);
+        $this->assertStringContainsString('REVALIDATION_SECRET', $workflow);
         $this->assertStringContainsString('https://hexaterminal.com/api/revalidate', $workflow);
         $this->assertStringContainsString('REVALIDATE_SECRET', $workflow);
         $this->assertStringContainsString('hash_equals($secret, (string) $frontend["REVALIDATE_SECRET"])', $workflow);
