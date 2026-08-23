@@ -1,66 +1,183 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# HexaTerminal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[English](README.md) | [العربية](README_AR.md)
 
-## About Laravel
+> Full-stack company website and content platform for HexaTerminal, combining a Next.js public frontend with a Laravel/Filament CMS and a versioned public API.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+HexaTerminal is a software engineering company focused on custom business systems and digital products. This repository contains the platform that powers the HexaTerminal website and its content-management workflow.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The codebase separates the public experience from content administration:
 
-## Learning Laravel
+- a **Next.js** frontend renders the public website;
+- a **Laravel 12** backend owns application data and the public API;
+- a **Filament 4** CMS provides structured content management;
+- a versioned **`/api/v1/public`** contract connects the frontend to published content;
+- localized content is supported in **English and Arabic**.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The repository is therefore more than a marketing website: it includes a structured CMS, publishing workflow, public API, lead capture, pricing and estimator flows, content search, redirects, and governance-oriented content models.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Core Services Presented by HexaTerminal
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The approved service content in the repository is organized around three core offerings:
 
-## Laravel Sponsors
+1. **Custom ERP & CRM Systems** — custom operational systems designed around real business workflows.
+2. **Web Platforms & Mobile Applications** — multi-user platforms, portals, booking systems, marketplaces, and mobile products.
+3. **E-commerce & Business Websites** — business websites and commerce experiences with custom integrations and operational functionality.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Platform Capabilities
 
-### Premium Partners
+The CMS and public API include structured support for:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- Services
+- Systems and software products
+- Case studies
+- Industries
+- Articles, categories, and tags
+- Team members
+- Testimonials
+- FAQs
+- Engagement models and pricing profiles
+- Project-cost estimator configuration and estimates
+- Company settings
+- Trust and governance pages
+- Leads and newsletter submissions
+- Redirect management
+- SEO-oriented content and metadata
 
-## Contributing
+## Architecture
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```text
+┌──────────────────────────────┐
+│      Public Web Client       │
+│  Next.js 16 + React 19 + TS │
+└──────────────┬───────────────┘
+               │
+               │ /api/v1/public/*
+               ▼
+┌──────────────────────────────┐
+│       Laravel 12 API         │
+│ Resources • Controllers     │
+│ Locale • Cache • Security   │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│  Eloquent Models / Database │
+│  Structured CMS Content     │
+└──────────────▲───────────────┘
+               │
+┌──────────────┴───────────────┐
+│       Filament 4 CMS         │
+│ Publishing • Media • Roles  │
+└──────────────────────────────┘
+```
 
-## Code of Conduct
+The Next.js frontend consumes the Laravel application through the explicit versioned public API rather than accessing CMS or legacy administrative routes directly.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+For the detailed boundary contract, see [Next.js ↔ Laravel Boundary](docs/architecture/nextjs-laravel-boundary.md).
 
-## Security Vulnerabilities
+## Content Management
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The current CMS architecture supports structured editorial content rather than hardcoded marketing pages.
 
-## License
+Content records can move through an editorial lifecycle that includes:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`draft → in_review → approved → scheduled → published → archived`
+
+Published API responses are filtered through publication rules before they are exposed to the public frontend.
+
+The CMS also supports localized fields through `spatie/laravel-translatable`, with English and Arabic configured as the primary content locales.
+
+A detailed map of the content entities and their data flow is available in [HexaTerminal CMS Data Architecture](HEXATERMINAL_CMS_DATA_ARCHITECTURE.md).
+
+## Public API
+
+The frontend-facing API is registered under:
+
+```text
+/api/v1/public/*
+```
+
+It exposes public-safe resources for website content including services, systems, case studies, industries, articles, team members, testimonials, FAQs, pricing, estimator flows, settings, search, redirects, trust content, and public submissions.
+
+The API layer includes mechanisms such as locale selection, response resources, cache headers on suitable read endpoints, and throttling on selected public-write operations.
+
+See [`routes/api_v1.php`](routes/api_v1.php) for the current route contract.
+
+## Technology Stack
+
+| Area | Technologies |
+| --- | --- |
+| Backend | PHP 8.2+, Laravel 12 |
+| CMS | Filament 4 |
+| Authentication / Authorization | Laravel Sanctum, Spatie Laravel Permission |
+| Localization | Spatie Laravel Translatable, next-intl |
+| Frontend | Next.js 16, React 19, TypeScript |
+| Styling | Tailwind CSS 4 |
+| Data / Cache Integration | Eloquent ORM, Redis client support through Predis |
+| Backend Quality Tooling | PHPUnit 11, Larastan, Laravel Pint |
+| Frontend Quality Tooling | ESLint, TypeScript typecheck, Playwright |
+
+The presence of test and quality tooling does not imply that every check currently passes; runtime and CI results should be treated separately from repository documentation.
+
+## Repository Structure
+
+```text
+.
+├── app/                         # Laravel application, models, API and CMS code
+├── config/                      # Laravel application configuration
+├── database/                    # Migrations, factories and seeders
+├── docs/                        # Architecture and engineering documentation
+├── frontend/                    # Next.js public website
+├── public/                      # Laravel public assets / entrypoint
+├── resources/                   # Laravel-side resources and views
+├── routes/                      # Web, API and versioned public API routes
+├── storage/                     # Laravel runtime storage structure
+├── tests/                       # Backend automated tests
+├── HEXATERMINAL_CMS_DATA_ARCHITECTURE.md
+├── composer.json
+└── package.json
+```
+
+## Security & Governance
+
+The repository includes several security-oriented boundaries in its current architecture:
+
+- public website data is exposed through explicit API Resource classes rather than raw model serialization;
+- CMS content is separated from the public API contract;
+- administrative access is authenticated;
+- Filament CMS configuration includes authenticator-app MFA support for admin users;
+- role and permission support is provided through Spatie Laravel Permission;
+- public-write endpoints such as leads and estimate submissions use throttling where configured;
+- environment-specific secrets are expected to remain outside source control.
+
+Client-visible or provider-managed credentials must still be restricted and rotated through their external providers whenever exposure history requires it.
+
+## Frontend
+
+The public application lives under [`frontend/`](frontend/) and uses the Next.js App Router stack with React, TypeScript, Tailwind CSS, and `next-intl`.
+
+Frontend-specific setup and commands are documented in [`frontend/README.md`](frontend/README.md).
+
+## Development Notes
+
+Backend dependencies are managed with Composer and frontend dependencies with npm. Environment configuration should be based on the example environment files appropriate to the intended environment; real credentials must not be committed.
+
+Because deployment and infrastructure requirements can differ between local, staging, and production environments, this README intentionally does not claim a universal one-command production deployment process.
+
+## Documentation
+
+- [CMS Data Architecture](HEXATERMINAL_CMS_DATA_ARCHITECTURE.md)
+- [Next.js ↔ Laravel Boundary](docs/architecture/nextjs-laravel-boundary.md)
+- [`routes/api_v1.php`](routes/api_v1.php) — current public API route contract
+- [`frontend/README.md`](frontend/README.md) — frontend-specific setup
+
+## Project Website
+
+HexaTerminal: https://www.hexaterminal.com/en
+
+---
+
+Built around a clear separation between public presentation, structured content management, and application data.
