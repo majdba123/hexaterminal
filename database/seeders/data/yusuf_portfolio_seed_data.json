@@ -1,0 +1,94 @@
+{
+  "package_version": "V1",
+  "team_member": {
+    "slug": "yusuf-jojeh",
+    "first_name": "Yusuf",
+    "last_name": "Mohammad Jojeh",
+    "position": {"en": "Co-Founder & Engineering Lead", "ar": "شريك مؤسس وقائد الهندسة"},
+    "bio": {
+      "en": "Yusuf Mohammad Jojeh is Co-Founder and Engineering Lead at HexaTerminal, focused on backend engineering, business systems, AI-enabled operations, SaaS architecture, and production delivery. He builds operational software with an emphasis on multi-tenant platforms, role-based access control, auditability, reliable APIs, workflow automation, and practical AI integrations.",
+      "ar": "يوسف محمد جوجيه هو شريك مؤسس وقائد الهندسة في HexaTerminal، ويركز على هندسة الـBackend وأنظمة الأعمال والعمليات المدعومة بالذكاء الاصطناعي وبنى SaaS والتسليم إلى بيئات الإنتاج. يعمل على بناء برمجيات تشغيلية مع اهتمام خاص بالأنظمة متعددة المستأجرين والصلاحيات وسجلات التدقيق وواجهات API الموثوقة وأتمتة سير العمل وتكاملات الذكاء الاصطناعي العملية."
+    },
+    "specialization": "Backend & Business Systems Engineering",
+    "expertise": ["Backend Engineering", "Business Systems & Operational Software", "Laravel / PHP", "Python / FastAPI", "React / Next.js", "SaaS & Multi-Tenancy", "PostgreSQL / Redis", "RBAC & Auditability", "AI / LLM Integrations", "Workflow Automation", "Docker & CI/CD"],
+    "languages": ["Arabic", "English"],
+    "location": "Aleppo, Syria",
+    "photo": "team/yusuf-jojeh.png",
+    "photo_alt": {"en": "Yusuf Mohammad Jojeh, Co-Founder and Engineering Lead at HexaTerminal.", "ar": "يوسف محمد جوجيه، شريك مؤسس وقائد الهندسة في HexaTerminal."},
+    "github_url": "https://github.com/YusufJojeh",
+    "linkedin_url": "https://www.linkedin.com/in/yusuf-jojeh",
+    "sort_order": 2
+  },
+  "systems": [
+    {
+      "slug": "dhura", "type": "saas_product", "category": "Real Estate Operations Platform",
+      "name": {"en": "Dhura", "ar": "ذُرى"},
+      "tagline": {"en": "Arabic-first real estate operations software for GCC teams.", "ar": "منصة عربية أولاً لإدارة عمليات الشركات العقارية في الخليج."},
+      "short_description": {"en": "Dhura connects CRM, project and unit inventory, deals, contracts, payment schedules, commissions, customer operations, executive dashboards, and governed AI assistance in one multi-tenant platform.", "ar": "تجمع ذُرى إدارة العملاء والمشاريع والوحدات والصفقات والعقود وجداول الدفعات والعمولات وعمليات العملاء ولوحات الإدارة والذكاء الاصطناعي المنضبط ضمن منصة متعددة المستأجرين."},
+      "full_description": {"en": "A multi-tenant real estate operations platform designed around GCC property workflows, from lead and inventory management through deals, contracts, payment schedules, commissions, customer access, reporting, and human-reviewed AI recommendations.", "ar": "منصة متعددة المستأجرين لإدارة العمليات العقارية في الخليج، من العملاء والمخزون إلى الصفقات والعقود وجداول الدفعات والعمولات وبوابة العملاء والتقارير وتوصيات AI بمراجعة بشرية."},
+      "problem": {"en": "Real estate teams often split leads, unit availability, deals, contracts, payments, and commissions across disconnected tools.", "ar": "غالباً ما تتوزع بيانات العملاء والوحدات والصفقات والعقود والدفعات والعمولات بين أدوات منفصلة."},
+      "solution": {"en": "One operational platform links CRM, inventory, contracts, customer and management workflows with tenant isolation and controlled AI assistance.", "ar": "منصة تشغيل واحدة تربط CRM والمخزون والعقود والعملاء والإدارة مع عزل المستأجرين وذكاء اصطناعي منضبط."},
+      "features": {"en": "CRM workflows\nProjects and unit inventory\nDeals and contracts\nPayment schedules and commissions\nCustomer portal\nExecutive dashboards\nMulti-tenant access controls\nHuman-reviewed AI recommendations", "ar": "إدارة CRM\nالمشاريع ومخزون الوحدات\nالصفقات والعقود\nجداول الدفعات والعمولات\nبوابة العملاء\nلوحات تنفيذية\nصلاحيات متعددة المستأجرين\nتوصيات AI بمراجعة بشرية"},
+      "business_outcomes": {"en": "One operational source of truth\nLess friction between CRM, inventory and contracts\nClearer management visibility", "ar": "مصدر تشغيلي موحد\nتقليل الاحتكاك بين CRM والمخزون والعقود\nرؤية إدارية أوضح"},
+      "target_audience": {"en": "Real estate developers, brokerages and sales operations teams in GCC markets.", "ar": "المطورون العقاريون وشركات الوساطة وفرق عمليات المبيعات في الخليج."},
+      "tech_stack": ["FastAPI", "React", "PostgreSQL", "Redis", "Docker"],
+      "cover_image": "systems/dhura-cover.png", "cover_image_alt": {"en": "Dhura real estate operations platform cover.", "ar": "غلاف منصة ذُرى للعمليات العقارية."}, "gallery": [], "demo_url": null, "live_url": null, "sort_order": 3
+    },
+    {
+      "slug": "leadscope-ai", "type": "ai_system", "category": "B2B Lead Intelligence",
+      "name": {"en": "LeadScope AI", "ar": "LeadScope AI"},
+      "tagline": {"en": "Evidence-first lead discovery and qualification for B2B teams.", "ar": "اكتشاف وتأهيل عملاء B2B بالاعتماد على الأدلة أولاً."},
+      "short_description": {"en": "LeadScope AI discovers prospects, stores provider evidence, normalizes facts, scores fit, and prepares assistive analysis and outreach drafts inside isolated workspaces.", "ar": "يكتشف LeadScope AI العملاء المحتملين ويحفظ أدلة البحث ويوحد الحقائق ويقيّم الملاءمة ويجهز التحليل ومسودات التواصل ضمن مساحات معزولة."},
+      "full_description": {"en": "A lead-intelligence workflow where provider results are normalized before AI reasons over them, keeping research grounded in stored evidence rather than generated assumptions.", "ar": "نظام ذكاء للعملاء المحتملين يوحد نتائج مزودي البحث قبل تحليل AI لها، بحيث يبقى البحث مبنياً على الأدلة المحفوظة."},
+      "problem": {"en": "Prospecting is slow when research, deduplication, qualification and outreach preparation are manual.", "ar": "يصبح البحث عن العملاء بطيئاً عندما تتم عمليات البحث وإزالة التكرار والتأهيل وتجهيز التواصل يدوياً."},
+      "solution": {"en": "A structured research pipeline captures evidence, normalizes facts, scores fit and then uses AI for bounded analysis.", "ar": "خط بحث منظم يحفظ الأدلة ويوحد الحقائق ويقيّم الملاءمة ثم يستخدم AI للتحليل المحدود."},
+      "features": {"en": "Multi-query discovery\nEvidence capture\nFact normalization and deduplication\nDeterministic and AI-assisted scoring\nWorkspace isolation\nOutreach drafts\nProvider controls", "ar": "بحث متعدد الاستعلامات\nحفظ الأدلة\nتوحيد الحقائق وإزالة التكرار\nتقييم حتمي ومدعوم بـAI\nعزل مساحات العمل\nمسودات التواصل\nالتحكم بالمزودات"},
+      "business_outcomes": {"en": "Repeatable evidence-backed prospecting\nBetter account prioritization\nAI reasoning tied to collected facts", "ar": "بحث قابل للتكرار ومدعوم بالأدلة\nترتيب أفضل للحسابات\nربط استدلال AI بالحقائق"},
+      "target_audience": {"en": "B2B agencies, software companies, sales and business-development teams.", "ar": "وكالات B2B وشركات البرمجيات وفرق المبيعات وتطوير الأعمال."},
+      "tech_stack": ["FastAPI", "React", "PostgreSQL", "SQLAlchemy", "Alembic", "Docker", "OpenAI", "Ollama"],
+      "cover_image": "systems/leadscope-cover.png", "cover_image_alt": {"en": "LeadScope AI lead intelligence cover.", "ar": "غلاف LeadScope AI لذكاء العملاء المحتملين."}, "gallery": [], "demo_url": null, "live_url": null, "sort_order": 4
+    },
+    {
+      "slug": "hirelens-ai", "type": "ai_system", "category": "Recruitment Intelligence Platform",
+      "name": {"en": "HireLens AI", "ar": "HireLens AI"},
+      "tagline": {"en": "Evidence-grounded hiring intelligence with human final review.", "ar": "ذكاء توظيف مبني على الأدلة مع مراجعة بشرية نهائية."},
+      "short_description": {"en": "HireLens AI organizes job criteria, candidate evidence, CV versions, interviews, evaluation reports, conflicts, and recruiter review inside an auditable hiring workflow.", "ar": "ينظم HireLens AI معايير الوظائف وأدلة المرشحين ونسخ السير والمقابلات وتقارير التقييم والتعارضات ومراجعة التوظيف ضمن سير قابل للتدقيق."},
+      "full_description": {"en": "A recruitment intelligence platform designed to support—not replace—human hiring decisions, with immutable evidence, provenance, tenant isolation, adaptive interviews and auditable review.", "ar": "منصة ذكاء للتوظيف تدعم القرار البشري ولا تستبدله، مع أدلة ثابتة ومصادر بيانات وعزل للشركات ومقابلات تكيفية ومراجعة قابلة للتدقيق."},
+      "problem": {"en": "Recruiters need consistent candidate comparison without losing evidence, provenance, conflicts or human accountability.", "ar": "تحتاج فرق التوظيف إلى مقارنة المرشحين باتساق دون فقدان الأدلة ومصادرها والتعارضات والمسؤولية البشرية."},
+      "solution": {"en": "A governed workflow connects job requirements, CV evidence, candidate intelligence, interviews, reports and final human review.", "ar": "سير منضبط يربط متطلبات الوظيفة وأدلة السيرة وذكاء المرشح والمقابلات والتقارير والمراجعة البشرية النهائية."},
+      "features": {"en": "Immutable job and CV versions\nCandidate 360\nEvidence matching\nGap and conflict detection\nAdaptive interviews\nHuman final review\nTenant isolation\nAudit and realtime events", "ar": "نسخ ثابتة للوظائف والسير\nCandidate 360\nمطابقة الأدلة\nكشف الفجوات والتعارضات\nمقابلات تكيفية\nمراجعة بشرية\nعزل الشركات\nتدقيق وأحداث لحظية"},
+      "business_outcomes": {"en": "More reviewable candidate intelligence\nEvidence preserved behind recommendations\nHuman control over status-changing decisions", "ar": "ذكاء مرشحين أسهل للمراجعة\nحفظ الأدلة خلف التوصيات\nتحكم بشري بالقرارات المؤثرة"},
+      "target_audience": {"en": "Recruitment agencies, HR teams, outsourcing companies and structured hiring teams.", "ar": "وكالات التوظيف وفرق الموارد البشرية وشركات التعهيد وفرق التوظيف المنظمة."},
+      "tech_stack": ["Laravel 12", "PHP", "React", "Pest", "PHPStan", "Playwright"],
+      "cover_image": "systems/hirelens-cover.png", "cover_image_alt": {"en": "HireLens AI recruitment intelligence cover.", "ar": "غلاف HireLens AI لذكاء التوظيف."}, "gallery": [], "demo_url": null, "live_url": null, "sort_order": 5
+    },
+    {
+      "slug": "smartq", "type": "business_system", "category": "Queue Management & Service Operations",
+      "name": {"en": "SmartQ", "ar": "SmartQ"},
+      "tagline": {"en": "Realtime queue operations for branches, counters, staff and customers.", "ar": "إدارة طوابير لحظية للفروع والكاونترات والموظفين والعملاء."},
+      "short_description": {"en": "SmartQ manages ticket lifecycles, counter operations, public displays, customer tracking, staff roles, reports, and a permission-aware operations assistant.", "ar": "يدير SmartQ دورة التذاكر وعمليات الكاونترات والشاشات وتتبع العميل والأدوار والتقارير ومساعد عمليات واعٍ بالصلاحيات."},
+      "full_description": {"en": "A queue and service-operations system connecting public ticket entry, customer tracking, teller operations, managers, reporting and realtime displays.", "ar": "نظام لإدارة الطوابير وعمليات الخدمة يربط إصدار التذاكر وتتبع العملاء والموظفين والمديرين والتقارير والشاشات اللحظية."},
+      "problem": {"en": "Service branches lose visibility when queue state, counter workload, wait times and staff actions are disconnected.", "ar": "تفقد فروع الخدمة الرؤية عندما تكون حالة الطابور وضغط الكاونترات ووقت الانتظار وإجراءات الموظفين منفصلة."},
+      "solution": {"en": "A role-aware realtime queue lifecycle connects customers, staff, managers, reports and displays.", "ar": "دورة طابور لحظية واعية بالأدوار تربط العملاء والموظفين والمديرين والتقارير والشاشات."},
+      "features": {"en": "Branches and counters\nTicket lifecycle\nRealtime public display\nCustomer tracking\nTeller and manager workspaces\nReports\nRBAC\nPermission-aware assistant", "ar": "الفروع والكاونترات\nدورة التذاكر\nشاشة عامة لحظية\nتتبع العميل\nمساحات الموظف والمدير\nتقارير\nRBAC\nمساعد واعٍ بالصلاحيات"},
+      "business_outcomes": {"en": "Shared realtime service view\nVisible queue state\nStructured management reporting", "ar": "رؤية لحظية مشتركة\nحالة طابور واضحة\nتقارير إدارة منظمة"},
+      "target_audience": {"en": "Clinics, service centers, banks, public-service desks and multi-branch businesses.", "ar": "العيادات ومراكز الخدمة والبنوك ومكاتب الخدمات والشركات متعددة الفروع."},
+      "tech_stack": ["Laravel 12", "React 19", "Inertia", "TypeScript", "Reverb", "Echo"],
+      "cover_image": "systems/smartq-cover.png", "cover_image_alt": {"en": "SmartQ queue operations cover.", "ar": "غلاف SmartQ لإدارة الطوابير."}, "gallery": [], "demo_url": null, "live_url": null, "sort_order": 6
+    },
+    {
+      "slug": "restocafe-os", "type": "saas_product", "category": "Restaurant & Cafe Operations",
+      "name": {"en": "RestoCafe OS", "ar": "RestoCafe OS"},
+      "tagline": {"en": "Multi-tenant restaurant operations with realtime kitchen and offline-first POS workflows.", "ar": "عمليات مطاعم متعددة المستأجرين مع مطبخ لحظي وPOS بمنهج Offline-first."},
+      "short_description": {"en": "RestoCafe OS combines multi-venue POS, kitchen workflows, order state management, offline-first PWA behavior, staff access controls and auditability.", "ar": "يجمع RestoCafe OS نقاط البيع متعددة الفروع وسير المطبخ وحالات الطلب والعمل دون اتصال وصلاحيات الموظفين وسجلات التدقيق."},
+      "full_description": {"en": "A restaurant and cafe operations platform connecting POS ordering, realtime kitchen updates, explicit order states, offline-capable workflows, staff permissions and audit history.", "ar": "منصة لعمليات المطاعم والمقاهي تربط طلبات POS بتحديثات المطبخ اللحظية وحالات الطلب والعمل دون اتصال وصلاحيات الموظفين وسجل التدقيق."},
+      "problem": {"en": "Restaurant operations become fragile when POS, kitchen state, staff permissions and connectivity failures are handled separately.", "ar": "تصبح عمليات المطاعم هشة عندما تتم معالجة POS وحالة المطبخ والصلاحيات وانقطاع الاتصال بشكل منفصل."},
+      "solution": {"en": "One operations platform treats ordering, kitchen execution, order state, offline continuity, roles and auditability as one system.", "ar": "منصة واحدة تتعامل مع الطلبات والمطبخ وحالة الطلب واستمرارية العمل دون اتصال والصلاحيات والتدقيق كنظام مترابط."},
+      "features": {"en": "Multi-tenant and multi-venue\nPOS workflows\nRealtime kitchen\nOrder state machine\nOffline-first PWA\nStaff RBAC\nAudit history\nOperational monitoring", "ar": "متعدد المستأجرين والفروع\nسير POS\nمطبخ لحظي\nحالات الطلب\nPWA Offline-first\nصلاحيات الموظفين\nسجل تدقيق\nمراقبة تشغيلية"},
+      "business_outcomes": {"en": "Connected front-of-house and kitchen state\nResilience during connectivity loss\nClearer role and order-state accountability", "ar": "ربط الواجهة بالمطبخ\nاستمرارية أفضل عند انقطاع الاتصال\nوضوح مسؤوليات الأدوار وحالات الطلب"},
+      "target_audience": {"en": "Restaurants, cafes, quick-service concepts and multi-venue food businesses.", "ar": "المطاعم والمقاهي ومشاريع الخدمة السريعة وشركات الأغذية متعددة الفروع."},
+      "tech_stack": ["NestJS 11", "React 19", "PostgreSQL", "Prisma", "Redis", "Socket.IO", "PWA", "Playwright"],
+      "cover_image": "systems/restocafe-cover.png", "cover_image_alt": {"en": "RestoCafe OS restaurant operations cover.", "ar": "غلاف RestoCafe OS لعمليات المطاعم."}, "gallery": [], "demo_url": null, "live_url": null, "sort_order": 7
+    }
+  ]
+}
