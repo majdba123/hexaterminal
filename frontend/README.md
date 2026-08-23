@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HexaTerminal Frontend
 
-## Getting Started
+> Public website for HexaTerminal, built with Next.js and consuming the Laravel backend through the versioned public API.
 
-First, run the development server:
+## Overview
+
+This directory contains the public-facing HexaTerminal web application.
+
+The frontend is intentionally separated from the Laravel CMS and administrative surfaces. Public content is requested through the versioned Laravel API under `/api/v1/public/*`, while content editing and administration remain backend responsibilities.
+
+## Technology Stack
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- next-intl for localized routing/content
+- Lucide React
+- Radix UI primitives
+- Playwright for end-to-end testing
+- ESLint
+
+## Available Scripts
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a production build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Start a previously built production bundle:
 
-## Learn More
+```bash
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Run linting:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run TypeScript validation:
 
-## Deploy on Vercel
+```bash
+npm run typecheck
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Run end-to-end tests:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test:e2e
+```
+
+Run the staging Playwright configuration:
+
+```bash
+npm run test:e2e:staging
+```
+
+The presence of these scripts does not imply that every check currently passes in every environment. Runtime validation depends on the required backend, environment configuration, and test prerequisites being available.
+
+## Backend Boundary
+
+The frontend consumes the public Laravel contract at:
+
+```text
+/api/v1/public/*
+```
+
+This boundary is documented in detail in:
+
+[`../docs/architecture/nextjs-laravel-boundary.md`](../docs/architecture/nextjs-laravel-boundary.md)
+
+The public frontend should not depend directly on Filament CMS routes or legacy administrative CRUD endpoints.
+
+## Localization
+
+The frontend uses `next-intl` and is designed around localized public content supplied by Laravel. The current project documentation and CMS configuration identify English and Arabic as the primary supported content locales.
+
+## Content Areas
+
+Depending on the route, the frontend consumes structured content for areas such as:
+
+- homepage content
+- services
+- systems
+- case studies
+- industries
+- insights/articles
+- team
+- testimonials and FAQs
+- pricing and project estimator flows
+- company settings and trust content
+- search and redirects
+
+The backend remains the source of truth for publication state and public-safe API fields.
+
+## Environment Configuration
+
+Environment-specific API origins and other runtime values should be configured through environment variables appropriate to the target environment. Real credentials and private server values should never be committed to source control.
+
+## Production Notes
+
+This frontend is part of a larger Laravel + Next.js system. Production deployment must account for both applications and the API boundary between them. This README intentionally avoids prescribing a single deployment command because deployment topology can differ between environments.
+
+## Related Documentation
+
+- [Root Project README](../README.md)
+- [CMS Data Architecture](../HEXATERMINAL_CMS_DATA_ARCHITECTURE.md)
+- [Next.js ↔ Laravel Boundary](../docs/architecture/nextjs-laravel-boundary.md)
