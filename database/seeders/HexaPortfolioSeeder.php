@@ -58,7 +58,7 @@ class HexaPortfolioSeeder extends Seeder
                 'cover_image' => $images->sync($data['cover_image']), 'cover_image_alt' => $data['cover_image_alt'],
                 'gallery' => $images->syncMany($data['gallery'] ?? []),
                 'demo_url' => $data['demo_url'], 'live_url' => $data['live_url'],
-                'is_featured' => true, 'status' => 'published', 'sort_order' => (int) $data['sort_order'],
+                'is_featured' => true, 'is_published' => true, 'sort_order' => (int) $data['sort_order'],
             ]);
             if (! $system->published_at) { $system->published_at = now(); }
             $system->save();
