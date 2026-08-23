@@ -18,9 +18,14 @@ class TeamMemberResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+        $locale = (string) $request->query('locale', app()->getLocale());
+        $fullName = $this->slug === 'yusuf-jojeh' && $locale === 'ar'
+            ? 'يوسف محمد جوجه'
+            : $this->full_name;
+
         return [
             'slug' => $this->slug,
-            'full_name' => $this->full_name,
+            'full_name' => $fullName,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'position' => $this->position,
