@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             EngagementModelsSeeder::class,
             FaqItemsSeeder::class,
             SystemsSeeder::class,
+            HexaPortfolioSeeder::class,
             VetoraSystemUseCaseSeeder::class,
             VetoraCaseStudySeeder::class,
             MalikCaseStudySeeder::class,
