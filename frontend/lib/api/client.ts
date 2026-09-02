@@ -24,6 +24,50 @@ import type {
 
 const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
 
+/**
+ * Temporary public portfolio curation.
+ *
+ * The CMS keeps the full project inventory so hidden work can be restored once
+ * its approved screenshots are available. The public website, however, must
+ * only expose projects whose visual proof is ready. Keeping this boundary in
+ * the server-only API client makes Home, Systems, Case Studies, Search and the
+ * sitemap agree without destructively deleting CMS records.
+ */
+const CURATED_SYSTEM_SLUGS = new Set([
+  "rakez-erp",
+  "dhura",
+  "matjrii",
+  "prospectiq",
+]);
+
+function isCuratedSystemSlug(slug: string): boolean {
+  return CURATED_SYSTEM_SLUGS.has(slug);
+}
+
+function isCuratedPortfolioSlug(slug: string): boolean {
+  return [...CURATED_SYSTEM_SLUGS].some(
+    (systemSlug) => slug === systemSlug || slug.startsWith(`${systemSlug}-`),
+  );
+}
+
+function isCuratedCaseStudy(caseStudy: CaseStudy): boolean {
+  return Boolean(
+    (caseStudy.system && isCuratedSystemSlug(caseStudy.system.slug)) ||
+      isCuratedPortfolioSlug(caseStudy.slug),
+  );
+}
+
+function singlePage<T>(data: T[]): ApiPaginatedEnvelope<T> {
+  return {
+    data,
+    meta: {
+      current_page: 1,
+      last_page: 1,
+      total: data.length,
+    },
+  };
+}
+
 /** Server Components fetch directly through this -- no client-side waterfall. */
 async function apiFetch<T>(
   path: string,
@@ -55,7 +99,23 @@ async function apiFetch<T>(
 
 export async function getHome(locale: string) {
   const result = await apiFetch<ApiEnvelope<HomePayload>>("/home", locale);
-  return result?.data ?? null;
+  if (!result?.data) return null;
+
+  const featuredSystems = result.data.featured_systems.filter((system) =>
+    isCuratedSystemSlug(system.slug),
+  );
+  const featuredCaseStudies = result.data.featured_case_studies.filter(isCuratedCaseStudy);
+
+  return {
+    ...result.data,
+    featured_systems: featuredSystems,
+    featured_case_studies: featuredCaseStudies,
+    stats: {
+      ...result.data.stats,
+      systems: featuredSystems.length,
+      case_studies: featuredCaseStudies.length,
+    },
+  };
 }
 
 export async function getServices(locale: string, page = 1, perPage = 20) {
@@ -72,28 +132,38 @@ export async function getService(locale: string, slug: string) {
     `/services/${slug}`,
     locale,
   );
-  return result?.data ?? null;
+  const service = result?.data ?? null;
+  if (!service) return null;
+
+  return {
+    ...service,
+    related_case_studies: service.related_case_studies?.filter((caseStudy) =>
+      isCuratedPortfolioSlug(caseStudy.slug),
+    ),
+  };
 }
 
 export async function getSystems(
   locale: string,
   options?: { type?: string; featured?: boolean; page?: number; perPage?: number },
 ) {
-  const searchParams: Record<string, string> = {};
+  const searchParams: Record<string, string> = { page: "1", per_page: "50" };
   if (options?.type) searchParams.type = options.type;
   if (options?.featured) searchParams.featured = "1";
-  if (options?.page) searchParams.page = String(options.page);
-  if (options?.perPage) searchParams.per_page = String(options.perPage);
 
   const result = await apiFetch<ApiPaginatedEnvelope<System>>(
     "/systems",
     locale,
     { searchParams },
   );
-  return result ?? { data: [], meta: { current_page: 1, last_page: 1, total: 0 } };
+  if (!result) return singlePage<System>([]);
+
+  return singlePage(result.data.filter((system) => isCuratedSystemSlug(system.slug)));
 }
 
 export async function getSystem(locale: string, slug: string) {
+  if (!isCuratedSystemSlug(slug)) return null;
+
   const result = await apiFetch<ApiEnvelope<System>>(`/systems/${slug}`, locale);
   return result?.data ?? null;
 }
@@ -102,17 +172,17 @@ export async function getCaseStudies(
   locale: string,
   options?: { featured?: boolean; page?: number; perPage?: number },
 ) {
-  const searchParams: Record<string, string> = {};
+  const searchParams: Record<string, string> = { page: "1", per_page: "50" };
   if (options?.featured) searchParams.featured = "1";
-  if (options?.page) searchParams.page = String(options.page);
-  if (options?.perPage) searchParams.per_page = String(options.perPage);
 
   const result = await apiFetch<ApiPaginatedEnvelope<CaseStudy>>(
     "/case-studies",
     locale,
     { searchParams },
   );
-  return result ?? { data: [], meta: { current_page: 1, last_page: 1, total: 0 } };
+  if (!result) return singlePage<CaseStudy>([]);
+
+  return singlePage(result.data.filter(isCuratedCaseStudy));
 }
 
 export async function getCaseStudy(locale: string, slug: string) {
@@ -120,7 +190,8 @@ export async function getCaseStudy(locale: string, slug: string) {
     `/case-studies/${slug}`,
     locale,
   );
-  return result?.data ?? null;
+  const caseStudy = result?.data ?? null;
+  return caseStudy && isCuratedCaseStudy(caseStudy) ? caseStudy : null;
 }
 
 export async function getIndustries(locale: string) {
@@ -157,7 +228,7 @@ export async function getArticle(locale: string, slug: string) {
 }
 
 export async function getArticleCategories(locale: string) {
-  const result = await apiFetch<ApiEnvelope<ArticleCategory[]>>("/article-categories", locale);
+  const result = await apiFetch<ApiEnvelope<ArticleCategory>>("/article-categories", locale);
   return result?.data ?? [];
 }
 
@@ -172,7 +243,18 @@ export async function search(locale: string, query: string) {
     searchParams: { q: query },
     revalidate: 0,
   });
-  return result?.data ?? { query, results: {} };
+  const data = result?.data ?? { query, results: {} };
+
+  return {
+    ...data,
+    results: {
+      ...data.results,
+      systems: data.results.systems?.filter((hit) => isCuratedSystemSlug(hit.slug)),
+      case_studies: data.results.case_studies?.filter((hit) =>
+        isCuratedPortfolioSlug(hit.slug),
+      ),
+    },
+  };
 }
 
 export async function getTeam(locale: string) {
