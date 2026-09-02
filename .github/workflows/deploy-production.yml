@@ -214,6 +214,38 @@ jobs:
     timeout-minutes: 35
 
     steps:
+      - name: Check out validated commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Package validated release
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          RELEASE_STAGE="$RUNNER_TEMP/hexaterminal-release"
+          rm -rf "$RELEASE_STAGE"
+          mkdir -p "$RELEASE_STAGE"
+
+          git archive HEAD | tar -x -C "$RELEASE_STAGE"
+          git ls-files > "$RELEASE_STAGE/.deploy-manifest"
+          printf '%s\n' "${{ github.sha }}" > "$RELEASE_STAGE/.deploy-sha"
+          tar -C "$RELEASE_STAGE" -czf release.tar.gz .
+
+      - name: Upload validated release
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          timeout: 30s
+          command_timeout: 10m
+          source: release.tar.gz
+          target: /tmp/hexaterminal-release-${{ github.sha }}
+          overwrite: true
+
       - name: Deploy backend and frontend
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -229,37 +261,55 @@ jobs:
             APP_DIR="/var/www/hexaterminal"
             FRONTEND_DIR="$APP_DIR/frontend"
             DEPLOY_SHA="${{ github.sha }}"
+            UPLOAD_DIR="/tmp/hexaterminal-release-$DEPLOY_SHA"
+            RELEASE_ARCHIVE="$UPLOAD_DIR/release.tar.gz"
             BACKEND_HEALTH_URL="https://api.hexaterminal.com/api/health/ready"
             MEDIA_SMOKE_URL="https://api.hexaterminal.com/storage/service-offerings/custom-erp-crm-systems.png"
             FRONTEND_HEALTH_URL="https://hexaterminal.com/api/health"
             PUBLIC_PAGE_URL="https://hexaterminal.com/en"
 
-            # The existing production checkout has stale credential config.
-            # Clone main in a fully isolated temporary Git environment first,
-            # then fetch that verified local clone into the persistent checkout.
-            TMP_ROOT="$(mktemp -d /tmp/hexaterminal-deploy.XXXXXX)"
-            trap 'rm -rf "$TMP_ROOT"' EXIT
-            mkdir -p "$TMP_ROOT/home"
+            test -f "$RELEASE_ARCHIVE"
+            test -f "$APP_DIR/.env"
+            test -f "$FRONTEND_DIR/.env.production"
 
-            GIT_CONFIG_NOSYSTEM=1 \
-            GIT_CONFIG_GLOBAL=/dev/null \
-            HOME="$TMP_ROOT/home" \
-              git -c credential.helper= -c http.extraHeader= clone \
-                --depth=1 \
-                --single-branch \
-                --branch main \
-                https://github.com/majdba123/hexaterminal.git \
-                "$TMP_ROOT/repo"
-
-            test "$(git -C "$TMP_ROOT/repo" rev-parse HEAD)" = "$DEPLOY_SHA"
+            RELEASE_DIR="$(mktemp -d /tmp/hexaterminal-extract.XXXXXX)"
+            trap 'rm -rf "$RELEASE_DIR" "$UPLOAD_DIR"' EXIT
+            tar -xzf "$RELEASE_ARCHIVE" -C "$RELEASE_DIR"
+            test "$(cat "$RELEASE_DIR/.deploy-sha")" = "$DEPLOY_SHA"
+            test -f "$RELEASE_DIR/artisan"
+            test -f "$RELEASE_DIR/frontend/package.json"
 
             cd "$APP_DIR"
-            git -c safe.directory="$APP_DIR" fetch "$TMP_ROOT/repo" main
-            git -c safe.directory="$APP_DIR" cat-file -e "$DEPLOY_SHA^{commit}"
-            git -c safe.directory="$APP_DIR" reset --hard "$DEPLOY_SHA"
-            test "$(git -c safe.directory="$APP_DIR" rev-parse HEAD)" = "$DEPLOY_SHA"
 
-            rm -rf "$TMP_ROOT"
+            # Delete only files that belonged to the previous source release.
+            # Runtime state and secrets (.env, storage uploads, production
+            # frontend env) are explicitly preserved and never come from GitHub.
+            if [ -f "$APP_DIR/.deploy-manifest" ]; then
+              while IFS= read -r tracked_path; do
+                case "$tracked_path" in
+                  .env|frontend/.env|frontend/.env.production|storage/*|public/storage|public/storage/*)
+                    continue
+                    ;;
+                esac
+                rm -f -- "$APP_DIR/$tracked_path"
+              done < "$APP_DIR/.deploy-manifest"
+            elif [ -d "$APP_DIR/.git" ]; then
+              git -c safe.directory="$APP_DIR" ls-files | while IFS= read -r tracked_path; do
+                case "$tracked_path" in
+                  .env|frontend/.env|frontend/.env.production|storage/*|public/storage|public/storage/*)
+                    continue
+                    ;;
+                esac
+                rm -f -- "$APP_DIR/$tracked_path"
+              done
+            fi
+
+            tar -C "$RELEASE_DIR" -cf - . | tar -C "$APP_DIR" -xf -
+            test "$(cat "$APP_DIR/.deploy-sha")" = "$DEPLOY_SHA"
+            test -f "$APP_DIR/.env"
+            test -f "$FRONTEND_DIR/.env.production"
+
+            rm -rf "$RELEASE_DIR" "$UPLOAD_DIR"
             trap - EXIT
 
             export COMPOSER_ALLOW_SUPERUSER=1
@@ -290,6 +340,7 @@ jobs:
             cp .env.production .env
 
             npm install --include=optional
+            rm -rf .next
             if npm run | grep -q " typecheck"; then
               npm run typecheck
             fi
@@ -307,7 +358,13 @@ jobs:
             else
               php artisan migrate --force
             fi
+
+            # Recreate the public-storage symlink idempotently before any media
+            # synchronization or smoke checks. CMS team uploads live here too.
+            php artisan storage:link || true
+            test -L "$APP_DIR/public/storage"
             php artisan hexa:sync-service-images
+
             # Keep Laravel and Next.js on one server-only secret. If this is
             # the first deploy with revalidation enabled, create one securely.
             php deploy/production/sync-revalidation-config.php \
