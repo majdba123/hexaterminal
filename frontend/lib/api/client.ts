@@ -37,7 +37,7 @@ const CURATED_SYSTEM_SLUGS = new Set([
   "rakez-erp",
   "dhura",
   "matjrii",
-  "prospectiq",
+  "leadscope-ai",
 ]);
 
 function isCuratedSystemSlug(slug: string): boolean {
