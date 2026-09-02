@@ -22,11 +22,11 @@ class RevalidationService
 {
     /**
      * Frontend content resources that have dedicated list/detail routes.
-     * Anything else (team, testimonials, faqs) only surfaces on aggregate
+     * Anything else (testimonials, faqs, etc.) only surfaces on aggregate
      * pages, so it maps to a "home" revalidation.
      */
     private const CONTENT_RESOURCES = [
-        'services', 'systems', 'case-studies', 'industries', 'articles',
+        'services', 'systems', 'case-studies', 'industries', 'articles', 'team',
     ];
 
     public function enabled(): bool

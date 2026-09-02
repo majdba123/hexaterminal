@@ -28,7 +28,6 @@ const SECRET = process.env.REVALIDATE_SECRET;
 const REPLAY_WINDOW_S = 300;
 
 // Map an API resource name to the frontend route segment that renders it.
-// `null` means "no dedicated list/detail route" (handled specially).
 const RESOURCE_ROUTES: Record<string, string> = {
   services: "services",
   systems: "systems",
@@ -78,6 +77,22 @@ function revalidateResource(resource: string, slug?: string): string[] {
       revalidated.push(`/${locale}`);
       continue;
     }
+
+    // Team members use /team for the list and /about/team/:slug for details.
+    // Keep /about fresh too because it surfaces team content.
+    if (resource === "team") {
+      revalidatePath(`/${locale}/team`);
+      revalidated.push(`/${locale}/team`);
+      revalidatePath(`/${locale}/about`);
+      revalidated.push(`/${locale}/about`);
+
+      if (slug) {
+        revalidatePath(`/${locale}/about/team/${slug}`);
+        revalidated.push(`/${locale}/about/team/${slug}`);
+      }
+      continue;
+    }
+
     if (!segment) continue;
 
     // List page (e.g. /en/systems) always refreshes.
@@ -161,7 +176,10 @@ export async function POST(request: NextRequest) {
   }
 
   if (body.resource) {
-    const known = body.resource === "home" || body.resource in RESOURCE_ROUTES;
+    const known =
+      body.resource === "home" ||
+      body.resource === "team" ||
+      body.resource in RESOURCE_ROUTES;
     if (!known) {
       return NextResponse.json(
         { revalidated: false, error: "unknown_resource" },
