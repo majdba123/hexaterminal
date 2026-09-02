@@ -234,20 +234,33 @@ jobs:
             FRONTEND_HEALTH_URL="https://hexaterminal.com/api/health"
             PUBLIC_PAGE_URL="https://hexaterminal.com/en"
 
+            # The existing production checkout has stale credential config.
+            # Clone main in a fully isolated temporary Git environment first,
+            # then fetch that verified local clone into the persistent checkout.
+            TMP_ROOT="$(mktemp -d /tmp/hexaterminal-deploy.XXXXXX)"
+            trap 'rm -rf "$TMP_ROOT"' EXIT
+            mkdir -p "$TMP_ROOT/home"
+
+            GIT_CONFIG_NOSYSTEM=1 \
+            GIT_CONFIG_GLOBAL=/dev/null \
+            HOME="$TMP_ROOT/home" \
+              git -c credential.helper= -c http.extraHeader= clone \
+                --depth=1 \
+                --single-branch \
+                --branch main \
+                https://github.com/majdba123/hexaterminal.git \
+                "$TMP_ROOT/repo"
+
+            test "$(git -C "$TMP_ROOT/repo" rev-parse HEAD)" = "$DEPLOY_SHA"
+
             cd "$APP_DIR"
-
-            # Use the canonical public repository and ignore stale global Git
-            # credential/URL rewrites on the host. No credential is persisted.
-            GIT_CONFIG_GLOBAL=/dev/null git \
-              -c safe.directory="$APP_DIR" \
-              -c credential.helper= \
-              fetch https://github.com/majdba123/hexaterminal.git main
-
-            # Deploy exactly the commit that passed validation. A later main
-            # push cannot silently change the code deployed by this run.
+            git -c safe.directory="$APP_DIR" fetch "$TMP_ROOT/repo" main
             git -c safe.directory="$APP_DIR" cat-file -e "$DEPLOY_SHA^{commit}"
             git -c safe.directory="$APP_DIR" reset --hard "$DEPLOY_SHA"
             test "$(git -c safe.directory="$APP_DIR" rev-parse HEAD)" = "$DEPLOY_SHA"
+
+            rm -rf "$TMP_ROOT"
+            trap - EXIT
 
             export COMPOSER_ALLOW_SUPERUSER=1
             for attempt in 1 2 3; do
