@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   group: hexaterminal-production-deploy
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   validate:
@@ -53,7 +53,7 @@ jobs:
           set -Eeuo pipefail
 
           for attempt in 1 2 3; do
-            if composer install --prefer-install=source --no-interaction --no-progress; then
+            if composer install --prefer-install=dist --no-interaction --no-progress; then
               exit 0
             fi
 
@@ -228,22 +228,32 @@ jobs:
 
             APP_DIR="/var/www/hexaterminal"
             FRONTEND_DIR="$APP_DIR/frontend"
+            DEPLOY_SHA="${{ github.sha }}"
             BACKEND_HEALTH_URL="https://api.hexaterminal.com/api/health/ready"
             MEDIA_SMOKE_URL="https://api.hexaterminal.com/storage/service-offerings/custom-erp-crm-systems.png"
             FRONTEND_HEALTH_URL="https://hexaterminal.com/api/health"
             PUBLIC_PAGE_URL="https://hexaterminal.com/en"
 
             cd "$APP_DIR"
-            git config --global --add safe.directory "$APP_DIR"
-            git fetch origin main
-            git reset --hard origin/main
-            git rev-parse HEAD
+
+            # Use the canonical public repository and ignore stale global Git
+            # credential/URL rewrites on the host. No credential is persisted.
+            GIT_CONFIG_GLOBAL=/dev/null git \
+              -c safe.directory="$APP_DIR" \
+              -c credential.helper= \
+              fetch https://github.com/majdba123/hexaterminal.git main
+
+            # Deploy exactly the commit that passed validation. A later main
+            # push cannot silently change the code deployed by this run.
+            git -c safe.directory="$APP_DIR" cat-file -e "$DEPLOY_SHA^{commit}"
+            git -c safe.directory="$APP_DIR" reset --hard "$DEPLOY_SHA"
+            test "$(git -c safe.directory="$APP_DIR" rev-parse HEAD)" = "$DEPLOY_SHA"
 
             export COMPOSER_ALLOW_SUPERUSER=1
             for attempt in 1 2 3; do
               if composer install \
                 --no-dev \
-                --prefer-install=source \
+                --prefer-install=dist \
                 --optimize-autoloader \
                 --no-interaction \
                 --no-progress; then
