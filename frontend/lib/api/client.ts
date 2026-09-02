@@ -243,7 +243,7 @@ export async function search(locale: string, query: string) {
     searchParams: { q: query },
     revalidate: 0,
   });
-  const data = result?.data ?? { query, results: {} };
+  const data: SearchResults = result?.data ?? { query, results: {} };
 
   return {
     ...data,
