@@ -15,6 +15,13 @@ return new class extends Migration
 
     public function up(): void
     {
+        // This is an editorial data migration, not schema. Test suites expect
+        // migrate:fresh to leave content tables empty so each test owns its
+        // fixtures. Never inject production portfolio records into APP_ENV=testing.
+        if (app()->environment('testing')) {
+            return;
+        }
+
         if (! Schema::hasTable('systems')) {
             return;
         }
