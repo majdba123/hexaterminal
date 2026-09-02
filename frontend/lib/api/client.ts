@@ -228,7 +228,7 @@ export async function getArticle(locale: string, slug: string) {
 }
 
 export async function getArticleCategories(locale: string) {
-  const result = await apiFetch<ApiEnvelope<ArticleCategory>>("/article-categories", locale);
+  const result = await apiFetch<ApiEnvelope<ArticleCategory[]>>("/article-categories", locale);
   return result?.data ?? [];
 }
 
