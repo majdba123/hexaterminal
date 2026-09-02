@@ -51,7 +51,9 @@ export default async function SearchPage({
   const t = await getTranslations("search");
   const tc = await getTranslations("common");
   const query = (q ?? "").trim();
-  const results = query.length >= 2 ? await search(locale, query) : { query, results: {} };
+  const results: SearchResults = query.length >= 2
+    ? await search(locale, query)
+    : { query, results: {} };
   const hasAnyResults = GROUPS.some((group) => (results.results[group]?.length ?? 0) > 0);
 
   return (
