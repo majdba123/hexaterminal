@@ -377,20 +377,84 @@ jobs:
             php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); $frontend = Dotenv\Dotenv::parse(file_get_contents($argv[1])); $secret = (string) config("revalidation.secret"); $errors = []; if (! config("revalidation.enabled")) { $errors[] = "backend disabled"; } if (config("revalidation.url") !== "https://hexaterminal.com/api/revalidate") { $errors[] = "backend URL is incorrect"; } if ($secret === "") { $errors[] = "backend secret is missing"; } if (! isset($frontend["REVALIDATE_SECRET"]) || (string) $frontend["REVALIDATE_SECRET"] === "") { $errors[] = "frontend secret is missing"; } elseif ($secret !== "" && ! hash_equals($secret, (string) $frontend["REVALIDATE_SECRET"])) { $errors[] = "backend and frontend secrets differ"; } if ($errors !== []) { fwrite(STDERR, "Invalid production revalidation configuration: ".implode(", ", $errors).".\n"); exit(1); }' "$FRONTEND_DIR/.env.production"
             php artisan queue:restart
 
+            # The source release is installed by the SSH deployment user while
+            # HTTP requests execute under PHP-FPM. Keep Laravel's writable
+            # runtime paths owned by the actual FPM worker user, then reload FPM
+            # so OPcache and long-lived workers cannot serve stale release code.
+            PHP_FPM_USER="$(ps -eo user=,comm= | awk '$2 ~ /^php-fpm/ && $1 != "root" {print $1; exit}')"
+            PHP_FPM_SERVICE="$(systemctl list-units --type=service --state=active --no-legend 'php*-fpm.service' 2>/dev/null | awk 'NR == 1 {print $1}')"
+
+            if [ -n "$PHP_FPM_USER" ]; then
+              PHP_FPM_GROUP="$(id -gn "$PHP_FPM_USER")"
+              chown -R "$PHP_FPM_USER:$PHP_FPM_GROUP" "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"
+              find "$APP_DIR/storage" "$APP_DIR/bootstrap/cache" -type d -exec chmod 775 {} +
+              find "$APP_DIR/storage" "$APP_DIR/bootstrap/cache" -type f -exec chmod 664 {} +
+              echo "Laravel runtime paths prepared for PHP-FPM user: $PHP_FPM_USER"
+            else
+              echo "Warning: no PHP-FPM worker user detected; runtime ownership was not changed." >&2
+            fi
+
+            if [ -n "$PHP_FPM_SERVICE" ]; then
+              systemctl reload "$PHP_FPM_SERVICE" || systemctl restart "$PHP_FPM_SERVICE"
+              systemctl is-active --quiet "$PHP_FPM_SERVICE"
+              echo "Reloaded PHP-FPM service: $PHP_FPM_SERVICE"
+            else
+              echo "Warning: no active php*-fpm systemd service detected; continuing with diagnostics enabled." >&2
+            fi
+
+            # Verify the same filesystem/config access that the HTTP worker has,
+            # without ever printing .env values or credentials into Actions logs.
+            if [ -n "$PHP_FPM_USER" ]; then
+              runuser -u "$PHP_FPM_USER" -- test -r "$APP_DIR/.env" || {
+                echo "PHP-FPM user cannot read Laravel .env" >&2
+                exit 1
+              }
+              runuser -u "$PHP_FPM_USER" -- test -w "$APP_DIR/storage/logs" || {
+                echo "PHP-FPM user cannot write storage/logs" >&2
+                exit 1
+              }
+              runuser -u "$PHP_FPM_USER" -- test -w "$APP_DIR/bootstrap/cache" || {
+                echo "PHP-FPM user cannot write bootstrap/cache" >&2
+                exit 1
+              }
+            fi
+
             systemctl restart hexa-frontend
             systemctl is-active --quiet hexa-frontend
             nginx -t
             systemctl reload nginx
 
-            curl \
-              --fail \
+            # Capture the safe health payload/status so a future failure tells us
+            # whether the web runtime itself is broken or a readiness dependency
+            # is unavailable. The endpoint exposes only boolean check results.
+            HEALTH_BODY="$(mktemp /tmp/hexa-health.XXXXXX)"
+            HEALTH_STATUS="$(curl \
               --silent \
               --show-error \
-              --retry 5 \
-              --retry-delay 3 \
-              --retry-connrefused \
+              --output "$HEALTH_BODY" \
+              --write-out '%{http_code}' \
               --max-time 15 \
-              "$BACKEND_HEALTH_URL"
+              "$BACKEND_HEALTH_URL" || true)"
+
+            if [ "$HEALTH_STATUS" != "200" ]; then
+              echo "Backend readiness failed with HTTP $HEALTH_STATUS" >&2
+              head -c 2000 "$HEALTH_BODY" >&2 || true
+              echo >&2
+              echo "PHP-FPM service: ${PHP_FPM_SERVICE:-not-detected}" >&2
+              echo "PHP-FPM worker user: ${PHP_FPM_USER:-not-detected}" >&2
+
+              php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); $kernel->bootstrap(); try { Illuminate\Support\Facades\DB::select("SELECT 1"); echo "CLI database check: ok\n"; } catch (Throwable $e) { echo "CLI database check: fail (".get_class($e).")\n"; } try { $key = "deploy-health-".bin2hex(random_bytes(4)); Illuminate\Support\Facades\Cache::put($key, "ok", 10); $ok = Illuminate\Support\Facades\Cache::get($key) === "ok"; Illuminate\Support\Facades\Cache::forget($key); echo "CLI cache check: ".($ok ? "ok" : "fail")."\n"; } catch (Throwable $e) { echo "CLI cache check: fail (".get_class($e).")\n"; }'
+
+              if [ -n "$PHP_FPM_USER" ]; then
+                runuser -u "$PHP_FPM_USER" -- php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class); try { $kernel->bootstrap(); echo "FPM-user Laravel bootstrap: ok\n"; } catch (Throwable $e) { echo "FPM-user Laravel bootstrap: fail (".get_class($e).")\n"; exit(1); }' || true
+              fi
+
+              rm -f "$HEALTH_BODY"
+              exit 1
+            fi
+
+            cat "$HEALTH_BODY"
+            rm -f "$HEALTH_BODY"
 
             # This must be served by the Laravel/Nginx media origin, never by
             # the Next.js frontend. Keep TLS validation enabled: a bad API
