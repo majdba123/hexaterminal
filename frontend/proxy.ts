@@ -6,23 +6,38 @@ import { buildCspHeader } from "./lib/csp";
 const intlMiddleware = createMiddleware(routing);
 
 /**
- * CSP is applied here (not next.config.ts's `headers()`) specifically so
- * CSP_ENFORCE is a per-request, runtime decision -- process.env is read
- * fresh on every request against the running server process, so an
- * operator can flip Report-Only -> enforced by changing the env var and
- * restarting the process, with NO rebuild required. See lib/csp.ts for the
- * hash-based (not nonce-based) policy this builds.
+ * CSP is applied here (not next.config.ts's `headers()`) so CSP rollout is a
+ * per-request runtime decision and never requires rebuilding the frontend.
+ *
+ * Next.js App Router streams response-specific inline RSC bootstrap scripts.
+ * The current static hash policy cannot safely allow those scripts, while
+ * `unsafe-inline` would defeat the XSS protection we want from CSP. Therefore:
+ *
+ * - normal production traffic emits no page CSP header;
+ * - `CSP_REPORT_ONLY=true` explicitly enables audit/reporting mode;
+ * - `CSP_ENFORCE=true` is honored only outside production until the app moves
+ *   to a request-bound nonce strategy.
+ *
+ * This keeps production console output clean without weakening the policy or
+ * forcing dynamic rendering just to support nonces. See lib/csp.ts for the
+ * current hash-based policy and its documented RSC limitation.
  */
 export default function proxy(request: NextRequest) {
   const response = intlMiddleware(request);
 
-  const { key, value } = buildCspHeader({
-    enforce: process.env.CSP_ENFORCE === "true",
-    analyticsSrc: process.env.NEXT_PUBLIC_ANALYTICS_SRC,
-    reportUri: "/api/csp-report",
-    isDev: process.env.NODE_ENV === "development",
-  });
-  response.headers.set(key, value);
+  const isProduction = process.env.NODE_ENV === "production";
+  const enforceCsp = process.env.CSP_ENFORCE === "true" && !isProduction;
+  const reportOnlyCsp = process.env.CSP_REPORT_ONLY === "true";
+
+  if (enforceCsp || reportOnlyCsp) {
+    const { key, value } = buildCspHeader({
+      enforce: enforceCsp,
+      analyticsSrc: process.env.NEXT_PUBLIC_ANALYTICS_SRC,
+      reportUri: "/api/csp-report",
+      isDev: process.env.NODE_ENV === "development",
+    });
+    response.headers.set(key, value);
+  }
 
   return response;
 }
