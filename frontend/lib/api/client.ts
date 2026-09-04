@@ -25,13 +25,10 @@ import type {
 const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
 
 /**
- * Temporary public portfolio curation.
- *
- * The CMS keeps the full project inventory so hidden work can be restored once
- * its approved screenshots are available. The public website, however, must
- * only expose projects whose visual proof is ready. Keeping this boundary in
- * the server-only API client makes Home, Systems, Case Studies, Search and the
- * sitemap agree without destructively deleting CMS records.
+ * Temporary public portfolio curation for surfaces that still intentionally
+ * require approved visual proof (for example featured home/case-study content).
+ * The Systems catalogue itself is CMS-driven and must not use this allowlist:
+ * publication state is already enforced by the Laravel public API.
  */
 const CURATED_SYSTEM_SLUGS = new Set([
   "rakez-erp",
@@ -147,7 +144,10 @@ export async function getSystems(
   locale: string,
   options?: { type?: string; featured?: boolean; page?: number; perPage?: number },
 ) {
-  const searchParams: Record<string, string> = { page: "1", per_page: "50" };
+  const searchParams: Record<string, string> = {
+    page: String(options?.page ?? 1),
+    per_page: String(options?.perPage ?? 20),
+  };
   if (options?.type) searchParams.type = options.type;
   if (options?.featured) searchParams.featured = "1";
 
@@ -156,14 +156,11 @@ export async function getSystems(
     locale,
     { searchParams },
   );
-  if (!result) return singlePage<System>([]);
 
-  return singlePage(result.data.filter((system) => isCuratedSystemSlug(system.slug)));
+  return result ?? { data: [], meta: { current_page: 1, last_page: 1, total: 0 } };
 }
 
 export async function getSystem(locale: string, slug: string) {
-  if (!isCuratedSystemSlug(slug)) return null;
-
   const result = await apiFetch<ApiEnvelope<System>>(`/systems/${slug}`, locale);
   return result?.data ?? null;
 }
