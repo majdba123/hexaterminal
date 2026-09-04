@@ -361,7 +361,9 @@ jobs:
 
             # Recreate the public-storage symlink idempotently before any media
             # synchronization or smoke checks. CMS team uploads live here too.
-            php artisan storage:link || true
+            if [ ! -L "$APP_DIR/public/storage" ]; then
+              php artisan storage:link
+            fi
             test -L "$APP_DIR/public/storage"
             php artisan hexa:sync-service-images
 
@@ -424,20 +426,32 @@ jobs:
             nginx -t
             systemctl reload nginx
 
-            # Capture the safe health payload/status so a future failure tells us
-            # whether the web runtime itself is broken or a readiness dependency
-            # is unavailable. The endpoint exposes only boolean check results.
+            # Restarts can briefly return 500/502 while PHP-FPM and Next.js
+            # reopen workers/sockets. Poll each service until it is genuinely
+            # ready instead of treating that expected startup window as a
+            # production failure.
             HEALTH_BODY="$(mktemp /tmp/hexa-health.XXXXXX)"
-            HEALTH_STATUS="$(curl \
-              --silent \
-              --show-error \
-              --output "$HEALTH_BODY" \
-              --write-out '%{http_code}' \
-              --max-time 15 \
-              "$BACKEND_HEALTH_URL" || true)"
+            HEALTH_STATUS=""
+            for attempt in {1..10}; do
+              HEALTH_STATUS="$(curl \
+                --silent \
+                --output "$HEALTH_BODY" \
+                --write-out '%{http_code}' \
+                --max-time 15 \
+                "$BACKEND_HEALTH_URL" || true)"
+
+              if [ "$HEALTH_STATUS" = "200" ]; then
+                break
+              fi
+
+              if [ "$attempt" -lt 10 ]; then
+                echo "Backend not ready yet (HTTP ${HEALTH_STATUS:-000}, attempt $attempt/10); retrying in 3s..." >&2
+                sleep 3
+              fi
+            done
 
             if [ "$HEALTH_STATUS" != "200" ]; then
-              echo "Backend readiness failed with HTTP $HEALTH_STATUS" >&2
+              echo "Backend readiness failed with HTTP ${HEALTH_STATUS:-000} after 10 attempts" >&2
               head -c 2000 "$HEALTH_BODY" >&2 || true
               echo >&2
               echo "PHP-FPM service: ${PHP_FPM_SERVICE:-not-detected}" >&2
@@ -455,6 +469,37 @@ jobs:
 
             cat "$HEALTH_BODY"
             rm -f "$HEALTH_BODY"
+
+            FRONTEND_HEALTH_BODY="$(mktemp /tmp/hexa-frontend-health.XXXXXX)"
+            FRONTEND_HEALTH_STATUS=""
+            for attempt in {1..10}; do
+              FRONTEND_HEALTH_STATUS="$(curl \
+                --silent \
+                --output "$FRONTEND_HEALTH_BODY" \
+                --write-out '%{http_code}' \
+                --max-time 15 \
+                "$FRONTEND_HEALTH_URL" || true)"
+
+              if [ "$FRONTEND_HEALTH_STATUS" = "200" ]; then
+                break
+              fi
+
+              if [ "$attempt" -lt 10 ]; then
+                echo "Frontend not ready yet (HTTP ${FRONTEND_HEALTH_STATUS:-000}, attempt $attempt/10); retrying in 3s..." >&2
+                sleep 3
+              fi
+            done
+
+            if [ "$FRONTEND_HEALTH_STATUS" != "200" ]; then
+              echo "Frontend readiness failed with HTTP ${FRONTEND_HEALTH_STATUS:-000} after 10 attempts" >&2
+              head -c 2000 "$FRONTEND_HEALTH_BODY" >&2 || true
+              echo >&2
+              rm -f "$FRONTEND_HEALTH_BODY"
+              exit 1
+            fi
+
+            cat "$FRONTEND_HEALTH_BODY"
+            rm -f "$FRONTEND_HEALTH_BODY"
 
             # This must be served by the Laravel/Nginx media origin, never by
             # the Next.js frontend. Keep TLS validation enabled: a bad API
@@ -478,16 +523,6 @@ jobs:
               echo "Public media was routed to Next.js instead of the API origin." >&2
               exit 1
             fi
-
-            curl \
-              --fail \
-              --silent \
-              --show-error \
-              --retry 5 \
-              --retry-delay 3 \
-              --retry-connrefused \
-              --max-time 15 \
-              "$FRONTEND_HEALTH_URL"
 
             curl \
               --fail \
