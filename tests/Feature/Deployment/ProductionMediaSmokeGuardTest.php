@@ -27,4 +27,17 @@ class ProductionMediaSmokeGuardTest extends TestCase
             $workflow,
         );
     }
+
+    public function test_production_deploy_waits_for_backend_and_frontend_readiness_after_restarts(): void
+    {
+        $workflow = file_get_contents(base_path('.github/workflows/deploy-production.yml'));
+
+        $this->assertIsString($workflow);
+        $this->assertStringContainsString('for attempt in {1..10}; do', $workflow);
+        $this->assertStringContainsString('Backend not ready yet', $workflow);
+        $this->assertStringContainsString('Frontend not ready yet', $workflow);
+        $this->assertStringContainsString('after 10 attempts', $workflow);
+        $this->assertStringNotContainsString('php artisan storage:link || true', $workflow);
+        $this->assertStringContainsString('if [ ! -L "$APP_DIR/public/storage" ]; then', $workflow);
+    }
 }
