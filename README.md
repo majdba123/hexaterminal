@@ -119,13 +119,32 @@ See [`routes/api_v1.php`](routes/api_v1.php) for the current route contract.
 | Data / Cache Integration | Eloquent ORM, Redis client support through Predis |
 | Backend Quality Tooling | PHPUnit 11, Larastan, Laravel Pint |
 | Frontend Quality Tooling | ESLint, TypeScript typecheck, Playwright |
+| CI/CD | GitHub Actions, automated validation before production deployment |
 
-The presence of test and quality tooling does not imply that every check currently passes; runtime and CI results should be treated separately from repository documentation.
+## CI/CD & Production Validation
+
+The repository contains a production workflow at [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml). Production deployment is gated by an explicit validation job rather than treating a successful build as sufficient evidence of readiness.
+
+The current validation pipeline includes:
+
+- PHP and Node.js environment setup;
+- backend and frontend dependency installation;
+- Laravel asset build and database migration/seed validation;
+- a focused Laravel test suite covering API behavior and security-sensitive areas;
+- checks for CORS policy, error leakage, Filament authorization/MFA, rate limiting, replay/abuse paths, security headers, storage routes, upload allowlists, and deployment guards;
+- a local health endpoint check before frontend integration validation;
+- Next.js/TypeScript type checking, linting, and production build;
+- deployment only after the validation job succeeds.
+
+The workflow also contains explicit production safety handling around destructive reseeding and deployment concurrency. This repository therefore provides concrete evidence of the **CI/CD, GitHub Actions, environment configuration, testing, deployment, and production-validation work** described in my CV.
+
+The presence of tooling or workflow definitions is not treated as proof that every historical run succeeded; runtime/CI status should be evaluated from actual workflow executions.
 
 ## Repository Structure
 
 ```text
 .
+├── .github/workflows/           # Production validation/deployment workflow
 ├── app/                         # Laravel application, models, API and CMS code
 ├── config/                      # Laravel application configuration
 ├── database/                    # Migrations, factories and seeders
@@ -151,9 +170,12 @@ The repository includes several security-oriented boundaries in its current arch
 - Filament CMS configuration includes authenticator-app MFA support for admin users;
 - role and permission support is provided through Spatie Laravel Permission;
 - public-write endpoints such as leads and estimate submissions use throttling where configured;
-- environment-specific secrets are expected to remain outside source control.
+- environment-specific secrets are expected to remain outside source control;
+- production validation includes focused security and deployment guard tests.
 
 Client-visible or provider-managed credentials must still be restricted and rotated through their external providers whenever exposure history requires it.
+
+See [`SECURITY.md`](SECURITY.md) for vulnerability reporting and repository credential-handling policy.
 
 ## Frontend
 
@@ -173,6 +195,7 @@ Because deployment and infrastructure requirements can differ between local, sta
 - [Next.js ↔ Laravel Boundary](docs/architecture/nextjs-laravel-boundary.md)
 - [`routes/api_v1.php`](routes/api_v1.php) — current public API route contract
 - [`frontend/README.md`](frontend/README.md) — frontend-specific setup
+- [`SECURITY.md`](SECURITY.md) — vulnerability reporting and secret-handling policy
 
 ## Project Website
 
@@ -180,4 +203,4 @@ HexaTerminal: https://www.hexaterminal.com/en
 
 ---
 
-Built around a clear separation between public presentation, structured content management, and application data.
+Built around a clear separation between public presentation, structured content management, application data, and production validation.
