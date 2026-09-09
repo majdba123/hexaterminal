@@ -18,7 +18,7 @@
  * substantive content are recorded here with `contentState: "content-blocked"`,
  * `indexable: false`, `inSitemap: false`, and no `navKey`/`footerGroup`. They
  * document the *target* architecture (see
- * docs/architecture/global-information-architecture.md) WITHOUT exposing an
+ * `docs/architecture/global-information-architecture.md`) WITHOUT exposing an
  * empty page in navigation, the sitemap, or search. No such route is made
  * public merely by appearing here.
  */
@@ -149,8 +149,8 @@ export const ROUTES: readonly RouteDefinition[] = [
     footerGroup: "quickLinks",
     breadcrumbKey: "caseStudies",
     pageType: "hub",
-    indexable: false,
-    inSitemap: false,
+    indexable: true,
+    inSitemap: true,
     contentState: "current",
     structuredData: "CollectionPage",
     legacyPaths: ["/projects", "/project/:id"],
