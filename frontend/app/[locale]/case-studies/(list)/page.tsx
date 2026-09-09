@@ -24,7 +24,7 @@ export async function generateMetadata({
     path: "/case-studies",
     title: t("title"),
     description: t("subtitle"),
-    robots: resolveRobots(true),
+    robots: resolveRobots(),
   });
 }
 
