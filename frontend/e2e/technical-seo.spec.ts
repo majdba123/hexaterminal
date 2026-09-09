@@ -29,6 +29,19 @@ test("canonical metadata uses the configured production origin and bilingual alt
   expect(metadata.openGraph?.locale).toBe("ar_SA");
 });
 
+test("routing consolidates locale-less and bare-host URLs onto the canonical origin", () => {
+  const config = readFileSync(join(process.cwd(), "next.config.ts"), "utf8");
+  const productionEnv = readFileSync(join(process.cwd(), ".env.production"), "utf8");
+
+  expect(productionEnv).toContain(
+    "NEXT_PUBLIC_SITE_URL=https://www.hexaterminal.com",
+  );
+  expect(config).toContain('source: "/"');
+  expect(config).toContain('destination: `${SITE_URL}/${routing.defaultLocale}`');
+  expect(config).toContain('type: "host", value: "hexaterminal.com"');
+  expect(config).toContain('destination: `${SITE_URL}/:path*`');
+});
+
 test("noindex route policy keeps unfinished Case Studies and Insights out of the sitemap", () => {
   const sitemapPaths = new Set(sitemapStaticPaths());
 
