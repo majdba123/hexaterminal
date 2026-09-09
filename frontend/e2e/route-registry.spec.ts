@@ -114,7 +114,7 @@ test.describe("Route registry consistency", () => {
   });
 
   test("unfinished routes are non-indexable and absent from the static sitemap", () => {
-    const unfinishedRouteIds = ["case-studies", "insights", "privacy", "terms"];
+    const unfinishedRouteIds = ["insights", "privacy", "terms"];
     const sitemapPaths = new Set(sitemapStaticPaths());
 
     for (const id of unfinishedRouteIds) {
@@ -125,14 +125,14 @@ test.describe("Route registry consistency", () => {
     }
   });
 
-  test("case studies are exposed in navigation while remaining noindex", () => {
+  test("case studies are exposed and indexable as approved portfolio proof", () => {
     const route = ROUTES.find((r) => r.id === "case-studies");
 
     expect(route, "case-studies route must remain registered").toBeTruthy();
     expect(primaryNavRoutes().map((r) => r.id)).toContain("case-studies");
     expect(footerRoutes("quickLinks").map((r) => r.id)).toContain("case-studies");
-    expect(route?.indexable).toBe(false);
-    expect(sitemapStaticPaths()).not.toContain("/case-studies");
+    expect(route?.indexable).toBe(true);
+    expect(sitemapStaticPaths()).toContain("/case-studies");
   });
 
   test("content-blocked routes are never indexable or in the sitemap", () => {

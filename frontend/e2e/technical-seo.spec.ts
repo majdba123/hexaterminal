@@ -42,22 +42,42 @@ test("routing consolidates locale-less and bare-host URLs onto the canonical ori
   expect(config).toContain('destination: `${SITE_URL}/:path*`');
 });
 
-test("noindex route policy keeps unfinished Case Studies and Insights out of the sitemap", () => {
+test("case studies are indexable while unfinished routes remain out of the sitemap", () => {
   const sitemapPaths = new Set(sitemapStaticPaths());
+  const caseStudies = ROUTES.find((candidate) => candidate.id === "case-studies");
 
-  for (const id of ["case-studies", "insights", "privacy", "terms"]) {
+  expect(caseStudies?.indexable).toBe(true);
+  expect(sitemapPaths).toContain("/case-studies");
+
+  for (const id of ["insights", "privacy", "terms"]) {
     const route = ROUTES.find((candidate) => candidate.id === id);
     expect(route?.indexable, id).toBe(false);
     expect(sitemapPaths, id).not.toContain(route?.path);
   }
 });
 
-test("sitemap source excludes noindex Case Studies and Insights API collections", () => {
+test("sitemap includes curated Case Studies but still excludes Insights", () => {
   const sitemap = readFileSync(join(process.cwd(), "app/sitemap.ts"), "utf8");
 
   expect(sitemap).toContain("if (!INDEXING_ENABLED) return []");
-  expect(sitemap).not.toContain("getCaseStudies");
+  expect(sitemap).toContain("getCaseStudies");
+  expect(sitemap).toContain("/case-studies/${slugSegment(c.slug)}");
   expect(sitemap).not.toContain("getArticles");
+});
+
+test("case study metadata follows environment and CMS noindex controls", () => {
+  const listing = readFileSync(
+    join(process.cwd(), "app/[locale]/case-studies/(list)/page.tsx"),
+    "utf8",
+  );
+  const detail = readFileSync(
+    join(process.cwd(), "app/[locale]/case-studies/[slug]/page.tsx"),
+    "utf8",
+  );
+
+  expect(listing).toContain("robots: resolveRobots(),");
+  expect(detail).toContain("robots: resolveRobots(caseStudy.seo?.noindex),");
+  expect(detail).not.toContain("robots: resolveRobots(true),");
 });
 
 test("pagination accepts only positive integer page values", () => {

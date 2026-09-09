@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { sitemapStaticPaths } from "@/lib/routes/registry";
 import {
+  getCaseStudies,
   getServices,
   getSystems,
   getIndustries,
@@ -97,10 +98,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // they are deliberately never added to the sitemap (registry: no `estimate`
   // detail route exists, and content-blocked/utility routes set inSitemap:false).
 
-  const [services, systems, industries] = await Promise.all([
+  const [services, systems, industries, caseStudies] = await Promise.all([
     collectAllPages((page) => getServices(locale, page, 50)),
     collectAllPages((page) => getSystems(locale, { page, perPage: 50 })),
     getIndustries(locale),
+    getCaseStudies(locale),
   ]);
 
   // A record's own `seo.noindex` override must exclude it from the sitemap
@@ -122,6 +124,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/services": mostRecent(services.map((s) => s.updated_at)),
     "/systems": mostRecent(systems.map((s) => s.updated_at)),
     "/industries": mostRecent(industries.map((i) => i.updated_at)),
+    "/case-studies": mostRecent(caseStudies.data.map((c) => c.updated_at)),
   };
 
   // The home page surfaces every content type, so it is as fresh as the
@@ -141,6 +144,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...notNoindexed(services).map((s) => ({ path: `/services/${slugSegment(s.slug)}`, lastModified: s.updated_at })),
     ...notNoindexed(systems).map((s) => ({ path: `/systems/${slugSegment(s.slug)}`, lastModified: s.updated_at })),
     ...notNoindexed(industries).map((i) => ({ path: `/industries/${slugSegment(i.slug)}`, lastModified: i.updated_at })),
+    ...notNoindexed(caseStudies.data).map((c) => ({
+      path: `/case-studies/${slugSegment(c.slug)}`,
+      lastModified: c.updated_at,
+    })),
   ];
 
   return [...staticEntries, ...dynamicEntries].map((entry) =>
