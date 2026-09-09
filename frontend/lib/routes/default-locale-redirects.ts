@@ -1,5 +1,5 @@
-import { routing } from "@/i18n/routing";
-import { SITE_URL } from "@/lib/seo/site";
+import { routing } from "../../i18n/routing";
+import { SITE_URL } from "../seo/site";
 import { ROUTES } from "./registry";
 
 export type LocaleRedirect = {
