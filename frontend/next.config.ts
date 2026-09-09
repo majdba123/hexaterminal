@@ -10,6 +10,26 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
 const ALLOW_INDEXING = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
 
+type LegacyRedirect = {
+  source: string;
+  destination: string;
+  permanent: boolean;
+};
+
+/**
+ * Recovery redirects for URLs already observed in search indexes. They are
+ * duplicated into the Redirect table by a corrective data migration, but stay
+ * here as build-safe fallbacks so an API/cache/deploy ordering issue cannot
+ * temporarily bring an indexed legacy URL back as a 404.
+ */
+const SEO_RECOVERY_REDIRECTS: readonly LegacyRedirect[] = [
+  {
+    source: "/en/services/ttoyr-ttbykat-aloyb",
+    destination: "/en/services/web-platforms-mobile-applications",
+    permanent: true,
+  },
+];
+
 /**
  * Baseline response headers safe for Next.js, streamed HTML, and remote
  * images/video, PLUS the indexing kill-switch (defence in depth alongside
@@ -52,28 +72,36 @@ async function securityHeaders() {
  * Real legacy -> new URL map, sourced from the Redirect table (populated by
  * `php artisan hexa:migrate-legacy-content` from routes/web.php's old
  * /project/{id}, /service/{id}, /team/{id}, /projects routes). See
- * docs/migration/legacy-to-nextjs.md. Runs once at build/dev-server start,
- * not per-request. Fails safe (no redirects, build still proceeds) if the
- * API is unreachable -- this must never block a deploy.
+ * docs/migration/legacy-redirect-map.md. Runs once at build/dev-server start,
+ * not per-request. Known indexed recovery mappings remain available even if
+ * the API is unreachable or temporarily stale; every other redirect still
+ * fails open so a redirect API problem can never block a deploy.
  */
-async function legacyRedirects() {
+async function legacyRedirects(): Promise<LegacyRedirect[]> {
   try {
     const res = await fetch(`${API_URL}/redirects?locale=en`);
     if (!res.ok) throw new Error(`redirects fetch failed: ${res.status}`);
     const { data } = (await res.json()) as {
       data: { from_path: string; to_path: string; status_code: number }[];
     };
-    return data.map((r) => ({
+
+    const apiRedirects: LegacyRedirect[] = data.map((r) => ({
       source: r.from_path,
       destination: r.to_path,
       permanent: r.status_code === 301,
     }));
+    const apiSources = new Set(apiRedirects.map((redirect) => redirect.source));
+
+    return [
+      ...apiRedirects,
+      ...SEO_RECOVERY_REDIRECTS.filter((redirect) => !apiSources.has(redirect.source)),
+    ];
   } catch (error) {
     console.warn(
-      `[next.config] Skipping legacy redirects -- could not reach ${API_URL}/redirects:`,
+      `[next.config] Redirect API unavailable -- keeping only indexed recovery redirects; ${API_URL}/redirects:`,
       error instanceof Error ? error.message : error,
     );
-    return [];
+    return [...SEO_RECOVERY_REDIRECTS];
   }
 }
 
