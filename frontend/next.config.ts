@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 import createNextIntlPlugin from "next-intl/plugin";
+import { routing } from "./i18n/routing";
 import { REMOTE_IMAGE_HOSTS } from "./lib/image-hosts";
+import { SITE_URL } from "./lib/seo/site";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
@@ -76,7 +78,27 @@ async function legacyRedirects() {
 }
 
 const nextConfig: NextConfig = {
-  redirects: legacyRedirects,
+  redirects: async () => [
+    // `/` must not remain a third, locale-less indexable entry point. The
+    // default-locale URL is also our x-default hreflang target, so make the
+    // relationship explicit with a permanent redirect instead of relying on
+    // locale negotiation that can vary by crawler headers.
+    {
+      source: "/",
+      destination: `${SITE_URL}/${routing.defaultLocale}`,
+      permanent: true,
+    },
+    // Canonicals, hreflang, sitemap and Open Graph all advertise the www host.
+    // Collapse the bare host at the routing layer too so search engines never
+    // have to infer which hostname is authoritative.
+    {
+      source: "/:path*",
+      has: [{ type: "host", value: "hexaterminal.com" }],
+      destination: `${SITE_URL}/:path*`,
+      permanent: true,
+    },
+    ...(await legacyRedirects()),
+  ],
   headers: securityHeaders,
   // The frontend is nested in a Laravel repo that also has a lockfile at the
   // root; pin the tracing root to this app so build output/file tracing and
