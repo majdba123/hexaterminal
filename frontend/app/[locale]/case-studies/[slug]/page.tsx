@@ -86,7 +86,7 @@ export async function generateMetadata({
     description: caseStudy.seo?.description ?? caseStudy.summary ?? caseStudy.context ?? undefined,
     canonical: caseStudy.seo?.canonical_url,
     image: caseStudy.seo?.og_image ?? caseStudy.cover_image,
-    robots: resolveRobots(true),
+    robots: resolveRobots(caseStudy.seo?.noindex),
   });
 }
 
