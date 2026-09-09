@@ -42,6 +42,17 @@ test("routing consolidates locale-less and bare-host URLs onto the canonical ori
   expect(config).toContain('destination: `${SITE_URL}/:path*`');
 });
 
+test("known indexed legacy service URL has a build-safe permanent recovery redirect", () => {
+  const config = readFileSync(join(process.cwd(), "next.config.ts"), "utf8");
+
+  expect(config).toContain('source: "/en/services/ttoyr-ttbykat-aloyb"');
+  expect(config).toContain(
+    'destination: "/en/services/web-platforms-mobile-applications"',
+  );
+  expect(config).toContain("SEO_RECOVERY_REDIRECTS");
+  expect(config).toContain("return [...SEO_RECOVERY_REDIRECTS]");
+});
+
 test("case studies are indexable while unfinished routes remain out of the sitemap", () => {
   const sitemapPaths = new Set(sitemapStaticPaths());
   const caseStudies = ROUTES.find((candidate) => candidate.id === "case-studies");

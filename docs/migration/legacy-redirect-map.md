@@ -33,13 +33,18 @@ The public canonical host is the **Next.js** app. The Laravel origin serves the
 API and the CMS (`/cms`), not the public site. Therefore:
 
 - **Public URL redirects are owned by the Next.js layer** — `frontend/next.config.ts`
-  `legacyRedirects()`, sourced from the DB `Redirect` table (populated by
-  `php artisan hexa:migrate-legacy-content`). One hop, at the edge, to the
-  correct localized destination.
+  `legacyRedirects()`, normally sourced from the DB `Redirect` table (populated
+  by `php artisan hexa:migrate-legacy-content` and corrective data migrations).
+  One hop, at the edge, to the correct localized destination.
+- A small `SEO_RECOVERY_REDIRECTS` fallback list may exist for URLs already
+  observed in external search indexes. Those entries are also persisted in the
+  Redirect table, but remain in the frontend config so an API outage, stale
+  five-minute cache, or backend/frontend deploy ordering cannot temporarily
+  restore a known indexed 404 during a build.
 - **The Laravel legacy web surface fails closed** when disabled
   (`LEGACY_PUBLIC_WEB_ENABLED=false`): a controlled 404, not a redirect. This
   avoids a second, competing redirect layer and makes redirect loops impossible
-  by construction (only one layer ever redirects).
+  by construction (only one public layer ever redirects).
 
 This is why the Laravel side does not itself 301 `/` → the Next home: doing so
 would be a cross-origin redirect from the API host and risk double-hops with the
@@ -49,8 +54,9 @@ edge layer.
 
 | Legacy URL | Destination | Hop type | Notes |
 |------------|-------------|----------|-------|
-| `/` | `/{locale}` (Next home) | 301 | locale via Next middleware |
+| `/` | `/en` | 301 | explicit canonical/default-locale redirect in Next config |
 | `/service/{id}` | `/{locale}/services/{slug}` | 301 | per-record via Redirect table |
+| `/en/services/ttoyr-ttbykat-aloyb` | `/en/services/web-platforms-mobile-applications` | 301 | indexed malformed legacy service slug; DB-backed with build-safe recovery fallback |
 | `/project/{id}` | case study **or** system detail | 301 | **founder must confirm** projects→which model; do not fabricate |
 | `/team/{id}` | team page/member | 302 | temporary until team page is built |
 | `/projects` | `/{locale}/case-studies` (or `/systems`) | 302 | temporary until mapping confirmed |
@@ -58,7 +64,7 @@ edge layer.
 
 ## Rules enforced
 
-- Exactly one redirect hop (single layer).
+- Exactly one redirect hop (single public layer).
 - **301 (permanent)** only where the mapping is stable (service/home).
 - **302 (temporary)** where the target is unconfirmed or unbuilt (team,
   projects).
@@ -71,11 +77,13 @@ edge layer.
 
 ## Cache invalidation
 
-The edge redirect list is read at Next build / dev-server start from
-`/api/v1/public/redirects`. Updating the `Redirect` table and rebuilding (or
-revalidating) the frontend refreshes the map; the fetch fails open (no
-redirects, build proceeds) if the API is unreachable, so a redirect change can
-never block a deploy.
+The normal edge redirect list is read at Next build / dev-server start from
+`/api/v1/public/redirects`. Updating the `Redirect` table and rebuilding the
+frontend refreshes the map. The public Redirect API is cached for five minutes,
+so known externally indexed recovery URLs also have a deduplicated frontend
+fallback. If the API is unreachable, the build proceeds with those recovery
+redirects only; other DB-driven legacy mappings remain fail-open and return on a
+later healthy build.
 
 ## Open founder confirmations
 
