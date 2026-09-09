@@ -3,7 +3,7 @@ import path from "node:path";
 import createNextIntlPlugin from "next-intl/plugin";
 import { routing } from "./i18n/routing";
 import { REMOTE_IMAGE_HOSTS } from "./lib/image-hosts";
-import { ROUTES } from "./lib/routes/registry";
+import { defaultLocaleRedirects } from "./lib/routes/default-locale-redirects";
 import { SITE_URL } from "./lib/seo/site";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
@@ -30,39 +30,6 @@ const SEO_RECOVERY_REDIRECTS: readonly LegacyRedirect[] = [
     permanent: true,
   },
 ];
-
-/**
- * Dynamic public families whose canonical URLs always carry the default-locale
- * prefix when a visitor/crawler arrives without one. Static paths come from the
- * central route registry below; these are the content-driven detail routes that
- * cannot be represented there individually.
- */
-const LOCALELESS_DYNAMIC_ROUTES = [
-  "/services/:slug",
-  "/systems/:slug",
-  "/case-studies/:slug",
-  "/industries/:slug",
-  "/insights/:slug",
-  "/about/team/:slug",
-] as const;
-
-function defaultLocaleRedirects(): LegacyRedirect[] {
-  const exact = ROUTES
-    .filter((route) => route.path !== "")
-    .map((route) => ({
-      source: route.path,
-      destination: `${SITE_URL}/${routing.defaultLocale}${route.path}`,
-      permanent: true,
-    }));
-
-  const dynamic = LOCALELESS_DYNAMIC_ROUTES.map((source) => ({
-    source,
-    destination: `${SITE_URL}/${routing.defaultLocale}${source}`,
-    permanent: true,
-  }));
-
-  return [...exact, ...dynamic];
-}
 
 /**
  * Baseline response headers safe for Next.js, streamed HTML, and remote
