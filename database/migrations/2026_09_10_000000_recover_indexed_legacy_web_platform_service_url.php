@@ -17,19 +17,31 @@ return new class extends Migration
         }
 
         $now = now();
+        $existing = DB::table('redirects')->where('from_path', self::FROM)->exists();
 
-        DB::table('redirects')->updateOrInsert(
-            ['from_path' => self::FROM],
-            [
-                'to_path' => self::TO,
-                'status_code' => 301,
-                'is_active' => true,
-                'hit_count' => 0,
-                'last_hit_at' => null,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-        );
+        if ($existing) {
+            DB::table('redirects')
+                ->where('from_path', self::FROM)
+                ->update([
+                    'to_path' => self::TO,
+                    'status_code' => 301,
+                    'is_active' => true,
+                    'updated_at' => $now,
+                ]);
+
+            return;
+        }
+
+        DB::table('redirects')->insert([
+            'from_path' => self::FROM,
+            'to_path' => self::TO,
+            'status_code' => 301,
+            'is_active' => true,
+            'hit_count' => 0,
+            'last_hit_at' => null,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
     }
 
     public function down(): void
