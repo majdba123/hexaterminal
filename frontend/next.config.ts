@@ -57,7 +57,7 @@ function defaultLocaleRedirects(): LegacyRedirect[] {
 
   const dynamic = LOCALELESS_DYNAMIC_ROUTES.map((source) => ({
     source,
-    destination: `${SITE_URL}/${routing.defaultLocale}${source.replace(":slug", ":slug")}`,
+    destination: `${SITE_URL}/${routing.defaultLocale}${source}`,
     permanent: true,
   }));
 
