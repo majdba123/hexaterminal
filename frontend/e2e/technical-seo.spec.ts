@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import { parsePageParam } from "../lib/pagination";
+import { defaultLocaleRedirects } from "../lib/routes/default-locale-redirects";
 import { localeAlternates } from "../lib/seo/alternates";
 import { serializeJsonLd } from "../lib/seo/jsonld";
 import { pageMetadata } from "../lib/seo/page-metadata";
@@ -40,6 +41,23 @@ test("routing consolidates locale-less and bare-host URLs onto the canonical ori
   expect(config).toContain('destination: `${SITE_URL}/${routing.defaultLocale}`');
   expect(config).toContain('type: "host", value: "hexaterminal.com"');
   expect(config).toContain('destination: `${SITE_URL}/:path*`');
+});
+
+test("locale-less public routes permanently converge on the default-locale canonical URL", () => {
+  const redirects = defaultLocaleRedirects();
+
+  expect(redirects).toContainEqual({
+    source: "/services",
+    destination: "https://www.hexaterminal.com/en/services",
+    permanent: true,
+  });
+  expect(redirects).toContainEqual({
+    source: "/systems/:slug",
+    destination: "https://www.hexaterminal.com/en/systems/:slug",
+    permanent: true,
+  });
+  expect(redirects.some((redirect) => redirect.source === "/service/:id")).toBe(false);
+  expect(redirects.some((redirect) => redirect.source === "/project/:id")).toBe(false);
 });
 
 test("known indexed legacy service URL has a build-safe permanent recovery redirect", () => {

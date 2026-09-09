@@ -3,6 +3,7 @@ import path from "node:path";
 import createNextIntlPlugin from "next-intl/plugin";
 import { routing } from "./i18n/routing";
 import { REMOTE_IMAGE_HOSTS } from "./lib/image-hosts";
+import { defaultLocaleRedirects } from "./lib/routes/default-locale-redirects";
 import { SITE_URL } from "./lib/seo/site";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
@@ -116,9 +117,14 @@ const nextConfig: NextConfig = {
       destination: `${SITE_URL}/${routing.defaultLocale}`,
       permanent: true,
     },
+    // Stable public routes without a locale must converge on the same default
+    // locale that canonical/hreflang/x-default advertise. These explicit
+    // patterns intentionally avoid legacy singular routes such as /service/:id
+    // and /project/:id, which keep their record-specific DB mappings.
+    ...defaultLocaleRedirects(),
     // Canonicals, hreflang, sitemap and Open Graph all advertise the www host.
-    // Collapse the bare host at the routing layer too so search engines never
-    // have to infer which hostname is authoritative.
+    // This rule comes after default-locale redirects so a bare-host `/services`
+    // can go straight to `www/.../en/services` in one hop.
     {
       source: "/:path*",
       has: [{ type: "host", value: "hexaterminal.com" }],
