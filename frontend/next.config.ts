@@ -3,6 +3,7 @@ import path from "node:path";
 import createNextIntlPlugin from "next-intl/plugin";
 import { routing } from "./i18n/routing";
 import { REMOTE_IMAGE_HOSTS } from "./lib/image-hosts";
+import { ROUTES } from "./lib/routes/registry";
 import { SITE_URL } from "./lib/seo/site";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
@@ -29,6 +30,39 @@ const SEO_RECOVERY_REDIRECTS: readonly LegacyRedirect[] = [
     permanent: true,
   },
 ];
+
+/**
+ * Dynamic public families whose canonical URLs always carry the default-locale
+ * prefix when a visitor/crawler arrives without one. Static paths come from the
+ * central route registry below; these are the content-driven detail routes that
+ * cannot be represented there individually.
+ */
+const LOCALELESS_DYNAMIC_ROUTES = [
+  "/services/:slug",
+  "/systems/:slug",
+  "/case-studies/:slug",
+  "/industries/:slug",
+  "/insights/:slug",
+  "/about/team/:slug",
+] as const;
+
+function defaultLocaleRedirects(): LegacyRedirect[] {
+  const exact = ROUTES
+    .filter((route) => route.path !== "")
+    .map((route) => ({
+      source: route.path,
+      destination: `${SITE_URL}/${routing.defaultLocale}${route.path}`,
+      permanent: true,
+    }));
+
+  const dynamic = LOCALELESS_DYNAMIC_ROUTES.map((source) => ({
+    source,
+    destination: `${SITE_URL}/${routing.defaultLocale}${source.replace(":slug", ":slug")}`,
+    permanent: true,
+  }));
+
+  return [...exact, ...dynamic];
+}
 
 /**
  * Baseline response headers safe for Next.js, streamed HTML, and remote
@@ -116,9 +150,14 @@ const nextConfig: NextConfig = {
       destination: `${SITE_URL}/${routing.defaultLocale}`,
       permanent: true,
     },
+    // Stable public routes without a locale must converge on the same default
+    // locale that canonical/hreflang/x-default advertise. These explicit
+    // patterns intentionally avoid legacy singular routes such as /service/:id
+    // and /project/:id, which keep their record-specific DB mappings.
+    ...defaultLocaleRedirects(),
     // Canonicals, hreflang, sitemap and Open Graph all advertise the www host.
-    // Collapse the bare host at the routing layer too so search engines never
-    // have to infer which hostname is authoritative.
+    // This rule comes after default-locale redirects so a bare-host `/services`
+    // can go straight to `www/.../en/services` in one hop.
     {
       source: "/:path*",
       has: [{ type: "host", value: "hexaterminal.com" }],
