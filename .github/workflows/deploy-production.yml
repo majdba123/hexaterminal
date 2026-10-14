@@ -339,8 +339,8 @@ jobs:
               echo "frontend/.env.production: API_URL must be https://api.hexaterminal.com/api/v1/public (found: $(grep '^API_URL=' .env.production || echo unset))" >&2
               exit 1
             }
-            grep -q '^NEXT_PUBLIC_SITE_URL=https://hexaterminal\.com$' .env.production || {
-              echo "frontend/.env.production: NEXT_PUBLIC_SITE_URL must be https://hexaterminal.com (found: $(grep '^NEXT_PUBLIC_SITE_URL=' .env.production || echo unset))" >&2
+            grep -Eq '^NEXT_PUBLIC_SITE_URL=https://(www\.)?hexaterminal\.com$' .env.production || {
+              echo "frontend/.env.production: NEXT_PUBLIC_SITE_URL must be https://hexaterminal.com or https://www.hexaterminal.com (found: $(grep '^NEXT_PUBLIC_SITE_URL=' .env.production || echo unset))" >&2
               exit 1
             }
             cp .env.production .env
