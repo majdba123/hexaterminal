@@ -479,12 +479,21 @@ jobs:
             FRONTEND_HEALTH_BODY="$(mktemp /tmp/hexa-frontend-health.XXXXXX)"
             FRONTEND_HEALTH_STATUS=""
             for attempt in {1..10}; do
-              FRONTEND_HEALTH_STATUS="$(curl \
-                --silent \
-                --output "$FRONTEND_HEALTH_BODY" \
-                --write-out '%{http_code}' \
-                --max-time 15 \
-                "$FRONTEND_HEALTH_URL" || true)"
+              # The canonical host is www; the apex may only redirect or not
+              # resolve from this server, so try each base until one answers.
+              for base in "https://www.hexaterminal.com" "https://hexaterminal.com" "http://127.0.0.1:3000"; do
+                FRONTEND_HEALTH_STATUS="$(curl \
+                  --silent \
+                  --output "$FRONTEND_HEALTH_BODY" \
+                  --write-out '%{http_code}' \
+                  --max-time 15 \
+                  "$base/api/health" || true)"
+                if [ "$FRONTEND_HEALTH_STATUS" = "200" ]; then
+                  FRONTEND_BASE_URL="$base"
+                  echo "Frontend healthy via $base"
+                  break
+                fi
+              done
 
               if [ "$FRONTEND_HEALTH_STATUS" = "200" ]; then
                 break
@@ -538,5 +547,5 @@ jobs:
               --retry-delay 3 \
               --retry-connrefused \
               --max-time 20 \
-              "$PUBLIC_PAGE_URL" \
+              "${FRONTEND_BASE_URL}/en" \
               > /dev/null
