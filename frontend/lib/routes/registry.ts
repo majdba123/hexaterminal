@@ -156,6 +156,18 @@ export const ROUTES: readonly RouteDefinition[] = [
     legacyPaths: ["/projects", "/project/:id"],
   },
   {
+    // A static, evidence-checked case study (not a CMS record): CRMA, the
+    // engineering capability showcase. Its static segment takes precedence
+    // over /case-studies/[slug]; the hub above stays noindex.
+    id: "case-study-crma",
+    path: "/case-studies/crma",
+    pageType: "detail",
+    indexable: true,
+    inSitemap: true,
+    contentState: "current",
+    structuredData: "WebPage",
+  },
+  {
     id: "industries",
     path: "/industries",
     navKey: "industries",

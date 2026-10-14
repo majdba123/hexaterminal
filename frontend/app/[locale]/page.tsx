@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { ServiceCard } from "@/components/site/service-card";
 import { HomeSystemsShowcase } from "@/components/site/home-systems-showcase";
 import { HomeCaseStudiesShowcase } from "@/components/site/home-case-studies-showcase";
+import { CrmaTeaser } from "@/components/site/crma/teaser";
 import { ArticleCard } from "@/components/site/article-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,6 +77,12 @@ export default async function HomePage({
           </Container>
         </Section>
       ) : null}
+
+      <Section>
+        <Container>
+          <CrmaTeaser />
+        </Container>
+      </Section>
 
       {home.featured_case_studies.length > 0 ? (
         <Section>

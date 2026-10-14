@@ -10,6 +10,7 @@ import { Breadcrumb } from "@/components/site/breadcrumb";
 import { CaseStudiesListingCard } from "@/components/site/case-studies-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
+import { CrmaTeaser } from "@/components/site/crma/teaser";
 import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
@@ -80,6 +81,11 @@ export default async function CaseStudiesPage({
               action={{ href: "/start-a-project", label: tc("emptyCta") }}
             />
           )}
+        </Container>
+      </Section>
+      <Section>
+        <Container>
+          <CrmaTeaser />
         </Container>
       </Section>
     </>

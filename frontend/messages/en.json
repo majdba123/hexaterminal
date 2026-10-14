@@ -582,5 +582,729 @@
     "notFoundTitle": "Estimate not found",
     "notFoundBody": "This estimate link is invalid or has been removed.",
     "runNew": "Run a new estimate"
+  },
+  "crma": {
+    "meta": {
+      "title": "CRMA — AI-Native CRM · Engineering capability showcase",
+      "description": "An engineering capability showcase from HexaTerminal: a multi-tenant CRM and sales operations platform with deterministic pipeline logic, graph-defined workflows and AI actions that wait for human approval. Seeded demonstration data.",
+      "breadcrumb": "CRMA"
+    },
+    "teaser": {
+      "eyebrow": "Engineering capability showcase",
+      "title": "CRMA",
+      "subtitle": "AI-Native CRM & Sales Operations Platform",
+      "body": "A multi-tenant CRM architecture combining sales operations, workflow automation, deterministic pipeline intelligence and governed AI actions.",
+      "labels": [
+        "CRM / ERP",
+        "Multi-tenant SaaS",
+        "Workflow Automation",
+        "Governed AI",
+        "Arabic RTL"
+      ],
+      "labelsLabel": "Capabilities",
+      "cta": "Explore Case Study",
+      "disclosure": "Engineering capability showcase · seeded demonstration data"
+    },
+    "hero": {
+      "eyebrow": "Engineering capability showcase",
+      "title": "CRMA — AI-Native CRM",
+      "lead": "A multi-tenant CRM and sales operations platform designed around controlled workflows, deterministic business rules and AI actions that require explicit human review before consequential changes.",
+      "stackLabel": "Stack",
+      "stack": "Laravel 12 · React 19 · MySQL · Redis/Horizon · Workflow Engine · Governed Agent Runtime · Arabic RTL",
+      "disclosure": "Engineering capability showcase · seeded demonstration data",
+      "shotLabel": "CRMA · Dashboard",
+      "shotAlt": "CRMA dashboard with pipeline value, open deals, tasks due today and recent activity, on seeded demonstration data.",
+      "centerLabel": "AI Action Center",
+      "centerAlt": "AI Action Center listing pending AI proposals, each with a risk level and approve or reject controls.",
+      "positioning": "Built as an engineering capability showcase for modern CRM, workflow automation and governed AI systems. Every screen shows the running application on seeded demonstration data."
+    },
+    "sections": {
+      "os": "The operating system",
+      "flow": "How work moves",
+      "logic": "Deterministic business logic",
+      "workflow": "Workflow automation",
+      "ai": "Governed AI",
+      "knowledge": "Knowledge",
+      "arch": "System architecture",
+      "security": "Security, tenancy, governance",
+      "integrations": "Integrations & MCP",
+      "mobile": "Responsive",
+      "rtl": "Arabic & English",
+      "evidence": "Engineering evidence",
+      "services": "Related services"
+    },
+    "os": {
+      "title": "Sales operations in one place",
+      "lede": "Contacts, leads, tasks, deals, the pipeline and reporting share one data model and one permission model, so a change in one module is visible in the others.",
+      "tabsLabel": "CRMA modules",
+      "frameLabel": "CRMA",
+      "modules": [
+        {
+          "key": "dashboard",
+          "name": "Dashboard",
+          "desc": "Pipeline value, open deals, today's tasks and recent activity for the signed-in team.",
+          "alt": "CRMA dashboard with pipeline metrics, tasks and an activity feed."
+        },
+        {
+          "key": "contacts",
+          "name": "Contacts",
+          "desc": "People and companies with owners, tags and the full activity history behind every record.",
+          "alt": "Contacts list with names, companies, owners and tags."
+        },
+        {
+          "key": "leads",
+          "name": "Leads",
+          "desc": "Inbound and captured leads with status, source and a rule-based score that explains itself.",
+          "alt": "Leads table with status, source and score columns."
+        },
+        {
+          "key": "tasks",
+          "name": "Tasks",
+          "desc": "Follow-ups with owners and due dates; overdue work is counted per owner.",
+          "alt": "Task list grouped by due date with owners and priorities."
+        },
+        {
+          "key": "dealWorkspace",
+          "name": "Deals",
+          "desc": "One deal workspace: stage, value, computed health signals and the stage history.",
+          "alt": "Deal workspace with stage, value, health signals labelled computed from CRM data, and stage history."
+        },
+        {
+          "key": "pipeline",
+          "name": "Pipeline",
+          "desc": "A board of open deals by stage, with value per column.",
+          "alt": "Kanban pipeline with deal cards across stages and value totals per stage."
+        },
+        {
+          "key": "reports",
+          "name": "Reports",
+          "desc": "Saved reports over the same tenant-scoped data the team works in.",
+          "alt": "Reports screen with saved report definitions and charts."
+        }
+      ]
+    },
+    "flow": {
+      "title": "From first contact to measured result",
+      "lede": "Every record follows one path. Automation and AI sit inside it; neither can skip the step where a person decides.",
+      "label": "The CRMA operating flow",
+      "steps": [
+        {
+          "name": "Capture",
+          "desc": "Forms, imports, signed webhooks and manual entry create leads and contacts."
+        },
+        {
+          "name": "Qualify",
+          "desc": "Rule-based lead scoring with a per-rule explanation; owners assigned."
+        },
+        {
+          "name": "Automate",
+          "desc": "Workflows react to record, email, form, schedule and webhook events."
+        },
+        {
+          "name": "Sell",
+          "desc": "Deals move through pipeline stages; every stage change is recorded."
+        },
+        {
+          "name": "Assist",
+          "desc": "Agents read CRM context and draft proposals — they never write directly."
+        },
+        {
+          "name": "Approve",
+          "desc": "A person reviews the proposed change, its risk and its evidence."
+        },
+        {
+          "name": "Measure",
+          "desc": "Reports, deal health and the audit log read the resulting state."
+        }
+      ],
+      "note": "Approval is a step in the flow, not an optional setting: governed actions cannot execute without a decision."
+    },
+    "logic": {
+      "title": "Business state is computed from CRM data, not guessed by the model.",
+      "lede": "Scores, health and pipeline review come from fixed, testable rules over stored records. The language model may explain a number; it never produces one.",
+      "pipelineLabel": "Pipeline",
+      "pipelineAlt": "Deal pipeline board with stage columns and value totals.",
+      "dealLabel": "Deal workspace",
+      "dealAlt": "Deal workspace showing health signals labelled 'Computed from CRM data, not by AI' and the deal's stage history.",
+      "items": [
+        {
+          "name": "Pipeline stages",
+          "desc": "Configured stages per organization; deals carry a stage and a status."
+        },
+        {
+          "name": "Deal health",
+          "desc": "A deterministic signal calculator scores each deal from activity, age and stage — AI may explain it but never produces it."
+        },
+        {
+          "name": "Pipeline review",
+          "desc": "Pipeline intelligence summarises stalled and at-risk deals from the same rules, with thresholds held in configuration."
+        },
+        {
+          "name": "Lead scoring",
+          "desc": "Priority, status, 30-day engagement, recency, contact completeness and value, each with its own rule and points, capped at 100."
+        },
+        {
+          "name": "Stage history",
+          "desc": "Every stage change is written to its own table, so time-in-stage is measured, not estimated."
+        },
+        {
+          "name": "Tasks & follow-up",
+          "desc": "Due and overdue work is counted per owner for the daily brief and the hourly proactive scan."
+        }
+      ]
+    },
+    "workflow": {
+      "title": "Automation you can read before it runs",
+      "lede": "Workflows are drawn as graphs, synced to executable triggers and actions, and validated before they can be activated.",
+      "triadLabel": "Workflow shape",
+      "triad": [
+        {
+          "name": "Trigger",
+          "desc": "Record created or updated, email opened, clicked or replied, form submitted, cron schedule, signed inbound webhook."
+        },
+        {
+          "name": "Condition",
+          "desc": "A typed expression language evaluates conditions — no eval() — with an audit command for existing workflows."
+        },
+        {
+          "name": "Action",
+          "desc": "Controlled actions on CRM records, waits and delays, resumed by a scheduler every minute."
+        }
+      ],
+      "shotLabel": "Workflow builder",
+      "shotAlt": "Visual workflow builder with a trigger node connected to condition and action nodes.",
+      "items": [
+        {
+          "name": "Graph-defined",
+          "desc": "The visual graph is the source; trigger and action rows are synced from it."
+        },
+        {
+          "name": "Validated activation",
+          "desc": "A workflow with errors cannot be switched on; the errors are returned to the builder."
+        },
+        {
+          "name": "Waits",
+          "desc": "Wait and delay steps park a run; a scheduled job resumes due runs every minute."
+        },
+        {
+          "name": "Event-driven",
+          "desc": "Record, email, form, schedule and webhook events start runs on queued workers."
+        }
+      ]
+    },
+    "ai": {
+      "title1": "AI proposes.",
+      "title2": "Humans decide.",
+      "lede": "Agents work inside CRM context with a tool allowlist per profile. Anything that changes data becomes a proposal: the stored current state, the proposed state, a reason, evidence and a risk class — waiting for a person.",
+      "chainLabel": "The governed action chain",
+      "chain": [
+        {
+          "name": "CRM context",
+          "desc": "Records the user can already see, scoped to their organization."
+        },
+        {
+          "name": "Agent runtime",
+          "desc": "One of 14 agent profiles, each with its own tool allowlist."
+        },
+        {
+          "name": "Tool",
+          "desc": "Read tools answer directly; write tools can only propose."
+        },
+        {
+          "name": "Proposal",
+          "desc": "Stored with reason and evidence; expires after 72 hours by default."
+        },
+        {
+          "name": "Field-level diff",
+          "desc": "Current and proposed values, side by side."
+        },
+        {
+          "name": "Risk",
+          "desc": "One of five risk classes decides how it may be approved."
+        },
+        {
+          "name": "Human approval",
+          "desc": "Approve, reject — or edit an email or WhatsApp draft, which is validated again."
+        },
+        {
+          "name": "Controlled execution",
+          "desc": "Executed by the action handler, written to the audit log."
+        },
+        {
+          "name": "Resume",
+          "desc": "The same agent run continues with the outcome."
+        }
+      ],
+      "risksLabel": "Risk classes",
+      "risks": [
+        {
+          "name": "READ",
+          "desc": "Reads only. Nothing to approve."
+        },
+        {
+          "name": "LOW_WRITE",
+          "desc": "Small internal writes. May be approved in bulk."
+        },
+        {
+          "name": "MEDIUM_WRITE",
+          "desc": "Record changes. May be approved in bulk."
+        },
+        {
+          "name": "HIGH_EXTERNAL",
+          "desc": "Leaves the system — email, WhatsApp. Never in bulk."
+        },
+        {
+          "name": "CRITICAL",
+          "desc": "Reviewed one at a time. Never in bulk."
+        }
+      ],
+      "shotLabel": "Copilot · proposal",
+      "shotAlt": "Copilot chat where the agent proposes moving a deal from Qualification to Proposal, with a field-by-field before and after and Approve and Reject buttons.",
+      "diff": {
+        "caption": "Stored state of the proposed stage change",
+        "action": "deal.stage_change",
+        "risk": "Medium write",
+        "status": "Pending review",
+        "field": "Field",
+        "current": "Current",
+        "proposed": "Proposed",
+        "approve": "Approve",
+        "reject": "Reject",
+        "note": "Recreated from the proposal shown above. The proposal stores the before and after state; the reviewer sees both before anything changes."
+      },
+      "points": [
+        {
+          "name": "Eight governed action types",
+          "desc": "Create task, add note, update record, change deal stage, assign lead, draft workflow, send email, send WhatsApp."
+        },
+        {
+          "name": "Same-run resume",
+          "desc": "A run pauses while waiting for a decision and resumes the same run afterwards — covered by runtime tests."
+        },
+        {
+          "name": "Edited drafts are revalidated",
+          "desc": "A reviewer can edit an outbound email or WhatsApp draft; the edit is a new revision and is checked again."
+        },
+        {
+          "name": "Everything is audited",
+          "desc": "Proposed, revised, rejected and executed events are written to the audit log."
+        }
+      ],
+      "disclosure": "The copilot turns on these screens were recorded with the deterministic test driver, so the tool sequence is repeatable."
+    },
+    "knowledge": {
+      "title": "Answers grounded in the organization's own documents",
+      "lede": "Hybrid retrieval: keyword ranking and vector similarity, fused into one result list, with an evaluation command that fails when quality drops.",
+      "flowLabel": "Retrieval pipeline",
+      "flow": [
+        {
+          "name": "Ingest",
+          "desc": "Text, file or URL; URLs fetched through the SSRF-safe fetcher."
+        },
+        {
+          "name": "BM25",
+          "desc": "Keyword ranking over full-text candidates."
+        },
+        {
+          "name": "Vector",
+          "desc": "Cosine similarity over stored embeddings."
+        },
+        {
+          "name": "Fusion",
+          "desc": "Reciprocal rank fusion merges both lists."
+        },
+        {
+          "name": "Evaluate",
+          "desc": "kb:eval reports recall@k and MRR against thresholds."
+        }
+      ],
+      "shotLabel": "Knowledge base",
+      "shotAlt": "Knowledge base screen with Text, File and URL tabs, an Index Document button and an Ask box.",
+      "points": [
+        {
+          "name": "Fusion ranking",
+          "desc": "BM25 plus vector similarity, merged with reciprocal rank fusion."
+        },
+        {
+          "name": "Sized for a team's knowledge",
+          "desc": "Vector similarity is computed in the application over a bounded set of recent chunks."
+        },
+        {
+          "name": "Measured, not assumed",
+          "desc": "Retrieval quality has a command and thresholds, so a regression fails loudly."
+        }
+      ]
+    },
+    "arch": {
+      "title": "Three tiers, one tenant boundary",
+      "lede": "Recreated from the codebase: what talks to the application, what runs inside it, and what it depends on.",
+      "tiers": [
+        {
+          "title": "Clients & inbound",
+          "nodes": [
+            {
+              "name": "Web app",
+              "desc": "Inertia + React 19, English and Arabic."
+            },
+            {
+              "name": "REST API",
+              "desc": "/api/v1 — 244 routes."
+            },
+            {
+              "name": "MCP clients",
+              "desc": "OAuth 2.1, PKCE S256."
+            },
+            {
+              "name": "Signed webhooks",
+              "desc": "Twilio, Stripe, Meta, workflow hooks."
+            }
+          ]
+        },
+        {
+          "title": "Application · Laravel 12",
+          "nodes": [
+            {
+              "name": "Tenant boundary",
+              "desc": "Organization global scope, RBAC per organization, 49 policies.",
+              "key": true
+            },
+            {
+              "name": "CRM domain",
+              "desc": "Contacts, leads, deals, tasks, pipeline, reports."
+            },
+            {
+              "name": "Workflow engine",
+              "desc": "Graph sync, typed expressions, waits."
+            },
+            {
+              "name": "Agent runtime",
+              "desc": "14 profiles, 39 registered tools."
+            },
+            {
+              "name": "Action engine",
+              "desc": "Proposals, risk, approval, execution.",
+              "key": true
+            },
+            {
+              "name": "Pipeline intelligence",
+              "desc": "Deterministic deal and lead signals."
+            },
+            {
+              "name": "Knowledge retrieval",
+              "desc": "BM25 + vector + RRF."
+            }
+          ]
+        },
+        {
+          "title": "Async, data & external",
+          "nodes": [
+            {
+              "name": "MySQL",
+              "desc": "168 migrations."
+            },
+            {
+              "name": "Redis · Horizon",
+              "desc": "Queues for email, AI agents, webhooks, WhatsApp, imports."
+            },
+            {
+              "name": "Scheduler",
+              "desc": "Workflow resume each minute, proposal expiry, hourly scan."
+            },
+            {
+              "name": "Reverb",
+              "desc": "WebSocket server in the compose stack."
+            },
+            {
+              "name": "Model providers",
+              "desc": "Anthropic, OpenAI, OpenAI-compatible — keys encrypted."
+            }
+          ]
+        }
+      ],
+      "deployLabel": "Deployment design",
+      "deploy": "Docker Compose: app · nginx · mysql · redis · horizon · scheduler · reverb. Release script with atomic symlink swap, health check and rollback."
+    },
+    "security": {
+      "title": "Specific controls, each in code and tests",
+      "lede": "No blanket claims. These are the mechanisms the repository implements.",
+      "items": [
+        {
+          "name": "Tenant isolation",
+          "desc": "A global organization scope on tenant models, cross-tenant validation rules, and dedicated tenancy tests."
+        },
+        {
+          "name": "Per-organization RBAC",
+          "desc": "Roles and permissions keyed to the organization, with API/UI policy parity tests."
+        },
+        {
+          "name": "Two-factor and sessions",
+          "desc": "TOTP two-factor, session list and revoke, IP allowlist, rate limiting."
+        },
+        {
+          "name": "SCIM provisioning",
+          "desc": "SCIM endpoints with their own authentication for user lifecycle."
+        },
+        {
+          "name": "SSRF-safe fetching",
+          "desc": "Public-IP validation, a pinned connection and re-validation on every redirect, with a body size cap."
+        },
+        {
+          "name": "Idempotency and headers",
+          "desc": "Idempotency keys on writes and a security-headers middleware."
+        },
+        {
+          "name": "AI tool allowlists",
+          "desc": "Each agent profile can only call the tools it lists."
+        },
+        {
+          "name": "Audit trail",
+          "desc": "AI proposals, revisions, rejections and executions are written to the audit log."
+        }
+      ],
+      "shotLabel": "Roles & permissions",
+      "shotAlt": "Roles and permissions matrix with permission toggles per role."
+    },
+    "integrations": {
+      "title": "What is built, and what is a connector",
+      "lede": "Two different things, kept apart.",
+      "tiers": [
+        {
+          "title": "Implemented",
+          "note": "In the codebase, with tests or verification logic",
+          "items": [
+            {
+              "name": "MCP server",
+              "desc": "OAuth 2.1 with PKCE S256, hashed audience-bound tokens, rotating refresh tokens with reuse detection; scopes crm:read and crm:propose. MCP writes become proposals."
+            },
+            {
+              "name": "External MCP client",
+              "desc": "HTTPS only and SSRF-validated. An admin approves each read-only tool; approval is revoked if the tool changes."
+            },
+            {
+              "name": "Signed webhooks",
+              "desc": "Twilio signature validation, Stripe event construction, Meta lead HMAC verification, inbound workflow hooks."
+            },
+            {
+              "name": "Model router",
+              "desc": "Anthropic, OpenAI and OpenAI-compatible endpoints (including a local Ollama), bring-your-own-key credentials encrypted at rest, usage recorded per call."
+            }
+          ]
+        },
+        {
+          "title": "Connector architecture",
+          "note": "Lightweight HTTP connectors, shown disconnected",
+          "items": [
+            {
+              "name": "Google Workspace",
+              "desc": "OAuth connection; reads profile and Gmail message list."
+            },
+            {
+              "name": "Slack · n8n",
+              "desc": "OAuth or token connections through the same connector catalog."
+            }
+          ]
+        }
+      ],
+      "shotLabel": "Connectors",
+      "shotAlt": "Connector settings listing Google Workspace, Slack and n8n, each disconnected with a connect button."
+    },
+    "mobile": {
+      "title": "One responsive product. No separate mobile application.",
+      "lede": "The same Inertia app at a 390 px phone viewport: the dashboard, the pipeline, a deal and the AI Action Center.",
+      "phones": [
+        {
+          "key": "mDashboard",
+          "name": "Dashboard",
+          "alt": "CRMA dashboard on a phone-width screen with stacked metric cards."
+        },
+        {
+          "key": "mPipeline",
+          "name": "Pipeline",
+          "alt": "Pipeline on a phone-width screen, stages stacked vertically."
+        },
+        {
+          "key": "mDeal",
+          "name": "Deal workspace",
+          "alt": "Deal workspace on a phone-width screen with health signals and stage history."
+        },
+        {
+          "key": "mActions",
+          "name": "AI Action Center",
+          "alt": "AI Action Center on a phone-width screen with pending proposals and approve and reject buttons."
+        }
+      ],
+      "note": "Captured at 390 × 844 at 3× density. The Arabic Action Center has an automated check at 390, 430, 768, 1024 and 1440 px."
+    },
+    "rtl": {
+      "title": "Arabic & English, natively.",
+      "lede": "Direction is switched at runtime, not faked with translated strings: layout, navigation and the board mirror as a whole.",
+      "ltrLabel": "English · LTR",
+      "rtlLabel": "العربية · RTL",
+      "ltrAlt": "Deal pipeline in English, stages reading left to right.",
+      "rtlAlt": "The same deal pipeline in Arabic, stages reading right to left with mirrored navigation.",
+      "points": [
+        "Language, RTL and direction contexts set the document direction at runtime.",
+        "Full Arabic message catalogue alongside English.",
+        "A locale middleware carries the choice across requests.",
+        "The Arabic Action Center is checked across five viewport widths."
+      ]
+    },
+    "evidence": {
+      "title": "Repository evidence",
+      "lede": "Counts from the CRMA codebase, not business results.",
+      "dateLabel": "Measured",
+      "date": "14 October 2026 · route count from route:list, other counts from the repository tree",
+      "metrics": [
+        {
+          "value": "1,098",
+          "label": "HTTP routes"
+        },
+        {
+          "value": "244",
+          "label": "/api/v1 routes"
+        },
+        {
+          "value": "150",
+          "label": "Eloquent models"
+        },
+        {
+          "value": "168",
+          "label": "Migrations"
+        },
+        {
+          "value": "155",
+          "label": "Controllers"
+        },
+        {
+          "value": "49",
+          "label": "Authorization policies"
+        },
+        {
+          "value": "183",
+          "label": "Inertia pages"
+        },
+        {
+          "value": "25",
+          "label": "Queued jobs"
+        },
+        {
+          "value": "8",
+          "label": "Governed action types"
+        },
+        {
+          "value": "39",
+          "label": "Registered AI tools"
+        },
+        {
+          "value": "14",
+          "label": "Agent profiles"
+        },
+        {
+          "value": "22",
+          "label": "Playwright specs"
+        }
+      ],
+      "testsLabel": "Test files",
+      "tests": "421 PHP test files · 269 frontend test files · 22 Playwright specs",
+      "testsNote": "File counts from the repository tree."
+    },
+    "gallery": {
+      "title": "More screens",
+      "note": "The running application on seeded, fictional data. Select a screen to view it full size.",
+      "open": "View full size",
+      "close": "Close",
+      "previous": "Previous screen",
+      "next": "Next screen",
+      "counter": "{n} of {total}",
+      "items": [
+        {
+          "key": "analytics",
+          "caption": "Analytics",
+          "alt": "Analytics dashboard with conversion and revenue charts."
+        },
+        {
+          "key": "aiInbox",
+          "caption": "AI inbox",
+          "alt": "AI inbox listing agent findings and briefs."
+        },
+        {
+          "key": "workflows",
+          "caption": "Workflows",
+          "alt": "Workflow list with status, trigger and last run."
+        },
+        {
+          "key": "copilotTask",
+          "caption": "Copilot · task proposal",
+          "alt": "Copilot proposing a follow-up task, waiting for approval."
+        },
+        {
+          "key": "aiSettings",
+          "caption": "AI settings",
+          "alt": "AI settings with provider selection and encrypted key fields."
+        },
+        {
+          "key": "teams",
+          "caption": "Teams",
+          "alt": "Teams screen with members and roles."
+        },
+        {
+          "key": "activity",
+          "caption": "Activity & audit",
+          "alt": "Activity and audit log with timestamped events."
+        },
+        {
+          "key": "rtlDashboard",
+          "caption": "Dashboard · Arabic",
+          "alt": "Dashboard in Arabic, right to left."
+        },
+        {
+          "key": "rtlActionCenter",
+          "caption": "AI Action Center · Arabic",
+          "alt": "AI Action Center in Arabic, right to left."
+        }
+      ]
+    },
+    "services": {
+      "title": "Need these capabilities?",
+      "lede": "The same engineering, applied to your operation.",
+      "items": [
+        {
+          "name": "Custom SaaS Platforms",
+          "desc": "Multi-tenant products with real isolation and per-organization roles.",
+          "href": "/services/web-platforms-mobile-applications"
+        },
+        {
+          "name": "CRM / ERP Systems",
+          "desc": "Pipelines, records and reporting shaped around how you sell and deliver.",
+          "href": "/services/custom-erp-crm-systems"
+        },
+        {
+          "name": "Backend Systems & APIs",
+          "desc": "Versioned APIs, queues, schedulers and signed webhooks.",
+          "href": "/services/web-platforms-mobile-applications"
+        },
+        {
+          "name": "Business Automation",
+          "desc": "Workflows that are validated before they run.",
+          "href": "/services/custom-erp-crm-systems"
+        },
+        {
+          "name": "AI Operational Workflows",
+          "desc": "Agents that propose, with people who approve.",
+          "href": "/services/custom-erp-crm-systems"
+        },
+        {
+          "name": "Integrations",
+          "desc": "OAuth, MCP and webhook integrations with verification built in.",
+          "href": "/services/web-platforms-mobile-applications"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Need a system like this?",
+      "body": "HexaTerminal designs and builds custom CRM, ERP, SaaS, automation and AI-enabled business systems around real operational workflows.",
+      "primary": "Discuss Your System",
+      "secondary": "Explore More Work"
+    }
   }
 }

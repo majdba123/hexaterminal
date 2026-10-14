@@ -9,6 +9,7 @@ import { Breadcrumb } from "@/components/site/breadcrumb";
 import { SystemsListingCard } from "@/components/site/systems-listing-card";
 import { EmptyState } from "@/components/site/empty-state";
 import { Pagination } from "@/components/site/pagination";
+import { CrmaTeaser } from "@/components/site/crma/teaser";
 import { parsePageParam } from "@/lib/pagination";
 
 export async function generateMetadata({
@@ -78,6 +79,11 @@ export default async function SystemsPage({
               action={{ href: "/start-a-project", label: tc("emptyCta") }}
             />
           )}
+        </Container>
+      </Section>
+      <Section>
+        <Container>
+          <CrmaTeaser />
         </Container>
       </Section>
     </>
