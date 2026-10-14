@@ -332,11 +332,17 @@ jobs:
             done
 
             cd "$FRONTEND_DIR"
-            test -f package.json
-            test -f package-lock.json
-            test -f .env.production
-            grep -q '^API_URL=https://api\.hexaterminal\.com/api/v1/public$' .env.production
-            grep -q '^NEXT_PUBLIC_SITE_URL=https://hexaterminal\.com$' .env.production
+            for required_file in package.json package-lock.json .env.production; do
+              test -f "$required_file" || { echo "Missing required frontend file: $FRONTEND_DIR/$required_file" >&2; exit 1; }
+            done
+            grep -q '^API_URL=https://api\.hexaterminal\.com/api/v1/public$' .env.production || {
+              echo "frontend/.env.production: API_URL must be https://api.hexaterminal.com/api/v1/public (found: $(grep '^API_URL=' .env.production || echo unset))" >&2
+              exit 1
+            }
+            grep -q '^NEXT_PUBLIC_SITE_URL=https://hexaterminal\.com$' .env.production || {
+              echo "frontend/.env.production: NEXT_PUBLIC_SITE_URL must be https://hexaterminal.com (found: $(grep '^NEXT_PUBLIC_SITE_URL=' .env.production || echo unset))" >&2
+              exit 1
+            }
             cp .env.production .env
 
             npm install --include=optional
