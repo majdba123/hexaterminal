@@ -1,39 +1,46 @@
 <?php
 
+namespace Tests\Feature;
+
 use App\Models\System;
 use App\Models\TeamMember;
 use Database\Seeders\HexaPortfolioSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
-uses(RefreshDatabase::class);
+class HexaPortfolioSeederTest extends TestCase
+{
+    use RefreshDatabase;
 
-it('publishes Yusuf and the approved Hexa portfolio idempotently', function () {
-    Storage::fake('public');
+    public function test_publishes_yusuf_and_the_approved_hexa_portfolio_idempotently(): void
+    {
+        Storage::fake('public');
 
-    $seeder = app(HexaPortfolioSeeder::class);
-    $seeder->run();
-    $seeder->run();
+        $seeder = app(HexaPortfolioSeeder::class);
+        $seeder->run();
+        $seeder->run();
 
-    $member = TeamMember::query()->where('slug', 'yusuf-jojeh')->sole();
+        $member = TeamMember::query()->where('slug', 'yusuf-jojeh')->sole();
 
-    expect($member->full_name)->toBe('Yusuf Mohammad Jojeh')
-        ->and($member->getTranslation('position', 'en'))->toBe('Co-Founder & Engineering Lead')
-        ->and($member->is_founder)->toBeTrue()
-        ->and($member->is_published)->toBeTrue()
-        ->and($member->publication_consent)->toBeTrue()
-        ->and($member->email)->toBeNull()
-        ->and($member->phone)->toBeNull();
+        $this->assertSame('Yusuf Mohammad Jojeh', $member->full_name);
+        $this->assertSame('Co-Founder & Engineering Lead', $member->getTranslation('position', 'en'));
+        $this->assertTrue($member->is_founder);
+        $this->assertTrue($member->is_published);
+        $this->assertTrue($member->publication_consent);
+        $this->assertNull($member->email);
+        $this->assertNull($member->phone);
 
-    $slugs = ['dhura', 'leadscope-ai', 'hirelens-ai', 'smartq', 'restocafe-os'];
+        $slugs = ['dhura', 'leadscope-ai', 'hirelens-ai', 'smartq', 'restocafe-os'];
 
-    expect(System::query()->whereIn('slug', $slugs)->count())->toBe(5);
+        $this->assertSame(5, System::query()->whereIn('slug', $slugs)->count());
 
-    foreach ($slugs as $slug) {
-        $system = System::query()->where('slug', $slug)->sole();
-        expect($system->is_published)->toBeTrue()
-            ->and($system->is_featured)->toBeTrue()
-            ->and($system->cover_image)->not->toBeEmpty();
-        Storage::disk('public')->assertExists($system->cover_image);
+        foreach ($slugs as $slug) {
+            $system = System::query()->where('slug', $slug)->sole();
+            $this->assertTrue($system->is_published);
+            $this->assertTrue($system->is_featured);
+            $this->assertNotEmpty($system->cover_image);
+            Storage::disk('public')->assertExists($system->cover_image);
+        }
     }
-});
+}
