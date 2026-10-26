@@ -154,6 +154,7 @@ jobs:
             tests/Feature/Security/FilamentAuthorizationTest.php \
             tests/Feature/Security/FilamentMfaTest.php \
             tests/Feature/Security/RateLimitingTest.php \
+            tests/Feature/Security/PublicProxyThrottleTest.php \
             tests/Feature/Security/ReplayAndAbuseTest.php \
             tests/Feature/Security/ReviewModerationTest.php \
             tests/Feature/Security/SecurityHeadersTest.php \
@@ -426,6 +427,17 @@ jobs:
                 exit 1
               }
             fi
+
+            # Queued lead notifications and image processing need a worker.
+            # Install/refresh the unit idempotently, running as the PHP-FPM user
+            # (or the storage owner) so job-written files match web requests.
+            APP_USER="${PHP_FPM_USER:-$(stat -c %U "$APP_DIR/storage")}"
+            sed "s/__APP_USER__/$APP_USER/" deploy/production/systemd/hexa-queue.service \
+              > /etc/systemd/system/hexa-queue.service
+            systemctl daemon-reload
+            systemctl enable hexa-queue
+            systemctl restart hexa-queue
+            systemctl is-active --quiet hexa-queue
 
             systemctl restart hexa-frontend
             systemctl is-active --quiet hexa-frontend

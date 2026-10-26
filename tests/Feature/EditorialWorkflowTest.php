@@ -45,6 +45,19 @@ class EditorialWorkflowTest extends TestCase
         $this->getJson('/api/v1/public/services/d')->assertNotFound();
     }
 
+    public function test_scheduled_content_without_a_date_stays_hidden(): void
+    {
+        $service = Service::create([
+            'slug' => 'd2', 'name' => ['en' => 'D2'], 'status' => 'scheduled',
+        ]);
+
+        $this->assertFalse($service->fresh()->is_published);
+        $this->getJson('/api/v1/public/services/d2')->assertNotFound();
+
+        $service->update(['published_at' => now()->subMinute()]);
+        $this->assertTrue($service->fresh()->is_published);
+    }
+
     public function test_audit_stamps_are_recorded_for_an_authenticated_user(): void
     {
         $user = User::factory()->create();

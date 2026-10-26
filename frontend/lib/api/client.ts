@@ -21,6 +21,7 @@ import type {
   Testimonial,
   TrustPage,
 } from "./types";
+import { upstreamHeaders } from "./upstream";
 
 const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
 
@@ -83,6 +84,8 @@ async function apiFetch<T>(
   }
 
   const res = await fetch(url, {
+    // Identifies SSR reads to Laravel so they use their own throttle bucket.
+    headers: upstreamHeaders(),
     next: { revalidate: init?.revalidate ?? 300 },
   });
 
@@ -294,7 +297,7 @@ export interface PreviewPayload<T = unknown> {
  */
 export async function getPreview(token: string) {
   const url = new URL(`${API_URL}/preview/${token}`);
-  const res = await fetch(url, { cache: "no-store" });
+  const res = await fetch(url, { cache: "no-store", headers: upstreamHeaders() });
   if (res.status === 404) return null;
   if (!res.ok) {
     throw new Error(`Preview request failed: ${res.status}`);
@@ -346,7 +349,7 @@ export async function getEstimate(locale: string, uuid: string): Promise<CostEst
   const url = new URL(`${API_URL}/estimates/${encodeURIComponent(uuid)}`);
   url.searchParams.set("locale", locale);
   try {
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { cache: "no-store", headers: upstreamHeaders() });
     if (!res.ok) return null;
     const body = (await res.json()) as ApiEnvelope<CostEstimateResult>;
     return body.data ?? null;

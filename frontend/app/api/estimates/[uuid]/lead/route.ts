@@ -1,4 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+
+import { badRequest, postUpstream, readJson, relayJson } from "@/lib/api/upstream";
 
 const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
 
@@ -9,17 +11,16 @@ const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
  */
 export async function POST(request: NextRequest, { params }: { params: Promise<{ uuid: string }> }) {
   const { uuid } = await params;
-  const body = await request.json();
+  const body = await readJson(request);
+  if (body === null) return badRequest();
 
-  const upstream = await fetch(`${API_URL}/estimates/${encodeURIComponent(uuid)}/lead`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(request.headers.get("referer") ? { Referer: request.headers.get("referer")! } : {}),
-    },
-    body: JSON.stringify(body),
-  });
+  const referer = request.headers.get("referer");
+  const upstream = await postUpstream(
+    `${API_URL}/estimates/${encodeURIComponent(uuid)}/lead`,
+    request,
+    body,
+    referer ? { Referer: referer } : undefined,
+  );
 
-  const data = await upstream.json();
-  return NextResponse.json(data, { status: upstream.status });
+  return relayJson(upstream);
 }

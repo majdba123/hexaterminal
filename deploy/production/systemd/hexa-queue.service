@@ -1,0 +1,23 @@
+# =============================================================================
+# systemd unit — Laravel queue worker (production)
+# Installed by .github/workflows/deploy-production.yml, which replaces
+# __APP_USER__ with the owner of $APP_DIR/storage so jobs write files with the
+# same ownership as PHP-FPM. Runs NewLeadNotification and ProcessProjectImage.
+#
+# --max-time recycles the worker hourly; the deploy's `queue:restart` makes it
+# exit after the current job so systemd starts it on the new release.
+# =============================================================================
+[Unit]
+Description=Hexa Terminal — Laravel queue worker
+After=network.target redis-server.service mysql.service
+
+[Service]
+Type=simple
+User=__APP_USER__
+WorkingDirectory=/var/www/hexaterminal
+ExecStart=/usr/bin/php /var/www/hexaterminal/artisan queue:work --sleep=3 --tries=3 --timeout=120 --max-time=3600
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

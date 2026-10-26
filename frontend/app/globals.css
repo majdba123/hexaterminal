@@ -234,6 +234,63 @@
     max-width: 34rem;
   }
 
+  /* Article body HTML from the CMS (sanitized server-side). Logical
+     properties so lists and quotes mirror correctly in RTL. */
+  .prose-content > * + * {
+    margin-block-start: 1.25em;
+  }
+
+  .prose-content h2 {
+    margin-block-start: 2em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .prose-content h3 {
+    margin-block-start: 1.6em;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .prose-content ul,
+  .prose-content ol {
+    padding-inline-start: 1.5em;
+  }
+
+  .prose-content ul {
+    list-style: disc;
+  }
+
+  .prose-content ol {
+    list-style: decimal;
+  }
+
+  .prose-content li + li {
+    margin-block-start: 0.4em;
+  }
+
+  .prose-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose-content blockquote {
+    border-inline-start: 3px solid var(--color-border);
+    padding-inline-start: 1em;
+    color: var(--color-muted-foreground);
+  }
+
+  .prose-content pre {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    background: var(--color-muted);
+    padding: 1em;
+    font-size: 0.875rem;
+  }
+
   .focus-ring {
     outline: none;
   }

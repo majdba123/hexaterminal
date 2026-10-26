@@ -5,7 +5,9 @@ namespace App\Filament\Resources\Articles\Schemas;
 use App\Filament\Support\Slugs;
 use App\Filament\Support\PublishingSection;
 use App\Filament\Support\Uploads;
+use App\Models\Article;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -37,7 +39,17 @@ class ArticleForm
                             ->unique(ignoreRecord: true)
                             ->columnSpanFull(),
                         Textarea::make('excerpt')->rows(2)->columnSpanFull(),
-                        Textarea::make('body')->rows(12)->columnSpanFull(),
+                        RichEditor::make('body')
+                            ->toolbarButtons([
+                                ['bold', 'italic', 'link'],
+                                ['h2', 'h3'],
+                                ['bulletList', 'orderedList', 'blockquote', 'codeBlock'],
+                                ['undo', 'redo'],
+                            ])
+                            // Legacy plain-text bodies open as paragraphs instead
+                            // of one run-together block.
+                            ->formatStateUsing(fn (?string $state): ?string => filled($state) ? Article::toHtml($state) : $state)
+                            ->columnSpanFull(),
                     ]),
                 Section::make('Meta')
                     ->columns(2)

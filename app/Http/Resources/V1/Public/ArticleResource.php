@@ -24,6 +24,7 @@ class ArticleResource extends JsonResource
             'title' => $this->title,
             'excerpt' => $this->excerpt,
             'body' => $this->body,
+            'body_html' => $this->bodyHtml(),
             'cover_image' => $this->cover_image,
             'cover_image_alt' => $this->cover_image_alt,
             'og_image' => $this->og_image,

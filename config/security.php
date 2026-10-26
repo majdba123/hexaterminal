@@ -98,4 +98,18 @@ return [
         'include_subdomains' => $bool('HSTS_INCLUDE_SUBDOMAINS', false),
         'preload' => $bool('HSTS_PRELOAD', false),
     ],
+
+    /*
+    |----------------------------------------------------------------------
+    | Trusted Next.js proxy
+    |----------------------------------------------------------------------
+    |
+    | Server-only secret the Next.js proxies send so Laravel can trust the
+    | forwarded visitor IP for per-visitor throttling (App\Services\
+    | PublicClientIp). Falls back to the revalidation secret, which the
+    | production deploy already provisions and verifies on both sides.
+    */
+    'public_proxy' => [
+        'secret' => env('PUBLIC_PROXY_SECRET') ?: env('REVALIDATION_SECRET'),
+    ],
 ];

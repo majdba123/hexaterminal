@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\System;
 use App\Notifications\NewLeadNotification;
 use App\Services\LeadScoringService;
+use App\Services\PublicClientIp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -145,7 +146,7 @@ class LeadController extends Controller
                 [
                     'secret' => $secret,
                     'response' => (string) $request->input('turnstile_token', ''),
-                    'remoteip' => $request->ip(),
+                    'remoteip' => PublicClientIp::resolve($request),
                 ],
             );
 

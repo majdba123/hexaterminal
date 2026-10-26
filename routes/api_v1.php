@@ -74,9 +74,9 @@ Route::prefix('v1/public')
         // is cached, but estimate creation/retrieval/lead are uncached.
         Route::get('pricing', [PricingController::class, 'index'])->middleware($cached);
         Route::get('estimator', [EstimatorController::class, 'config'])->middleware($cached);
-        Route::post('estimates', [EstimatorController::class, 'store'])->middleware('throttle:20,1');
+        Route::post('estimates', [EstimatorController::class, 'store'])->middleware('throttle:public-estimates');
         Route::get('estimates/{uuid}', [EstimatorController::class, 'show']);
-        Route::post('estimates/{uuid}/lead', [EstimatorController::class, 'submitLead'])->middleware('throttle:5,1');
+        Route::post('estimates/{uuid}/lead', [EstimatorController::class, 'submitLead'])->middleware('throttle:public-estimate-lead');
 
         // Locale-agnostic; consumed by frontend/next.config.ts at build time.
         Route::get('redirects', [RedirectController::class, 'index'])->middleware($cached);
@@ -86,6 +86,6 @@ Route::prefix('v1/public')
         Route::get('preview/{token}', [PreviewController::class, 'show'])->middleware('throttle:60,1');
 
         // Public writes: throttled, honeypot-checked, no caching.
-        Route::post('leads', [LeadController::class, 'store'])->middleware('throttle:5,1');
-        Route::post('newsletter', [NewsletterController::class, 'store'])->middleware('throttle:5,1');
+        Route::post('leads', [LeadController::class, 'store'])->middleware('throttle:public-leads');
+        Route::post('newsletter', [NewsletterController::class, 'store'])->middleware('throttle:public-newsletter');
     });

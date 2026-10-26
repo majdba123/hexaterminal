@@ -49,6 +49,13 @@ trait HasEditorialWorkflow
                 $model->published_at = now();
             }
 
+            // Fail closed: Publishable treats a null published_at as "live now",
+            // so a Scheduled item without a date must not become public. Re-derived
+            // on every save so adding the date later makes it eligible again.
+            if ($model->status === 'scheduled') {
+                $model->is_published = $model->published_at !== null;
+            }
+
             // Audit stamps -- only when a real user is acting (CLI/seeders stay null).
             $userId = Auth::id();
             if ($userId !== null) {

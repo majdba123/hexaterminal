@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 
 class Article extends Model
@@ -68,6 +69,36 @@ class Article extends Model
      * count at ~200 wpm. Unicode-aware split so Arabic counts sensibly.
      * Computed on demand, never stored.
      */
+    /**
+     * Render-ready body for the current locale: rich-text bodies are passed
+     * through the HTML sanitizer; legacy plain-text bodies are escaped and
+     * split into paragraphs so line breaks survive.
+     */
+    public function bodyHtml(): ?string
+    {
+        $body = trim((string) $this->body);
+        if ($body === '') {
+            return null;
+        }
+
+        return Str::sanitizeHtml(self::toHtml($body));
+    }
+
+    /** Converts a plain-text body to paragraphs; HTML bodies pass through. */
+    public static function toHtml(string $body): string
+    {
+        if ($body !== strip_tags($body)) {
+            return $body;
+        }
+
+        $paragraphs = preg_split('/\R{2,}/u', trim($body), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        return implode('', array_map(
+            fn (string $paragraph): string => '<p>'.nl2br(e(trim($paragraph)), false).'</p>',
+            $paragraphs,
+        ));
+    }
+
     public function readingMinutes(string $locale): int
     {
         $body = strip_tags((string) $this->getTranslation('body', $locale, false));

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { badRequest, postUpstream, readJson, relayJson } from "@/lib/api/upstream";
+
 const API_URL = process.env.API_URL ?? "http://localhost:8000/api/v1/public";
 
 const NATIVE_LEAD_FIELDS = [
@@ -40,21 +42,14 @@ export async function POST(request: NextRequest) {
         if (typeof value === "string") payload[field] = value;
         return payload;
       }, {})
-    : await request.json();
+    : await readJson(request);
+  if (body === null) return badRequest();
 
-  const upstream = await fetch(`${API_URL}/leads`, {
-    method: "POST",
-    // Do not pass browser request context to Laravel. Sanctum must see this
-    // public proxy request as stateless.
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  const upstream = await postUpstream(`${API_URL}/leads`, request, body);
 
   if (form) {
-    return nativeRedirect(request, form, upstream.ok ? "success" : "error");
+    return nativeRedirect(request, form, upstream?.ok ? "success" : "error");
   }
 
-  const data = await upstream.json();
-
-  return NextResponse.json(data, { status: upstream.status });
+  return relayJson(upstream);
 }

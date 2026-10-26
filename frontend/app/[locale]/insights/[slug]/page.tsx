@@ -89,7 +89,13 @@ export default async function ArticleDetailPage({
         {article.excerpt ? (
           <p className="mt-4 text-lg text-muted-foreground">{article.excerpt}</p>
         ) : null}
-        {article.body ? (
+        {article.body_html ? (
+          <div
+            className="prose-content mt-8 text-base leading-relaxed text-foreground"
+            // Sanitized by Laravel (Article::bodyHtml via Symfony HtmlSanitizer).
+            dangerouslySetInnerHTML={{ __html: article.body_html }}
+          />
+        ) : article.body ? (
           <div className="prose-content mt-8 whitespace-pre-line text-base leading-relaxed text-foreground">
             {article.body}
           </div>

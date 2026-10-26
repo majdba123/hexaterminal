@@ -171,6 +171,8 @@ export interface Article {
   title: string;
   excerpt: string | null;
   body: string | null;
+  /** Sanitized render-ready HTML; absent from older API responses. */
+  body_html?: string | null;
   cover_image: string | null;
   cover_image_alt: string | null;
   og_image: string | null;

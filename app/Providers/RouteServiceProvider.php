@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\PublicClientIp;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -37,9 +38,22 @@ class RouteServiceProvider extends ServiceProvider
         // authenticated/admin surface and is too strict for this traffic
         // shape. Public writes (e.g. lead submission) keep their own
         // explicit throttle:5,1 on the individual route.
+        // Server-side rendering reads arrive from the trusted Next.js server
+        // without a visitor IP; they share one generous bucket so a crawler
+        // burst cannot 429 page renders. Everyone else is keyed per visitor.
         RateLimiter::for('public-api', function (Request $request) {
-            return Limit::perMinute(300)->by($request->ip());
+            if (PublicClientIp::isTrustedProxy($request) && PublicClientIp::forwarded($request) === null) {
+                return Limit::perMinute(3000)->by('nextjs-ssr');
+            }
+
+            return Limit::perMinute(300)->by(PublicClientIp::resolve($request));
         });
+
+        // Public writes, keyed by the real visitor IP (see PublicClientIp).
+        RateLimiter::for('public-leads', fn (Request $request) => Limit::perMinute(5)->by(PublicClientIp::resolve($request)));
+        RateLimiter::for('public-newsletter', fn (Request $request) => Limit::perMinute(5)->by(PublicClientIp::resolve($request)));
+        RateLimiter::for('public-estimates', fn (Request $request) => Limit::perMinute(20)->by(PublicClientIp::resolve($request)));
+        RateLimiter::for('public-estimate-lead', fn (Request $request) => Limit::perMinute(5)->by(PublicClientIp::resolve($request)));
 
         $this->routes(function () {
             // Health/readiness probes: registered without the throttle:api
