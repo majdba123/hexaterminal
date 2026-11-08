@@ -12,28 +12,42 @@ const PROXY_SECRET = process.env.PUBLIC_PROXY_SECRET || process.env.REVALIDATE_S
 const UPSTREAM_TIMEOUT_MS = 8000;
 
 /**
- * The real visitor IP, used to key the per-visitor throttle in Laravel
- * (App\Services\PublicClientIp). Order matters, and each step assumes the
- * origin is only reachable through our own edge:
+ * Whether to trust `CF-Connecting-IP` as the visitor IP.
  *
- * 1. `CF-Connecting-IP` — set by Cloudflare and overwritten on every request,
- *    so a client cannot forge it *through* Cloudflare. It must win over the
- *    two below: once Cloudflare proxies the site, `X-Real-IP` and the
- *    right-most `X-Forwarded-For` hop are both a Cloudflare edge address, and
- *    every visitor would collapse into one throttle bucket.
- * 2. `X-Real-IP` — our own Nginx sets this from $remote_addr.
+ * OFF by default, and that default is load-bearing. The header is only
+ * trustworthy for traffic that actually passed through Cloudflare, because
+ * Cloudflare overwrites any client-supplied value on every request. On a
+ * deployment whose origin is reachable without going through Cloudflare —
+ * which includes the checked-in staging stack, where
+ * `deploy/staging/nginx/frontend-staging.conf` publishes 443 directly and does
+ * not strip the header — trusting it unconditionally would let a caller rotate
+ * it and pick its own `throttle:public-leads` bucket, defeating the
+ * per-visitor write limits.
+ *
+ * Set `TRUST_CLOUDFLARE_CLIENT_IP=true` only once the origin refuses traffic
+ * that did not come from Cloudflare (firewall or Nginx `allow` on Cloudflare's
+ * published ranges). See docs/deployment/production-deployment.md §Cloudflare.
+ */
+const TRUST_CLOUDFLARE_CLIENT_IP = process.env.TRUST_CLOUDFLARE_CLIENT_IP === "true";
+
+/**
+ * The real visitor IP, used to key the per-visitor throttle in Laravel
+ * (App\Services\PublicClientIp).
+ *
+ * 1. `CF-Connecting-IP` — only when TRUST_CLOUDFLARE_CLIENT_IP is set, see
+ *    above. It has to win over the two below wherever Cloudflare is in front:
+ *    there `X-Real-IP` and the right-most `X-Forwarded-For` hop are both a
+ *    Cloudflare edge address, so every visitor would collapse into one bucket.
+ * 2. `X-Real-IP` — our own Nginx sets this from $remote_addr. Connection
+ *    derived, so this is the safe default.
  * 3. Right-most `X-Forwarded-For` hop — appended by Nginx; left-most entries
  *    are client-supplied and must never be trusted.
- *
- * REQUIRED by (1): the origin must refuse traffic that does not come from
- * Cloudflare (firewall or Nginx `allow` on Cloudflare's published ranges).
- * If the origin IP is directly reachable, a caller can set CF-Connecting-IP
- * itself and pick its own throttle bucket. See
- * docs/deployment/production-deployment.md §Cloudflare.
  */
 function visitorIp(request: NextRequest): string | null {
-  const cfConnectingIp = request.headers.get("cf-connecting-ip")?.trim();
-  if (cfConnectingIp) return cfConnectingIp;
+  if (TRUST_CLOUDFLARE_CLIENT_IP) {
+    const cfConnectingIp = request.headers.get("cf-connecting-ip")?.trim();
+    if (cfConnectingIp) return cfConnectingIp;
+  }
 
   const realIp = request.headers.get("x-real-ip")?.trim();
   if (realIp) return realIp;

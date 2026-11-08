@@ -174,7 +174,7 @@ Mode matters:
 
 ### Lock the origin to Cloudflare — required, not optional
 
-`frontend/lib/api/upstream.ts` trusts `CF-Connecting-IP` as the visitor IP,
+`frontend/lib/api/upstream.ts` can use `CF-Connecting-IP` as the visitor IP,
 because behind Cloudflare both `X-Real-IP` and the right-most `X-Forwarded-For`
 hop are a Cloudflare edge address and every visitor would otherwise land in one
 throttle bucket (`throttle:public-leads`, 5/min, keyed by
@@ -182,10 +182,28 @@ throttle bucket (`throttle:public-leads`, 5/min, keyed by
 
 Cloudflare overwrites a client-supplied `CF-Connecting-IP` on every request, so
 that header is trustworthy **only for traffic that actually passed through
-Cloudflare**. If the origin IP stays directly reachable, a caller can set the
-header itself and choose its own throttle bucket. Therefore the origin must
-refuse non-Cloudflare traffic on 80/443 — firewall rule or nginx `allow` on
-Cloudflare's published ranges (`https://www.cloudflare.com/ips/`).
+Cloudflare**. Where the origin stays directly reachable, a caller can set the
+header itself and choose its own throttle bucket — which would make the
+per-visitor write limits useless.
+
+So the app does **not** trust it by default. Enabling it is two steps, in this
+order:
+
+1. **Lock the origin down first.** Refuse non-Cloudflare traffic on 80/443 —
+   firewall rule or nginx `allow` on Cloudflare's published ranges
+   (`https://www.cloudflare.com/ips/`). Verify from an address outside those
+   ranges that the origin IP no longer answers.
+2. **Then** set `TRUST_CLOUDFLARE_CLIENT_IP=true` in
+   `frontend/.env.production` and restart `hexa-frontend`.
+
+Doing step 2 without step 1 is the whole vulnerability. Leaving the flag unset
+is always safe: the app falls back to the connection-derived `X-Real-IP`, which
+behind Cloudflare means a shared throttle bucket — degraded, not exploitable.
+
+Any ingress that is *not* behind Cloudflare should also strip the header, so
+that setting the flag by mistake cannot be exploited;
+`deploy/staging/nginx/frontend-staging.conf` does this with
+`proxy_set_header CF-Connecting-IP "";`.
 
 Either also set nginx `real_ip_header CF-Connecting-IP` with
 `set_real_ip_from` on those ranges, so access logs and Laravel's own
