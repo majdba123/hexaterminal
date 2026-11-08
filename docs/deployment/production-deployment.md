@@ -144,6 +144,29 @@ Health of the build was verified with:
 - Terminate TLS at the proxy. Forward `X-Forwarded-*` so Laravel builds correct
   absolute URLs.
 
+## TLS today: renewing on the origin
+
+Cloudflare is the destination (next section), but it cannot be switched on yet:
+the zone is registered through Cloudflare Registrar inside an account we do not
+control, so the nameservers cannot be pointed at a zone in our own account.
+Until that is resolved, the origin's own Let's Encrypt certificates are what
+visitors get, and they are what must stay valid.
+
+Renew them with the **Renew TLS Certificates** workflow
+(`.github/workflows/renew-tls.yml`), never by hand over SSH:
+
+1. Actions → Renew TLS Certificates → Run workflow → `mode: dry-run`.
+   This exercises the full ACME challenge against Let's Encrypt's staging
+   server. If the challenge is what broke, this says so without spending a
+   rate-limit slot.
+2. If the dry run passes, run it again with `mode: renew`. It issues, reloads
+   nginx, re-enables `certbot.timer`, and then verifies all three hostnames
+   **from the GitHub runner** — off the box, so a working loopback cannot
+   disguise a broken public certificate.
+
+The run prints the timer state and the tail of `letsencrypt.log` before
+touching anything, so the reason the previous renewal lapsed is recorded.
+
 ## Cloudflare
 
 Public TLS is served by Cloudflare, so the certificate renews automatically and
