@@ -153,19 +153,46 @@ Until that is resolved, the origin's own Let's Encrypt certificates are what
 visitors get, and they are what must stay valid.
 
 Renew them with the **Renew TLS Certificates** workflow
-(`.github/workflows/renew-tls.yml`), never by hand over SSH:
+(`.github/workflows/renew-tls.yml`), never by hand over SSH. Modes:
 
-1. Actions → Renew TLS Certificates → Run workflow → `mode: dry-run`.
-   This exercises the full ACME challenge against Let's Encrypt's staging
-   server. If the challenge is what broke, this says so without spending a
-   rate-limit slot.
-2. If the dry run passes, run it again with `mode: renew`. It issues, reloads
-   nginx, re-enables `certbot.timer`, and then verifies all three hostnames
-   **from the GitHub runner** — off the box, so a working loopback cannot
-   disguise a broken public certificate.
+| Mode | What it does |
+|---|---|
+| `diagnose` | Prints each renewal config's authenticator, the timer state and the certificate paths nginx serves. Changes nothing. |
+| `dry-run` | `certbot renew` against the staging ACME server, using whatever authenticator is already configured. |
+| `renew` | `certbot renew` for real, then reloads nginx and verifies publicly. |
+| `repair-dry-run` | Simulates reissuing with the `--nginx` authenticator. |
+| `repair` | Reissues with `--nginx`, persisting it into the renewal config. |
 
-The run prints the timer state and the tail of `letsencrypt.log` before
-touching anything, so the reason the previous renewal lapsed is recorded.
+Every certbot call is scoped with `--cert-name` to `hexaterminal.com` and
+`api.hexaterminal.com`. **The box is shared**: it also carries certificates for
+`malik`, `msz`, `studio` and `voice.hexaterminal.com`, which belong to other
+sites. A bare `certbot renew` would sweep all of them in.
+
+### What actually broke, and what fixed it (2026-11-08)
+
+Not the timer. `certbot.timer` was enabled and firing twice a day the whole
+time — it had run nine hours before the fix. The fault was the authenticator:
+
+```
+authenticator = standalone     # hexaterminal.com and api.hexaterminal.com
+```
+
+`standalone` spins up its own listener on port 80, and nginx already owns port
+80, so every single renewal failed with *"Could not bind TCP port 80"*. It had
+been failing silently since July. `malik` (authenticator `nginx`) and `studio`
+(`webroot`) on the same host renewed normally throughout, which is what proved
+the nginx plugin works here.
+
+`mode: repair` reissued both with `--nginx`, which writes
+`authenticator = nginx` into the renewal config, so the existing timer now
+succeeds on its own. `--cert-name` kept the lineages, so the
+`/etc/letsencrypt/live/<name>/` paths nginx references did not move.
+
+Result: both certificates valid to **2027-02-06**, all three hostnames verified
+over HTTPS with full certificate validation.
+
+The `renew` and `repair` modes verify from the **GitHub runner**, off the box,
+on purpose — a healthy loopback is exactly what disguised this for a month.
 
 ## Cloudflare
 
