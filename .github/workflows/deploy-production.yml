@@ -582,7 +582,12 @@ jobs:
           check_host() {
             local host="$1" probe_url="$2"
 
-            # No --insecure anywhere: certificate validation IS the check.
+            # Certificate validation IS the check here, so this curl must keep
+            # verifying peers. Never add a flag that skips verification, and do
+            # not write that flag's name anywhere in this file either:
+            # ProductionMediaSmokeGuardTest asserts the whole workflow does not
+            # contain it, by plain string match. A comment mentioning it fails
+            # the guard just as a real use would.
             if ! curl --fail --silent --show-error --location \
                  --retry 3 --retry-delay 5 --retry-connrefused \
                  --max-time 20 --output /dev/null "$probe_url"; then
