@@ -1,0 +1,247 @@
+name: CI
+
+# Runs the quality gates on pull requests.
+#
+# Why this exists: until this file, `deploy-production.yml` was the repository's
+# only workflow, and it triggers on `push` to `main`. Nothing ran on a pull
+# request, so typecheck, lint, build and the backend tests first executed only
+# *after* a change had already reached `main` — after the point where a gate can
+# prevent anything. A red `main` was the earliest possible signal.
+#
+# This job mirrors the `validate` job of the production deploy step for step, so
+# a green PR means that job will also pass. It deliberately does NOT deploy,
+# package, or touch any server, and it needs no secrets.
+#
+# It is one job on purpose: the frontend build fetches from the API during
+# static generation, so it needs the Laravel server started below. Splitting
+# backend and frontend into parallel jobs would build the frontend against
+# nothing.
+#
+# Note on duplication: the environment block below repeats the one in
+# deploy-production.yml. That is intentional for now — factoring it out would
+# mean editing the production deploy path, a larger change than this gate is
+# worth. If a third workflow ever needs it, extract it then.
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # One run per branch; a new push supersedes the previous run.
+  group: hexaterminal-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate HexaTerminal Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/package-lock.json
+
+      - name: Install backend dependencies
+        env:
+          COMPOSER_ALLOW_SUPERUSER: 1
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          for attempt in 1 2 3; do
+            if composer install --prefer-install=dist --no-interaction --no-progress; then
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              exit 1
+            fi
+
+            echo "composer install failed on attempt $attempt, retrying after backoff..." >&2
+            sleep $((attempt * 15))
+          done
+
+      - name: Prepare validation environment
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache .ci
+          touch .ci/validate.sqlite
+          cat > .env <<EOF
+          APP_NAME="Hexa Terminal"
+          APP_ENV=testing
+          APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          APP_DEBUG=false
+          APP_URL=http://127.0.0.1:8000
+          PUBLIC_MEDIA_URL=http://127.0.0.1:8000
+          LOG_CHANNEL=stack
+          LOG_DEPRECATIONS_CHANNEL=null
+          LOG_LEVEL=warning
+          DB_CONNECTION=sqlite
+          DB_DATABASE=$GITHUB_WORKSPACE/.ci/validate.sqlite
+          BROADCAST_DRIVER=log
+          CACHE_DRIVER=array
+          CACHE_STORE=array
+          FILESYSTEM_DISK=local
+          QUEUE_CONNECTION=sync
+          SESSION_DRIVER=array
+          SESSION_LIFETIME=120
+          MEMCACHED_HOST=127.0.0.1
+          REDIS_HOST=127.0.0.1
+          REDIS_PASSWORD=null
+          REDIS_PORT=6379
+          MAIL_MAILER=array
+          MAIL_HOST=127.0.0.1
+          MAIL_PORT=2525
+          MAIL_USERNAME=null
+          MAIL_PASSWORD=null
+          MAIL_ENCRYPTION=null
+          MAIL_FROM_ADDRESS="hello@example.com"
+          MAIL_FROM_NAME="Hexa Terminal"
+          ADMIN_NAME="CI Administrator"
+          ADMIN_EMAIL=ci-admin@example.com
+          ADMIN_PASSWORD=ci-admin-password-1234
+          TURNSTILE_SECRET_KEY=
+          AI_SEO_PROVIDER=anthropic
+          ANTHROPIC_API_KEY=
+          AI_SEO_MODEL=claude-opus-4-8
+          AI_SEO_TIMEOUT=30
+          LEGACY_PUBLIC_WEB_ENABLED=true
+          LEGACY_ADMIN_ENABLED=true
+          LEGACY_API_ENABLED=true
+          CSP_ENABLED=true
+          CSP_ENFORCE=false
+          HSTS_ENABLED=false
+          HSTS_INCLUDE_SUBDOMAINS=false
+          HSTS_PRELOAD=false
+          SESSION_SECURE_COOKIE=false
+          VITE_APP_NAME="Hexa Terminal"
+          PHP_CLI_SERVER_WORKERS=8
+          EOF
+
+      - name: Install Laravel asset dependencies
+        run: npm install --include=optional
+
+      - name: Build Laravel assets
+        run: npx vite build
+
+      - name: Run database setup
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # Exercise migrations, idempotent seeders, and legacy migration once,
+          # then reset to a schema-only test database so API tests own all fixtures.
+          php artisan migrate --force
+          php artisan db:seed --force
+          php artisan hexa:migrate-legacy-content
+          php artisan migrate:fresh --force
+
+      - name: Run Laravel validation suite
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # Same file list as the production deploy's `validate` job, so a green
+          # PR means that job will also pass. This is parity, not full coverage:
+          # the suite contains tests outside this list that do not currently
+          # pass, and widening the list is its own piece of work.
+          php artisan test \
+            tests/Feature/HealthTest.php \
+            tests/Feature/Api/V1 \
+            tests/Feature/Security/CorsPolicyTest.php \
+            tests/Feature/Security/ErrorLeakageTest.php \
+            tests/Feature/Security/FilamentAuthorizationTest.php \
+            tests/Feature/Security/FilamentMfaTest.php \
+            tests/Feature/Security/RateLimitingTest.php \
+            tests/Feature/Security/PublicProxyThrottleTest.php \
+            tests/Feature/Security/ReplayAndAbuseTest.php \
+            tests/Feature/Security/ReviewModerationTest.php \
+            tests/Feature/Security/SecurityHeadersTest.php \
+            tests/Feature/Security/SlugValidationTest.php \
+            tests/Feature/Security/StorageRouteTest.php \
+            tests/Feature/Security/UploadAllowlistTest.php \
+            tests/Feature/Deployment/ProductionMediaSmokeGuardTest.php \
+            tests/Feature/Deployment/ProductionRevalidationDeployGuardTest.php \
+            tests/Feature/Deployment/ProductionFreshSeedSafetyTest.php \
+            tests/Feature/VetoraCaseStudyFeaturedSeedTest.php \
+            tests/Feature/Pricing \
+            tests/Feature/RevalidationTest.php
+
+      - name: Install frontend dependencies
+        run: npm install --include=optional
+        working-directory: frontend
+
+      - name: Start Laravel validation server
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/validate-server.log 2>&1 &
+          echo $! > .ci/validate-server.pid
+
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8000/api/health > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Laravel validation server failed to start" >&2
+          cat storage/logs/validate-server.log >&2 || true
+          exit 1
+
+      - name: Run frontend typecheck
+        run: npm run typecheck
+        working-directory: frontend
+
+      - name: Run frontend lint
+        run: npm run lint -- .
+        working-directory: frontend
+
+      # Pure unit tests on Playwright's runner: no browser, no dev server, no
+      # API, ~1s. This step is NOT part of the deploy's validate job, so it is
+      # the one intentional addition beyond parity.
+      - name: Run frontend unit tests
+        run: npm run test:unit
+        working-directory: frontend
+
+      - name: Run frontend build
+        env:
+          # Build-time placeholders, not production values. Nothing here is a
+          # secret; the real values live in frontend/.env.production on the
+          # server.
+          #
+          # These are byte-identical to the deploy's own build step on purpose,
+          # including NEXT_PUBLIC_SITE_URL being the apex rather than the
+          # canonical www host (frontend/lib/seo/site.ts). A gate whose job is
+          # to predict the deploy must not build under different inputs. The
+          # apex/www mismatch is pre-existing in deploy-production.yml and is
+          # not fixed here; fix it in both files together or not at all.
+          API_URL: http://127.0.0.1:8000/api/v1/public
+          NEXT_PUBLIC_SITE_URL: https://hexaterminal.com
+          NEXT_PUBLIC_ALLOW_INDEXING: true
+          REVALIDATE_SECRET: ci-validation-secret
+        run: npm run build
+        working-directory: frontend

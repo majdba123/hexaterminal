@@ -561,3 +561,72 @@ jobs:
               --max-time 20 \
               "${FRONTEND_BASE_URL}/en" \
               > /dev/null
+
+      # Runs on the GitHub runner, not the server: the readiness loop above
+      # deliberately falls back to http://127.0.0.1:3000 because the server
+      # cannot always resolve its own public hostname (DNS hairpin). That
+      # fallback let the 2026-10 deploys pass green while the public
+      # certificate for hexaterminal.com had been expired since 7 October and
+      # every real visitor saw a browser interstitial. The runner has clean
+      # public DNS and no hairpin, so it is the right place to assert that the
+      # site is actually reachable over valid TLS from the internet.
+      - name: Verify public TLS and HTTPS reachability
+        shell: bash
+        env:
+          TLS_MIN_DAYS_REMAINING: "14"
+        run: |
+          set -Eeuo pipefail
+
+          failures=0
+
+          check_host() {
+            local host="$1" probe_url="$2"
+
+            # No --insecure anywhere: certificate validation IS the check.
+            if ! curl --fail --silent --show-error --location \
+                 --retry 3 --retry-delay 5 --retry-connrefused \
+                 --max-time 20 --output /dev/null "$probe_url"; then
+              echo "::error::$host is not reachable over valid HTTPS ($probe_url)." >&2
+              failures=$((failures + 1))
+              return
+            fi
+
+            local not_after epoch now days
+            # `|| true`: under `set -Eeuo pipefail` a failing substitution
+            # would abort the step before the friendly warning below.
+            not_after="$(echo \
+              | openssl s_client -servername "$host" -connect "$host:443" 2>/dev/null \
+              | openssl x509 -noout -enddate 2>/dev/null \
+              | cut -d= -f2 || true)"
+
+            if [ -z "$not_after" ]; then
+              echo "::warning::$host answered over HTTPS but its certificate expiry could not be read." >&2
+              return
+            fi
+
+            epoch="$(date -d "$not_after" +%s 2>/dev/null || true)"
+            if [ -z "$epoch" ]; then
+              echo "::warning::$host returned an unparseable certificate expiry ('$not_after')." >&2
+              return
+            fi
+            now="$(date +%s)"
+            days=$(( (epoch - now) / 86400 ))
+
+            if [ "$days" -lt 0 ]; then
+              echo "::error::$host certificate expired $(( -days )) day(s) ago ($not_after)." >&2
+              failures=$((failures + 1))
+            elif [ "$days" -lt "$TLS_MIN_DAYS_REMAINING" ]; then
+              echo "::warning::$host certificate expires in $days day(s) ($not_after); renewal is overdue." >&2
+            else
+              echo "$host: HTTPS ok, certificate valid for $days more day(s)."
+            fi
+          }
+
+          check_host "www.hexaterminal.com" "https://www.hexaterminal.com/api/health"
+          check_host "hexaterminal.com"     "https://hexaterminal.com/api/health"
+          check_host "api.hexaterminal.com" "https://api.hexaterminal.com/api/health/ready"
+
+          if [ "$failures" -gt 0 ]; then
+            echo "Public HTTPS verification failed for $failures host(s). The release is live on the server but is not usable by visitors." >&2
+            exit 1
+          fi

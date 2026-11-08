@@ -2,6 +2,8 @@ import "server-only";
 
 import { NextResponse, type NextRequest } from "next/server";
 
+import { resolveVisitorIp } from "./visitor-ip";
+
 /**
  * Server-only shared secret that lets Laravel trust the visitor IP we forward
  * (App\Services\PublicClientIp). Falls back to the revalidation secret, which
@@ -11,26 +13,13 @@ const PROXY_SECRET = process.env.PUBLIC_PROXY_SECRET || process.env.REVALIDATE_S
 
 const UPSTREAM_TIMEOUT_MS = 8000;
 
-/**
- * The visitor IP as seen by our own Nginx. X-Real-IP is set from
- * $remote_addr; otherwise take the right-most X-Forwarded-For hop, which Nginx
- * appends and the client cannot forge (left-most entries are client-supplied).
- */
-function visitorIp(request: NextRequest): string | null {
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  if (realIp) return realIp;
-
-  const hops = request.headers.get("x-forwarded-for")?.split(",").map((hop) => hop.trim()).filter(Boolean);
-  return hops?.at(-1) ?? null;
-}
-
 /** Headers for a server-to-server call to the Laravel public API. */
 export function upstreamHeaders(request?: NextRequest, extra?: Record<string, string>): Record<string, string> {
   const headers: Record<string, string> = { "Content-Type": "application/json", ...extra };
   if (!PROXY_SECRET) return headers;
 
   headers["X-Hexa-Proxy-Secret"] = PROXY_SECRET;
-  const ip = request ? visitorIp(request) : null;
+  const ip = request ? resolveVisitorIp(request.headers) : null;
   if (ip) headers["X-Hexa-Client-Ip"] = ip;
   return headers;
 }
