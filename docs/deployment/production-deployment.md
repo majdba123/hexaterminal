@@ -144,6 +144,71 @@ Health of the build was verified with:
 - Terminate TLS at the proxy. Forward `X-Forwarded-*` so Laravel builds correct
   absolute URLs.
 
+## Cloudflare
+
+Public TLS is served by Cloudflare, so the certificate renews automatically and
+never expires silently. This replaces the manual certbot setup whose renewal
+failed unnoticed in October 2026 (`hexaterminal.com` served an expired
+certificate from 7 October; `api.hexaterminal.com` from 28 October).
+
+**All three hostnames must be proxied** (orange cloud): `hexaterminal.com`,
+`www.hexaterminal.com`, `api.hexaterminal.com`. A grey-cloud (DNS-only) record
+is served straight from the origin with the origin's own certificate and is not
+covered by Cloudflare's.
+
+### Origin certificate — the part that makes it permanent
+
+1. Cloudflare dashboard → SSL/TLS → Origin Server → **Create Certificate**.
+   Cover `hexaterminal.com`, `*.hexaterminal.com`. Validity: 15 years.
+2. Install the certificate and key on the origin and point nginx at them for
+   all three server blocks.
+3. SSL/TLS → Overview → encryption mode **Full (strict)**.
+
+Mode matters:
+
+| Mode | Behaviour | Use |
+|---|---|---|
+| Flexible | Cloudflare → origin over plain HTTP | **Never.** The origin's `301 http → https` makes an infinite redirect loop. |
+| Full | Encrypted to origin, certificate not validated | Only as a temporary bridge while the origin certificate is still expired. |
+| Full (strict) | Encrypted and validated | **Target state**, once the origin certificate above is installed. |
+
+### Lock the origin to Cloudflare — required, not optional
+
+`frontend/lib/api/upstream.ts` trusts `CF-Connecting-IP` as the visitor IP,
+because behind Cloudflare both `X-Real-IP` and the right-most `X-Forwarded-For`
+hop are a Cloudflare edge address and every visitor would otherwise land in one
+throttle bucket (`throttle:public-leads`, 5/min, keyed by
+`App\Services\PublicClientIp`).
+
+Cloudflare overwrites a client-supplied `CF-Connecting-IP` on every request, so
+that header is trustworthy **only for traffic that actually passed through
+Cloudflare**. If the origin IP stays directly reachable, a caller can set the
+header itself and choose its own throttle bucket. Therefore the origin must
+refuse non-Cloudflare traffic on 80/443 — firewall rule or nginx `allow` on
+Cloudflare's published ranges (`https://www.cloudflare.com/ips/`).
+
+Either also set nginx `real_ip_header CF-Connecting-IP` with
+`set_real_ip_from` on those ranges, so access logs and Laravel's own
+`$request->ip()` show the visitor rather than the edge.
+
+### HTML caching
+
+Pages are currently served `Cache-Control: private, no-cache, no-store`, so
+Cloudflare will not cache HTML and cold renders stay slow (measured 2026-11-01:
+`/ar` cold TTFB 14.9s, warm 0.53s). Putting Cloudflare in front fixes the
+certificate but **not** the cold-render latency until the app emits cacheable
+HTML (ISR / `s-maxage`) or a Cache Rule overrides it. Tracked separately.
+
+### Verification
+
+`.github/workflows/deploy-production.yml` → *Verify public TLS and HTTPS
+reachability* runs on the GitHub runner after every deploy and fails the run
+when any of the three hosts is unreachable over valid HTTPS, warning when a
+certificate has under 14 days left. It runs on the runner, not the server,
+because the server-side readiness loop falls back to `http://127.0.0.1:3000`
+for DNS-hairpin reasons — which is exactly how the October expiry deployed
+green.
+
 ## Storage / media
 
 - Laravel `storage/app/public` must be linked: `php artisan storage:link`.

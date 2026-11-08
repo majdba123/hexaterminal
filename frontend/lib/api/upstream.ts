@@ -12,11 +12,29 @@ const PROXY_SECRET = process.env.PUBLIC_PROXY_SECRET || process.env.REVALIDATE_S
 const UPSTREAM_TIMEOUT_MS = 8000;
 
 /**
- * The visitor IP as seen by our own Nginx. X-Real-IP is set from
- * $remote_addr; otherwise take the right-most X-Forwarded-For hop, which Nginx
- * appends and the client cannot forge (left-most entries are client-supplied).
+ * The real visitor IP, used to key the per-visitor throttle in Laravel
+ * (App\Services\PublicClientIp). Order matters, and each step assumes the
+ * origin is only reachable through our own edge:
+ *
+ * 1. `CF-Connecting-IP` — set by Cloudflare and overwritten on every request,
+ *    so a client cannot forge it *through* Cloudflare. It must win over the
+ *    two below: once Cloudflare proxies the site, `X-Real-IP` and the
+ *    right-most `X-Forwarded-For` hop are both a Cloudflare edge address, and
+ *    every visitor would collapse into one throttle bucket.
+ * 2. `X-Real-IP` — our own Nginx sets this from $remote_addr.
+ * 3. Right-most `X-Forwarded-For` hop — appended by Nginx; left-most entries
+ *    are client-supplied and must never be trusted.
+ *
+ * REQUIRED by (1): the origin must refuse traffic that does not come from
+ * Cloudflare (firewall or Nginx `allow` on Cloudflare's published ranges).
+ * If the origin IP is directly reachable, a caller can set CF-Connecting-IP
+ * itself and pick its own throttle bucket. See
+ * docs/deployment/production-deployment.md §Cloudflare.
  */
 function visitorIp(request: NextRequest): string | null {
+  const cfConnectingIp = request.headers.get("cf-connecting-ip")?.trim();
+  if (cfConnectingIp) return cfConnectingIp;
+
   const realIp = request.headers.get("x-real-ip")?.trim();
   if (realIp) return realIp;
 
