@@ -1,0 +1,217 @@
+name: Renew TLS Certificates
+
+# Manual-dispatch maintenance for the origin's Let's Encrypt certificates.
+#
+# Why this exists: the certbot renewal on the origin stopped running at some
+# point before October 2026 and nobody noticed, so `hexaterminal.com` has served
+# an expired certificate since 7 October and `api.hexaterminal.com` since
+# 28 October. The deploy's own health checks fall back to http://127.0.0.1:3000,
+# which answered fine, so three deploys went green over a dead public
+# certificate.
+#
+# This workflow is the sanctioned way to renew: it reuses the deploy's SSH
+# secrets, so nobody has to hand-edit the server or pass a private key around,
+# and every run is logged. It never runs on push -- TLS renewal is an explicit
+# operator decision, not a side effect of merging.
+#
+# Run it with mode=dry-run first. That proves the ACME challenge actually
+# reaches the origin without burning a Let's Encrypt rate-limit slot, which
+# matters because the failure we are fixing is most likely a blocked challenge.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run tests the renewal end to end without issuing. renew issues real certificates and reloads nginx.'
+        required: true
+        default: 'dry-run'
+        type: choice
+        options:
+          - dry-run
+          - renew
+
+permissions:
+  contents: read
+
+# Never let two renewals overlap, and never cancel one midway: an interrupted
+# certbot run can leave a half-written renewal lineage behind.
+concurrency:
+  group: hexaterminal-tls-renewal
+  cancel-in-progress: false
+
+jobs:
+  renew:
+    name: Renew origin certificates (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Renew certificates on the origin
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          timeout: 30s
+          command_timeout: 10m
+          envs: RENEW_MODE
+          script: |
+            set -Eeuo pipefail
+
+            echo "::group::certbot availability"
+            if ! command -v certbot >/dev/null 2>&1; then
+              echo "::error::certbot is not on PATH on this host."
+              echo "Renewal lineages present (if any):"
+              ls -la /etc/letsencrypt/renewal 2>/dev/null || echo "  no /etc/letsencrypt/renewal"
+              echo "Other ACME clients:"
+              command -v acme.sh lego dehydrated 2>/dev/null || echo "  none found"
+              exit 1
+            fi
+            certbot --version
+            echo "::endgroup::"
+
+            echo "::group::Certificates before"
+            certbot certificates || true
+            echo "::endgroup::"
+
+            echo "::group::Why renewal stopped - timer state"
+            # The renewal almost certainly lapsed because this timer is dead.
+            # Printed before we change anything so the run records the cause.
+            systemctl is-enabled certbot.timer 2>&1 || true
+            systemctl is-active certbot.timer 2>&1 || true
+            systemctl list-timers 'certbot*' --all --no-pager 2>/dev/null || true
+            echo "--- last renewal attempts ---"
+            tail -n 40 /var/log/letsencrypt/letsencrypt.log 2>/dev/null \
+              || echo "  no /var/log/letsencrypt/letsencrypt.log"
+            echo "::endgroup::"
+
+            echo "::group::Certificate paths nginx actually serves"
+            grep -rhoE 'ssl_certificate(_key)?[[:space:]]+[^;]+;' /etc/nginx 2>/dev/null \
+              | sort -u || echo "  could not read /etc/nginx"
+            echo "::endgroup::"
+
+            if [ "$RENEW_MODE" = "dry-run" ]; then
+              echo "::group::certbot renew --dry-run"
+              # Exercises the full challenge against the staging ACME server.
+              # If this fails, a real renewal would have failed too, and the
+              # output names the reason without spending a rate-limit slot.
+              certbot renew --dry-run
+              echo "::endgroup::"
+              echo "Dry run succeeded. Re-run this workflow with mode=renew to issue."
+              exit 0
+            fi
+
+            echo "::group::certbot renew"
+            # Capture rather than let `set -e` abort, so the certificate state
+            # after the attempt is always printed, failure or not.
+            rc=0
+            certbot renew --non-interactive || rc=$?
+            echo "::endgroup::"
+
+            echo "::group::Certificates after (certbot exit $rc)"
+            certbot certificates || true
+            echo "::endgroup::"
+
+            if [ "$rc" -ne 0 ]; then
+              echo "::error::certbot renew failed with exit code $rc. nginx was left untouched."
+              exit "$rc"
+            fi
+
+            echo "::group::Reload nginx"
+            nginx -t
+            systemctl reload nginx
+            systemctl is-active --quiet nginx
+            echo "nginx reloaded."
+            echo "::endgroup::"
+
+            echo "::group::Re-arm automatic renewal"
+            # The whole point: make sure this does not silently lapse again.
+            # A failure here must not fail the run -- the certificates are
+            # already renewed and serving by this point.
+            if systemctl list-unit-files 'certbot.timer' --no-legend 2>/dev/null | grep -q certbot; then
+              systemctl enable --now certbot.timer \
+                && systemctl list-timers 'certbot*' --all --no-pager \
+                || echo "::warning::could not enable certbot.timer; renewal is still manual."
+            else
+              echo "::warning::no certbot.timer on this host; renewal is still manual."
+            fi
+            echo "::endgroup::"
+
+            echo "::group::What the origin now serves locally"
+            for host in hexaterminal.com www.hexaterminal.com api.hexaterminal.com; do
+              expiry="$(echo \
+                | openssl s_client -servername "$host" -connect 127.0.0.1:443 2>/dev/null \
+                | openssl x509 -noout -enddate 2>/dev/null \
+                | cut -d= -f2 || true)"
+              echo "$host -> ${expiry:-could not read}"
+            done
+            echo "::endgroup::"
+        env:
+          RENEW_MODE: ${{ inputs.mode }}
+
+      - name: Verify public TLS from outside the server
+        if: inputs.mode == 'renew'
+        shell: bash
+        env:
+          TLS_MIN_DAYS_REMAINING: "14"
+        run: |
+          set -Eeuo pipefail
+
+          # Deliberately the same check the deploy's final gate runs, and for
+          # the same reason: the server can reach itself on loopback while the
+          # public hostname serves something else entirely. Only a probe from
+          # off the box proves a visitor gets a valid certificate.
+          failures=0
+
+          check_host() {
+            local host="$1" probe_url="$2"
+
+            # Peer verification IS the check. Never weaken this curl.
+            if ! curl --fail --silent --show-error --location \
+                 --retry 3 --retry-delay 5 --retry-connrefused \
+                 --max-time 20 --output /dev/null "$probe_url"; then
+              echo "::error::$host is not reachable over valid HTTPS ($probe_url)." >&2
+              failures=$((failures + 1))
+              return
+            fi
+
+            local not_after epoch now days
+            not_after="$(echo \
+              | openssl s_client -servername "$host" -connect "$host:443" 2>/dev/null \
+              | openssl x509 -noout -enddate 2>/dev/null \
+              | cut -d= -f2 || true)"
+
+            if [ -z "$not_after" ]; then
+              echo "::warning::$host answered over HTTPS but its certificate expiry could not be read." >&2
+              return
+            fi
+
+            epoch="$(date -d "$not_after" +%s 2>/dev/null || true)"
+            if [ -z "$epoch" ]; then
+              echo "::warning::$host returned an unparseable certificate expiry ('$not_after')." >&2
+              return
+            fi
+            now="$(date +%s)"
+            days=$(( (epoch - now) / 86400 ))
+
+            if [ "$days" -lt 0 ]; then
+              echo "::error::$host certificate expired $(( -days )) day(s) ago ($not_after)." >&2
+              failures=$((failures + 1))
+            elif [ "$days" -lt "$TLS_MIN_DAYS_REMAINING" ]; then
+              echo "::warning::$host certificate expires in $days day(s) ($not_after)." >&2
+            else
+              echo "$host: HTTPS ok, certificate valid for $days more day(s)."
+            fi
+          }
+
+          check_host "www.hexaterminal.com" "https://www.hexaterminal.com/api/health"
+          check_host "hexaterminal.com"     "https://hexaterminal.com/api/health"
+          check_host "api.hexaterminal.com" "https://api.hexaterminal.com/api/health/ready"
+
+          if [ "$failures" -gt 0 ]; then
+            echo "::error::$failures host(s) still fail public TLS verification." >&2
+            exit 1
+          fi
+
+          echo "All three hostnames serve a valid certificate."
